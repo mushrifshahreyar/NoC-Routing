@@ -402,46 +402,56 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 
 	std::cout<<"Q_TABLE:  "<<Q[0][0][1]<<std::endl;
 	if(inport_dirn == "NORTH"){
-		if(my_y < num_rows - 1) {
+		//if(my_y < num_rows - 1) {
 			temp_y = my_y + 1;
 			temp_x = my_x;
-		}
+		//}
 	}
 	else if(inport_dirn == "SOUTH") {
-		if(my_y > 0) {
+		//if(my_y > 0) {
 			temp_y = my_y - 1;
 			temp_x = my_x;
-		}
+		//}
 	
 	}
 	else if(inport_dirn == "EAST") {
-		if(my_x < num_cols -1) {
+		//if(my_x < num_cols -1) {
 			temp_x = my_x + 1;
 			temp_y = my_y;
-		}
+		//}
 	}
 	else {
-		if(my_x > 0) {
+		//if(my_x > 0) {
 			temp_x = my_x - 1;
 			temp_y = my_y;
-		}
+		//}
 	
 	}
 
 	prev_router_id = temp_y * num_cols + temp_x;
-	if(action == 0 && my_y < num_rows-1) {
-		outport_dirn = "North";
-	}
-	else if(action == 1) {
-		outport_dirn = "East";
-	}
-	else if(action == 2) {
-		outport_dirn = "South";
-	}
-	else {
-		outport_dirn = "West";
-	}
-	std::cout<<outport_dirn<<std::endl;
+
+	do{
+		std::cout<<"Called "<<action;
+		if(action == 0 && my_y < num_rows-1) {
+			outport_dirn = "North";
+		}
+		else if(action == 1 && my_x < num_cols-1) {
+			outport_dirn = "East";
+		}
+		else if(action == 2 && my_y>0) {
+			outport_dirn = "South";
+		}
+		else if(action == 3 && my_x>0){
+			outport_dirn = "West";
+		}
+		else {
+			std::cout<<"ELSE CALLED"<<std::endl;
+			action = epsilon_greedy(Q, my_id, dest_id);
+		}
+
+	}while(outport_dirn == "Unknown");
+
+//	std::cout<<outport_dirn<<std::endl;
 	if(my_id == src_id) {
 		return m_outports_dirn2idx[outport_dirn];
 	}
