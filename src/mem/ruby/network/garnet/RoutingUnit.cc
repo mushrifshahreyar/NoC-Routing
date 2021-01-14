@@ -349,8 +349,8 @@ int RoutingUnit::epsilon_greedy(std::vector<std::vector<std::vector<double>>> Q,
 		return optimalAction;
 	}
 
-	
-	int randomAction = rand() % 4;
+        srand(time(0));
+        int randomAction = rand() % 4;
 //	randomAction = temp % 4;
 	std::cout<<"Rchd RandomAction: "<<randomAction<<std::endl;
 	return randomAction;
@@ -381,14 +381,16 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	}	*/
 	//---Geting source and destination router details
 	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
-    int num_cols = m_router->get_net_ptr()->getNumCols();
-    assert(num_rows > 0 && num_cols > 0);
-	static int i = 0;
-    i++;
-	std::cout<<"I :"<<i<<std::endl;
-	int my_id = m_router->get_id();
-    int my_x = my_id % num_cols;
-    int my_y = my_id / num_cols;
+        int num_cols = m_router->get_net_ptr()->getNumCols();
+        std::cout<<"Number of rows: "<<num_rows<<std::endl;
+        std::cout<<" Number of cols: "<<num_cols<<std::endl;
+        assert(num_rows > 0 && num_cols > 0);
+        static int i = 0;
+        i++;
+        std::cout<<"I :"<<i<<std::endl;
+        int my_id = m_router->get_id();
+        int my_x = my_id % num_cols;
+        int my_y = my_id / num_cols;
 
     int dest_id = route.dest_router;
     int dest_x = dest_id % num_cols;
@@ -451,8 +453,10 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 		}
 		else {
 		//	std::cout<<"ELSE CALLED"<<std::endl;
-			epsilon += 0.01;
-			action = epsilon_greedy(Q, my_id, dest_id);
+                        //epsilon += 0.01;
+                        srand(time(0));
+                        action = rand() % 4;
+                        //action = epsilon_greedy(Q, my_id, dest_id);
 
 		}
 		
