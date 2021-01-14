@@ -335,24 +335,21 @@ RoutingUnit::outportComputeOE(RouteInfo route,
 #define NROUTERS 16
 #define NACTIONS 4
 #define GRIDSIZE 4
-#define LEARNINGRATE 0.5
+#define LEARNINGRATE 0.09
 #define DISCOUNTRATE 0.9
 
-int epsilon=0.3;
 
 int RoutingUnit::epsilon_greedy(std::vector<std::vector<std::vector<double>>> Q, int state, int destination) {
-	srand(time(0));
 	float p = (float) rand() / RAND_MAX;
-	if(p > epsilon) {
-		int optimalAction = distance(Q[state][destination].begin(), min_element(Q[state][destination].begin(), Q[state][destination].end()));
-		std::cout<<"Optimal Action: "<<optimalAction<<std::endl;
+	if(p > EPSILON) {
+		int optimalAction = distance(Q[state][destination].begin(), max_element(Q[state][destination].begin(), Q[state][destination].end()));
+		//std::cout<<"Optimal Action: "<<optimalAction<<std::endl;
 		return optimalAction;
 	}
 
-        srand(time(0));
         int randomAction = rand() % 4;
 //	randomAction = temp % 4;
-	std::cout<<"Rchd RandomAction: "<<randomAction<<std::endl;
+	//std::cout<<"Rchd RandomAction: "<<randomAction<<std::endl;
 	return randomAction;
 }
 
@@ -361,12 +358,19 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	Tick src_queueing_delay = t_flit->get_src_delay();
     Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
     Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
+	std::cout << "Queueing delay: " << queueing_delay <<std::endl;	
 	
+	static int SEED = 0;
+	if(SEED == 0){
+		srand(time(NULL));
+		std::cout << "Reaching srand()" << std::endl;
+		SEED += 1;
+	}
 
     PortDirection outport_dirn = "Unknown";
     
 	//---Initializing Q-Table---
-	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS - 1, std::vector<double> (NACTIONS, 100000)));
+	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS - 1, std::vector<double> (NACTIONS, 0)));
 	//std::vector<std::vector<std::vector<double>>> Q(NROUTERS, NROUTERS - 1, std::vector<double> (NACTIONS, 0));
 	RouteInfo route = t_flit->get_route();
 //	std::cout<<"Q Table"<<std::endl;
@@ -382,16 +386,14 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	//---Geting source and destination router details
 	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
         int num_cols = m_router->get_net_ptr()->getNumCols();
-        std::cout<<"Number of rows: "<<num_rows<<std::endl;
-        std::cout<<" Number of cols: "<<num_cols<<std::endl;
         assert(num_rows > 0 && num_cols > 0);
         static int i = 0;
         i++;
-        std::cout<<"I :"<<i<<std::endl;
         int my_id = m_router->get_id();
         int my_x = my_id % num_cols;
         int my_y = my_id / num_cols;
 
+        std::cout<<"I :"<<i<<" Current Router ID: " << my_id << std::endl;
     int dest_id = route.dest_router;
     int dest_x = dest_id % num_cols;
     int dest_y = dest_id / num_cols;
@@ -399,7 +401,8 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
     int src_id = route.src_router;
     int src_x = src_id % num_cols;
     int src_y = src_id / num_cols;
-
+	
+	std::cout << "Check" <<std::endl;
 	int action = epsilon_greedy(Q, my_id, dest_id);
 	std::cout<<"Action :"<<action<<std::endl;
 	int prev_router_id;
@@ -408,37 +411,39 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 
 //	std::cout<<"Q_TABLE:  "<<Q[0][0][1]<<std::endl;
 //	std::cout<<"Host cycles "<<getHostCycles();
-	if(inport_dirn == "NORTH"){
+	if(inport_dirn == "North"){
 		if(my_y < num_rows - 1) {
 			temp_y = my_y + 1;
 			temp_x = my_x;
 		}
 	}
-	else if(inport_dirn == "SOUTH") {
+	else if(inport_dirn == "South") {
 		if(my_y > 0) {
 			temp_y = my_y - 1;
 			temp_x = my_x;
 		}
 	
 	}
-	else if(inport_dirn == "EAST") {
+	else if(inport_dirn == "East") {
 		if(my_x < num_cols -1) {
 			temp_x = my_x + 1;
 			temp_y = my_y;
 		}
 	}
-	else {
+	else if(inport_dirn == "West"){
 		if(my_x > 0) {
 			temp_x = my_x - 1;
 			temp_y = my_y;
 		}
 	
 	}
+	else{
+		std::cout << "Inport direction: " << inport_dirn << " Source ID: " << src_id << " Current ID: " << my_id << std::endl;
+	}
 
 	prev_router_id = temp_y * num_cols + temp_x;
 
 	do{
-		std::cout<<"Called "<<action;
 		if(action == 0 && my_y < num_rows-1) {
 			outport_dirn = "North";
 		}
@@ -454,15 +459,16 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 		else {
 		//	std::cout<<"ELSE CALLED"<<std::endl;
                         //epsilon += 0.01;
-                        srand(time(0));
-                        action = rand() % 4;
+			long long random = rand();
+                        action = random % 4;
+			std::cout<<"Action "<<action << " my_x: " << my_x << " my_y: " << my_y << " Rand(): " << random << std::endl;
                         //action = epsilon_greedy(Q, my_id, dest_id);
 
 		}
 		
 	}while(outport_dirn == "Unknown");
 
-	epsilon = 0.3;
+	//epsilon = 0.3;
 //	std::cout<<outport_dirn<<std::endl;
 	if(my_id == src_id) {
 		return m_outports_dirn2idx[outport_dirn];
@@ -481,9 +487,9 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 		prev_action = 1;
 	}
 
-	double Qy_min = *min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end());
+	double Qy_min = *max_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end());
 	
-	Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (Qy_min + (queueing_delay * 0.005) - Q[prev_router_id][dest_id][prev_action]);
+	Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (DISCOUNTRATE*Qy_min + ((-1)*(queueing_delay )* 0.005) - Q[prev_router_id][dest_id][prev_action]);
 	//Update Q_table
 
     return m_outports_dirn2idx[outport_dirn];
