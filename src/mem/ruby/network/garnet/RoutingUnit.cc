@@ -342,7 +342,7 @@ RoutingUnit::outportComputeOE(RouteInfo route,
 int RoutingUnit::epsilon_greedy(std::vector<std::vector<std::vector<double>>> Q, int state, int destination) {
 	float p = (float) rand() / RAND_MAX;
 	if(p > EPSILON) {
-		int optimalAction = distance(Q[state][destination].begin(), max_element(Q[state][destination].begin(), Q[state][destination].end()));
+		int optimalAction = std::distance(Q[state][destination].begin(), std::max_element(Q[state][destination].begin(), Q[state][destination].end()));
 		//std::cout<<"Optimal Action: "<<optimalAction<<std::endl;
 		return optimalAction;
 	}
@@ -370,7 +370,7 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
     PortDirection outport_dirn = "Unknown";
     
 	//---Initializing Q-Table---
-	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS - 1, std::vector<double> (NACTIONS, 0)));
+	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, 0)));
 	//std::vector<std::vector<std::vector<double>>> Q(NROUTERS, NROUTERS - 1, std::vector<double> (NACTIONS, 0));
 	RouteInfo route = t_flit->get_route();
 //	std::cout<<"Q Table"<<std::endl;
@@ -442,6 +442,7 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	}
 
 	prev_router_id = temp_y * num_cols + temp_x;
+	std::cout << "After calculating previous router." << std::endl;	
 
 	do{
 		if(action == 0 && my_y < num_rows-1) {
@@ -456,7 +457,10 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 		else if(action == 3 && my_x>0){
 			outport_dirn = "West";
 		}
-		else {
+		else if(my_id == dest_id){
+			std::cout << "Output direction: Local port." << std::endl;
+		}
+		else{
 		//	std::cout<<"ELSE CALLED"<<std::endl;
                         //epsilon += 0.01;
 			long long random = rand();
@@ -468,8 +472,9 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 		
 	}while(outport_dirn == "Unknown");
 
+	
 	//epsilon = 0.3;
-//	std::cout<<outport_dirn<<std::endl;
+	std::cout<<"After calculating output direction: " << outport_dirn << std::endl;
 	if(my_id == src_id) {
 		return m_outports_dirn2idx[outport_dirn];
 	}
@@ -487,10 +492,14 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 		prev_action = 1;
 	}
 
-	double Qy_min = *max_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end());
-	
+	std::cout << "After calculating action the previous router took." << std::endl;
+	std::cout << "Current ID: " << my_id << " Destination ID: " << dest_id << std::endl;
+	double Qy_min = *std::max_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end());
+	std::cout << "After calculating Qy_min." << std::endl;	
 	Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (DISCOUNTRATE*Qy_min + ((-1)*(queueing_delay )* 0.005) - Q[prev_router_id][dest_id][prev_action]);
 	//Update Q_table
+
+	std::cout << "After updating Q-table." << std::endl;
 
     return m_outports_dirn2idx[outport_dirn];
 }
