@@ -29,14 +29,17 @@
 
 
 #include "mem/ruby/network/garnet/RoutingUnit.hh"
-#include <bits/stdc++.h>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
+#include <unistd.h>
 #include "base/cast.hh"
 #include "debug/RubyNetwork.hh"
 #include "mem/ruby/network/garnet/InputUnit.hh"
 #include "mem/ruby/network/garnet/Router.hh"
 #include "mem/ruby/slicc_interface/Message.hh"
 #include "mem/ruby/network/garnet/flit.hh"
+#include "cpu/kvm/base.hh"
 
 RoutingUnit::RoutingUnit(Router *router)
 {
@@ -358,42 +361,53 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	Tick src_queueing_delay = t_flit->get_src_delay();
     Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
     Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
-	std::cout << "Queueing delay: " << queueing_delay <<std::endl;	
-	
+//	std::cout<<"CURRENT TICK "<<curTick()<<"\n";	
 	static int SEED = 0;
 	if(SEED == 0){
 		srand(time(NULL));
-		std::cout << "Reaching srand()" << std::endl;
+//		std::cout << "Reaching srand()" << std::endl;
 		SEED += 1;
 	}
 
     PortDirection outport_dirn = "Unknown";
-    
-	//---Initializing Q-Table---
+    static bool isQTableInitialized = false;
 	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, 0)));
-	//std::vector<std::vector<std::vector<double>>> Q(NROUTERS, NROUTERS - 1, std::vector<double> (NACTIONS, 0));
-	RouteInfo route = t_flit->get_route();
-//	std::cout<<"Q Table"<<std::endl;
-/*  	for(int i=0; i<NROUTERS; ++i) {
-		for(int j=0; j<NROUTERS-1; ++j) {
-			for(int k=0; k< 4;++k) {
-					std::cout<<Q[i][j][k]<<" ";
+	
+	if(!isQTableInitialized){
+		isQTableInitialized = true;
+		if(access("Q_Table.txt", F_OK) == 0) {
+			std::ifstream f_qTable {"Q_Table.txt"};
+			for(int i=0;i<NROUTERS;++i) {
+				for(int j=0;j<NROUTERS;++j) {
+					for(int k=0;k<NACTIONS;++k) {
+						f_qTable >> Q[i][j][k];
+					}
+				}
 			}
-			std::cout<<std::endl;
+			std::cout<<"File exist\n";
+			//for(int i=0;i<NROUTERS;++i) {
+			//	for(int j=0;j<NROUTERS;++j) {
+			//		for(int k=0;k<NACTIONS;++k) {
+			//				std::cout<<Q[i][j][k]<<" ";
+			//		}
+			//		std::cout<<"\n";
+			//	}
+			//	std::cout<<"\n";
+			//}
 		}
-		std::cout<<std::endl;
-	}	*/
+	}
+
+	//---Initializing Q-Table---
+	RouteInfo route = t_flit->get_route();
+
 	//---Geting source and destination router details
 	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
-        int num_cols = m_router->get_net_ptr()->getNumCols();
-        assert(num_rows > 0 && num_cols > 0);
-        static int i = 0;
-        i++;
-        int my_id = m_router->get_id();
-        int my_x = my_id % num_cols;
-        int my_y = my_id / num_cols;
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
 
-        std::cout<<"I :"<<i<<" Current Router ID: " << my_id << std::endl;
     int dest_id = route.dest_router;
     int dest_x = dest_id % num_cols;
     int dest_y = dest_id / num_cols;
@@ -402,15 +416,11 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
     int src_x = src_id % num_cols;
     int src_y = src_id / num_cols;
 	
-	std::cout << "Check" <<std::endl;
 	int action = epsilon_greedy(Q, my_id, dest_id);
-	std::cout<<"Action :"<<action<<std::endl;
 	int prev_router_id;
+
 	int temp_x = 0;
 	int temp_y = 0;
-
-//	std::cout<<"Q_TABLE:  "<<Q[0][0][1]<<std::endl;
-//	std::cout<<"Host cycles "<<getHostCycles();
 	if(inport_dirn == "North"){
 		if(my_y < num_rows - 1) {
 			temp_y = my_y + 1;
@@ -438,11 +448,9 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	
 	}
 	else{
-		std::cout << "Inport direction: " << inport_dirn << " Source ID: " << src_id << " Current ID: " << my_id << std::endl;
 	}
 
 	prev_router_id = temp_y * num_cols + temp_x;
-	std::cout << "After calculating previous router." << std::endl;	
 
 	do{
 		if(action == 0 && my_y < num_rows-1) {
@@ -458,23 +466,16 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 			outport_dirn = "West";
 		}
 		else if(my_id == dest_id){
-			std::cout << "Output direction: Local port." << std::endl;
+//			std::cout << "Output direction: Local port." << std::endl;
 		}
 		else{
-		//	std::cout<<"ELSE CALLED"<<std::endl;
-                        //epsilon += 0.01;
 			long long random = rand();
-                        action = random % 4;
-			std::cout<<"Action "<<action << " my_x: " << my_x << " my_y: " << my_y << " Rand(): " << random << std::endl;
-                        //action = epsilon_greedy(Q, my_id, dest_id);
-
+            action = random % 4;
 		}
 		
 	}while(outport_dirn == "Unknown");
 
 	
-	//epsilon = 0.3;
-	std::cout<<"After calculating output direction: " << outport_dirn << std::endl;
 	if(my_id == src_id) {
 		return m_outports_dirn2idx[outport_dirn];
 	}
@@ -491,16 +492,26 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	else {
 		prev_action = 1;
 	}
-
-	std::cout << "After calculating action the previous router took." << std::endl;
-	std::cout << "Current ID: " << my_id << " Destination ID: " << dest_id << std::endl;
+	
+	//Updating Q-Table
 	double Qy_min = *std::max_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end());
-	std::cout << "After calculating Qy_min." << std::endl;	
 	Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (DISCOUNTRATE*Qy_min + ((-1)*(queueing_delay )* 0.005) - Q[prev_router_id][dest_id][prev_action]);
-	//Update Q_table
+	if(curTick() == 100000) {
+		std::ofstream f_qTable;
+		std::cout<<"Updating File\n";
+		f_qTable.open("Q_Table.txt", std::ios::out | std::ios::trunc);
+		for(int i=0;i<NROUTERS;++i) {
+			for(int j=0;j<NROUTERS;++j) {
+				for(int k=0;k<NACTIONS;++k) {
+					f_qTable << Q[i][j][k] << " ";
+				}
+				f_qTable << "\n";
+			}
+			f_qTable << "\n";
+		}
 
-	std::cout << "After updating Q-table." << std::endl;
-
+		std::cout<<"File Updated\n";
+	}
     return m_outports_dirn2idx[outport_dirn];
 }
 // Template for implementing custom routing algorithm
