@@ -339,13 +339,13 @@ RoutingUnit::outportComputeOE(RouteInfo route,
 #define NACTIONS 4
 #define GRIDSIZE 4
 #define LEARNINGRATE 0.09
-#define DISCOUNTRATE 0.9
+#define DISCOUNTRATE 0.7
 
 
 int RoutingUnit::epsilon_greedy(std::vector<std::vector<std::vector<double>>> Q, int state, int destination) {
 	float p = (float) rand() / RAND_MAX;
 	if(p > EPSILON) {
-		int optimalAction = std::distance(Q[state][destination].begin(), std::max_element(Q[state][destination].begin(), Q[state][destination].end()));
+		int optimalAction = std::distance(Q[state][destination].begin(), std::min_element(Q[state][destination].begin(), Q[state][destination].end()));
 		//std::cout<<"Optimal Action: "<<optimalAction<<std::endl;
 		return optimalAction;
 	}
@@ -368,11 +368,13 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 //		std::cout << "Reaching srand()" << std::endl;
 		SEED += 1;
 	}
+	static int iter = 0;
+	//std::cout << "Number of iterations: " << iter << std::endl;
+	iter++;
 
     PortDirection outport_dirn = "Unknown";
     static bool isQTableInitialized = false;
-	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, 0)));
-	
+	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, INT_MAX)));
 	if(!isQTableInitialized){
 		isQTableInitialized = true;
 		if(access("Q_Table.txt", F_OK) == 0) {
@@ -384,6 +386,7 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 					}
 				}
 			}
+			//f_qTable >> EPSILON;
 			std::cout<<"File exist\n";
 			//for(int i=0;i<NROUTERS;++i) {
 			//	for(int j=0;j<NROUTERS;++j) {
@@ -493,12 +496,17 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 		prev_action = 1;
 	}
 	
+	std::cout << "Iterations: " << iter <<std::endl;
 	//Updating Q-Table
-	double Qy_min = *std::max_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end());
-	Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (DISCOUNTRATE*Qy_min + ((-1)*(queueing_delay )* 0.005) - Q[prev_router_id][dest_id][prev_action]);
+	//std::cout << "Queueing Delay: " << queueing_delay << std::endl;
+	double Qy_min = *std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end());
+	std::cout << "Q-tavle value before updation: " << Q[prev_router_id][dest_id][prev_action] << std::endl;
+	std::cout << "Qy_min: " << Qy_min << " Queueing delay: " << queueing_delay << std::endl;
+	Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (DISCOUNTRATE*Qy_min + ((int)(queueing_delay)) - Q[prev_router_id][dest_id][prev_action]);
+	std::cout << "Q-tavle value after updation: " << Q[prev_router_id][dest_id][prev_action] << std::endl;
 	if(curTick() == 100000) {
 		std::ofstream f_qTable;
-		std::cout<<"Updating File\n";
+		//std::cout<<"Updating File\n";
 		f_qTable.open("Q_Table.txt", std::ios::out | std::ios::trunc);
 		for(int i=0;i<NROUTERS;++i) {
 			for(int j=0;j<NROUTERS;++j) {
@@ -510,8 +518,10 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 			f_qTable << "\n";
 		}
 
-		std::cout<<"File Updated\n";
+		//std::cout<<"File Updated\n";
 	}
+	//std::cout.precision(10);
+	//std::cout << std::fixed << EPSILON << std::endl;
     return m_outports_dirn2idx[outport_dirn];
 }
 // Template for implementing custom routing algorithm
