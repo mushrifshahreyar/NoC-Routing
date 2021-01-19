@@ -64,12 +64,19 @@ class RoutingUnit
                          int inport,
                          PortDirection inport_dirn);
 
-    // Custom Routing Algorithm using Port Directions
+    // Odd-Even Routing Algorithm using Port Directions
     int outportComputeOE(RouteInfo route,
                              int inport,
                              PortDirection inport_dirn);
+
+	// Q_Routing Algorithm for Training
 	int epsilon_greedy(std::vector<std::vector<std::vector<double>>> Q, int state, int destination);
+
 	int outportComputeQ_Routing(flit *t_flit, int inport, PortDirection inport_dirn);
+
+	// Q Routing Algorithm for Testing
+	int outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDirection inport_dirn);
+
     int outportComputeCustom(RouteInfo route,
                              int inport,
                              PortDirection inport_dirn);

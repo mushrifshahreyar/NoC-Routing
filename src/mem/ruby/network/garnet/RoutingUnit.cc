@@ -190,7 +190,7 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
         case CUSTOM_: outport =
             outportComputeOE(route, inport, inport_dirn); break;
         case 3: outport =
-            outportComputeQ_Routing(t_flit, inport, inport_dirn); break;
+            outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn); break;
         default: outport =
             lookupRoutingTable(route.vnet, route.net_dest); break;
     }
@@ -523,6 +523,68 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	//std::cout.precision(10);
 	//std::cout << std::fixed << EPSILON << std::endl;
     return m_outports_dirn2idx[outport_dirn];
+}
+
+int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
+
+	static bool isQTableInitialized = false;
+	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, INT_MAX)));
+	if(!isQTableInitialized){
+		isQTableInitialized = true;
+		if(access("Q_Table.txt", F_OK) == 0) {
+			std::ifstream f_qTable {"Q_Table.txt"};
+			for(int i=0;i<NROUTERS;++i) {
+				for(int j=0;j<NROUTERS;++j) {
+					for(int k=0;k<NACTIONS;++k) {
+						f_qTable >> Q[i][j][k];
+					}
+				}
+			}
+		}
+	}
+
+	RouteInfo route = t_flit->get_route();
+	PortDirection outport_dirn = "Unknown";
+    
+	//---Geting source and destination router details
+	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+    int dest_id = route.dest_router;
+    int dest_x = dest_id % num_cols;
+    int dest_y = dest_id / num_cols;
+
+    int src_id = route.src_router;
+    int src_x = src_id % num_cols;
+    int src_y = src_id / num_cols;
+	
+	//---- Get action
+	int action = std::distance(Q[my_id][dest_id].begin(), std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end()));
+	
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
+	}
+	
+    return m_outports_dirn2idx[outport_dirn];
+
 }
 // Template for implementing custom routing algorithm
 // using port directions. (Example adaptive)
