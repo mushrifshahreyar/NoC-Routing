@@ -40,6 +40,8 @@
 #include "mem/ruby/slicc_interface/Message.hh"
 #include "mem/ruby/network/garnet/flit.hh"
 #include "cpu/kvm/base.hh"
+#include <Python.h>
+#include "pyhelper.hpp"
 
 RoutingUnit::RoutingUnit(Router *router)
 {
@@ -191,6 +193,7 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
             outportComputeOE(route, inport, inport_dirn); break;
         case 3: outport =
             outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn); break;
+		case 4: outport = outportComputeQ_RoutingPython(t_flit, inport, inport_dirn); break;
         default: outport =
             lookupRoutingTable(route.vnet, route.net_dest); break;
     }
@@ -585,6 +588,65 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 	
     return m_outports_dirn2idx[outport_dirn];
 
+}
+
+int
+RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirection inport_dirn) {
+	RouteInfo route = t_flit->get_route();
+	PortDirection outport_dirn = "Unknown";
+    
+	//---Geting source and destination router details
+	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+    int my_id = m_router->get_id();
+    //int my_x = my_id % num_cols;
+    //int my_y = my_id / num_cols;
+
+    int dest_id = route.dest_router;
+    //int dest_x = dest_id % num_cols;
+    //int dest_y = dest_id / num_cols;
+
+    int src_id = route.src_router;
+    //int src_x = src_id % num_cols;
+    //int src_y = src_id / num_cols;
+	
+
+	std::cout<<"Reached here\n";
+	//std::cout<<"Current path is "<<std::filesystem::current_path()<<std::endl;
+
+	//char result[1000];
+	//ssize_t count = readlink("/proc/self/exe", result, 1000);
+	//std::cout<<result<<std::endl;
+	setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
+	CPyInstance hInstance;
+
+    CPyObject pName = PyUnicode_FromString("Q_Routing");
+	CPyObject pModule = PyImport_Import(pName);
+	
+	if(pModule)
+	{
+		CPyObject pFunc = PyObject_GetAttrString(pModule, "start");
+		if(pFunc && PyCallable_Check(pFunc))
+		{
+            CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
+			CPyObject pValue = PyObject_CallObject(pFunc, args);
+
+			printf("C: getInteger() = %ld\n", PyLong_AsLong(pValue));
+		}
+		else
+		{
+			printf("ERROR: function getInteger()\n");
+		}
+
+	}
+	else
+	{
+		printf("ERROR: Module not imported\n");
+	}
+
+	return 0;	
+	
 }
 // Template for implementing custom routing algorithm
 // using port directions. (Example adaptive)

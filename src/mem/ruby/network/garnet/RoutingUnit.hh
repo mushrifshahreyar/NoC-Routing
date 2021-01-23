@@ -77,6 +77,7 @@ class RoutingUnit
 	// Q Routing Algorithm for Testing
 	int outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDirection inport_dirn);
 
+	int outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirection inport_dirn);
     int outportComputeCustom(RouteInfo route,
                              int inport,
                              PortDirection inport_dirn);

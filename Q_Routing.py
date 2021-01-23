@@ -9,7 +9,7 @@ def read_QTableFile():
     file_name = 'Q_Table.txt'
     Q_Table = np.zeros((NROUTERS,NROUTERS,NACTIONS))
     
-    with open(file_path + file_name,'r') as f:
+    with open(file_name,'r') as f:
         i = 0
         j = 0
         k = 0
@@ -44,3 +44,5 @@ def start(my_Router_id, dest_Router_id):
     #--- get action from Q-Table and return the action
     action = get_action(Q_Table, my_Router_id, dest_Router_id)
     print(action)
+
+start(1,1)
