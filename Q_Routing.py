@@ -39,10 +39,12 @@ def start(my_Router_id, dest_Router_id):
 #    src_Router_id = input()
 
     #--- Reading Q Table from the file
+    print("Hello")
     Q_Table = read_QTableFile()
+    #Q_Table = np.zeros((NROUTERS,NROUTERS,NACTIONS))
     
     #--- get action from Q-Table and return the action
     action = get_action(Q_Table, my_Router_id, dest_Router_id)
-    print(action)
+    #print("Python " + str(action))
+    return action
 
-start(1,1)

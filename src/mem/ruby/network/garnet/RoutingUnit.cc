@@ -612,27 +612,33 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
     //int src_y = src_id / num_cols;
 	
 
-	std::cout<<"Reached here\n";
+	std::cout<<"1- Reached here\n";
 	//std::cout<<"Current path is "<<std::filesystem::current_path()<<std::endl;
 
 	//char result[1000];
 	//ssize_t count = readlink("/proc/self/exe", result, 1000);
 	//std::cout<<result<<std::endl;
-	setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
-	CPyInstance hInstance;
-
+	
+	//setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
+	Py_Initialize();
+	std::cout<<"2- Reached here\n";
     CPyObject pName = PyUnicode_FromString("Q_Routing");
 	CPyObject pModule = PyImport_Import(pName);
 	
+	std::cout<<"3- Reached here\n";
+	CPyObject pValue = 0;
 	if(pModule)
 	{
+		std::cout<<"Inside if-else\n";
 		CPyObject pFunc = PyObject_GetAttrString(pModule, "start");
 		if(pFunc && PyCallable_Check(pFunc))
 		{
-            CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
-			CPyObject pValue = PyObject_CallObject(pFunc, args);
+			long temp = my_id;
+			long temp2 = dest_id;
+            CPyObject args = PyTuple_Pack(2,PyLong_FromLong(temp),PyLong_FromLong(temp2));
+			pValue = PyObject_CallObject(pFunc, args);
 
-			printf("C: getInteger() = %ld\n", PyLong_AsLong(pValue));
+			printf("Called = %ld\n", PyLong_AsLong(pValue));
 		}
 		else
 		{
@@ -645,7 +651,27 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 		printf("ERROR: Module not imported\n");
 	}
 
-	return 0;	
+	
+	
+	int temp = (int)pValue;
+	//std::cout<<"Exiting\n";
+	if(pValue == 0) {
+		outport_dirn = "North";
+	}
+	else if(pValue == 1) {
+		outport_dirn = "East";
+	}
+	else if(pValue == 2) {
+		outport_dirn = "South";
+	}
+	else {
+		outport_dirn = "West";
+	}
+	std::cout<<"4- Reached here";
+	//Py_Finalize();
+	return m_outports_dirn2idx[outport_dirn];
+
+
 	
 }
 // Template for implementing custom routing algorithm
