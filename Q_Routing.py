@@ -28,7 +28,7 @@ def read_QTableFile():
 
 def get_action(Q_Table, my_id, dest_id):
     action = np.where(Q_Table[my_id][dest_id] == np.amin(Q_Table[my_id][dest_id]))
-
+    print("Q_Table Values " + str(Q_Table[my_id][dest_id]))
     return action[0][0]
 
 def start(my_Router_id, dest_Router_id):
@@ -39,12 +39,11 @@ def start(my_Router_id, dest_Router_id):
 #    src_Router_id = input()
 
     #--- Reading Q Table from the file
-    print("Hello")
+    print(str(my_Router_id) + " " + str(dest_Router_id))
     Q_Table = read_QTableFile()
-    #Q_Table = np.zeros((NROUTERS,NROUTERS,NACTIONS))
     
     #--- get action from Q-Table and return the action
     action = get_action(Q_Table, my_Router_id, dest_Router_id)
-    #print("Python " + str(action))
+    print("Python-Action " + str(action))
     return action
 

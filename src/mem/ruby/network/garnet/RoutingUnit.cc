@@ -568,6 +568,11 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 	//---- Get action
 	int action = std::distance(Q[my_id][dest_id].begin(), std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end()));
 	
+	std::cout<<"------\n";
+	std::cout<<action<<std::endl;
+	for(int i=0;i<4;++i) {
+		std::cout<<Q[my_id][dest_id][i]<<" ";
+	}	
 	switch(action) {
 		case 0: outport_dirn = "North";
 				break;
@@ -585,6 +590,8 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 				std::cout<<"Rchd here\n";
 				break;
 	}
+	std::cout<<outport_dirn;	
+	std::cout<<"\n------\n";
 	
     return m_outports_dirn2idx[outport_dirn];
 
@@ -592,6 +599,7 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 
 int
 RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirection inport_dirn) {
+	std::cout<<"0- Reached here\n";
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
     
@@ -599,9 +607,13 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
 	int num_cols = m_router->get_net_ptr()->getNumCols();
     assert(num_rows > 0 && num_cols > 0);
+
+	std::cout<<"0.5- Reached here\n";
     int my_id = m_router->get_id();
     //int my_x = my_id % num_cols;
     //int my_y = my_id / num_cols;
+
+
 
     int dest_id = route.dest_router;
     //int dest_x = dest_id % num_cols;
@@ -620,7 +632,12 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 	//std::cout<<result<<std::endl;
 	
 	//setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
-	Py_Initialize();
+	static bool isInit = false;
+	if(!isInit) {
+		Py_Initialize();
+		isInit = true;
+	}
+//	Py_Initialize();
 	std::cout<<"2- Reached here\n";
     CPyObject pName = PyUnicode_FromString("Q_Routing");
 	CPyObject pModule = PyImport_Import(pName);
@@ -635,10 +652,10 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 		{
 			long temp = my_id;
 			long temp2 = dest_id;
-            CPyObject args = PyTuple_Pack(2,PyLong_FromLong(temp),PyLong_FromLong(temp2));
+            CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
 			pValue = PyObject_CallObject(pFunc, args);
 
-			printf("Called = %ld\n", PyLong_AsLong(pValue));
+			printf("Cpp- Action = %ld\n", PyLong_AsLong(pValue));
 		}
 		else
 		{
@@ -653,24 +670,32 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 
 	
 	
-	int temp = (int)pValue;
+	int action = (int)pValue;
+//	Py_Finalize();
 	//std::cout<<"Exiting\n";
-	if(pValue == 0) {
+	if(action == 0) {
 		outport_dirn = "North";
 	}
-	else if(pValue == 1) {
+	else if(action == 1) {
 		outport_dirn = "East";
 	}
-	else if(pValue == 2) {
+	else if(action == 2) {
 		outport_dirn = "South";
 	}
 	else {
 		outport_dirn = "West";
 	}
-	std::cout<<"4- Reached here";
+	std::cout<<"4- Reached here"<<std::endl;
 	//Py_Finalize();
-	return m_outports_dirn2idx[outport_dirn];
+	std::cout<<"5- Reached here"<<std::endl;
+	std::cout<<outport_dirn<<std::endl;
+	auto x = m_outports_dirn2idx[outport_dirn];
+	std::cout<<"6- Reached here "<<x<<std::endl;
 
+//	return m_outports_dirn2idx[outport_dirn];
+	auto x1 = this->outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn);
+	std::cout<<"C function "<<x1<<std::endl;
+	return x;
 
 	
 }
