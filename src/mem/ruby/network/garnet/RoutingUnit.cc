@@ -670,21 +670,40 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 
 	
 	
-	int action = (int)pValue;
+	int action = (int) PyLong_AsLong(pValue);
 //	Py_Finalize();
 	//std::cout<<"Exiting\n";
-	if(action == 0) {
-		outport_dirn = "North";
+//	if(action == 0) {
+//		outport_dirn = "North";
+//	}
+//	else if(action == 1) {
+//		outport_dirn = "East";
+//	}
+//	else if(action == 2) {
+//		outport_dirn = "South";
+//	}
+//	else {
+//		outport_dirn = "West";
+//	}
+	std::cout<<"Action: "<<action<<std::endl;
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
 	}
-	else if(action == 1) {
-		outport_dirn = "East";
-	}
-	else if(action == 2) {
-		outport_dirn = "South";
-	}
-	else {
-		outport_dirn = "West";
-	}
+	
 	std::cout<<"4- Reached here"<<std::endl;
 	//Py_Finalize();
 	std::cout<<"5- Reached here"<<std::endl;
