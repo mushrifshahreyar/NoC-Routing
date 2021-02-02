@@ -37,7 +37,7 @@ def start(my_Router_id, dest_Router_id):
 #    my_Router_id = input()
 #    dest_Router_id =  input()
 #    src_Router_id = input()
-
+	print("I was here")
     #--- Reading Q Table from the file
     print(str(my_Router_id) + " " + str(dest_Router_id))
     Q_Table = read_QTableFile()
