@@ -194,6 +194,7 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
         case 3: outport =
             outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn); break;
 		case 4: outport = outportComputeQ_RoutingPython(t_flit, inport, inport_dirn); break;
+		case 5: outport = outportComputeDQNPython(t_flit, inport, inport_dirn); break;
         default: outport =
             lookupRoutingTable(route.vnet, route.net_dest); break;
     }
@@ -722,8 +723,9 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 }
 
 
-int
-RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn) {
+
+
+int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn) {
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
     
@@ -748,15 +750,31 @@ RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inp
     int src_x = src_id % num_cols;
     int src_y = src_id / num_cols;
 	
-
 	static bool isInit = false;
+
+	CPyObject pName;
+	CPyObject pModule;
 	if(!isInit) {
 		srand(time(NULL));
 		Py_Initialize();
 		isInit = true;
+		pName = PyUnicode_FromString("DQN");
+		pModule = PyImport_Import(pName);
+		if(pModule){
+			CPyObject pFunc = PyObject_GetAttrString(pModule, "initialize");
+			if(pFunc && PyCallable_Check(pFunc)){
+				PyObject_CallObject(pFunc, NULL);
+			}
+			else{
+				printf("ERROR: function initialize()\n");
+			}
+		}
+		else{
+			printf("Module not imported in initialize function\n");
+		}
 	}
 
-	//int action = epsilon_greedy(Q, my_id, dest_id);
+	int action = 0;
 	int prev_router_id;
 
 	int temp_x = 0;
@@ -791,35 +809,7 @@ RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inp
 	else{
 	}
 
-	int action = 0;
 	prev_router_id = temp_y * num_cols + temp_x;
-
-	do{
-		if(action == 0 && my_y < num_rows-1) {
-			outport_dirn = "North";
-		}
-		else if(action == 1 && my_x < num_cols-1) {
-			outport_dirn = "East";
-		}
-		else if(action == 2 && my_y>0) {
-			outport_dirn = "South";
-		}
-		else if(action == 3 && my_x>0){
-			outport_dirn = "West";
-		}
-		else if(my_id == dest_id){
-//			std::cout << "Output direction: Local port." << std::endl;
-		}
-		else{
-			long long random = rand();
-            action = random % 4;
-		}
-		
-	}while(outport_dirn == "Unknown");
-
-	if(my_id == src_id) {
-		return m_outports_dirn2idx[outport_dirn];
-	}
 
 	int prev_action = 0;
 	if(inport_dirn == "North") {
@@ -836,10 +826,10 @@ RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inp
 	}
 
 //	Py_Initialize();
-    CPyObject pName = PyUnicode_FromString("DQN");
-	CPyObject pModule = PyImport_Import(pName);
+    //pName = PyUnicode_FromString("DQN");
+	//pModule = PyImport_Import(pName);
 	
-	std::cout<<"3- Reached here\n";
+	//std::cout<<"3- Reached here\n";
 	CPyObject pValue = 0;
 
 	if(pModule)
@@ -854,8 +844,7 @@ RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inp
 				long temp2 = dest_id;
         	    CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
 				pValue = PyObject_CallObject(pFunc, args);
-
-				//printf("Cpp- Action = %ld\n", PyLong_AsLong(pValue));
+				action = (int) PyLong_AsLong(pValue);
 			}
 			else{
 				printf("ERROR: function get_qs()\n");
@@ -864,12 +853,43 @@ RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inp
 		else{
 			action = rand() % 4;
 		}
-		action = (int) PyLong_AsLong(pValue);
+
+
+		do{
+			if(action == 0 && my_y < num_rows-1) {
+				outport_dirn = "North";
+			}
+			else if(action == 1 && my_x < num_cols-1) {
+				outport_dirn = "East";
+			}
+			else if(action == 2 && my_y>0) {
+				outport_dirn = "South";
+			}
+			else if(action == 3 && my_x>0){
+				outport_dirn = "West";
+			}
+			else if(my_id == dest_id){
+	//			std::cout << "Output direction: Local port." << std::endl;
+			}
+			else{
+				long long random = rand();
+				action = random % 4;
+			}	
+		}while(outport_dirn == "Unknown");
+
+		if(my_id == src_id) {
+			return m_outports_dirn2idx[outport_dirn];
+		}
 
 		CPyObject pFunc = PyObject_GetAttrString(pModule, "update_replay_memory");
 		
 		if(pFunc && PyCallable_Check(pFunc)){
-			CPyObject args = PyTuple_Pack(5,PyLong_FromLong(my_id),PyLong_FromLong(dest_id),PyLong_FromLong(prev_router_id),PyLong_FromLong(prev_action),PyLong_FromLong(queueing_delay));
+			// pass done variable
+			int done = 0;
+			if (dest_id == my_id){
+				done = 1;
+			}
+			CPyObject args = PyTuple_Pack(6,PyLong_FromLong(my_id),PyLong_FromLong(dest_id),PyLong_FromLong(prev_router_id),PyLong_FromLong(prev_action),PyLong_FromLong(queueing_delay), PyLong_FromLong(done));
 			pValue = PyObject_CallObject(pFunc, args);
 		}
 		else{
@@ -887,45 +907,11 @@ RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inp
 		}
 	}
 	else{
-		printf("ERROR: Module not imported\n");
-	}
-
-
-//	Py_Finalize();
-
-	//std::cout<<"Action: "<<action<<std::endl;
-	switch(action) {
-		case 0: outport_dirn = "North";
-				break;
-
-		case 1: outport_dirn = "East";
-				break;
-
-		case 2: outport_dirn = "South";
-				break;
-
-		case 3: outport_dirn = "West";
-				break;
-
-		default:
-				std::cout<<"Rchd here\n";
-				break;
+		printf("ERROR: Module not imported in main functions\n");
 	}
 	
-	//if (epsilon*EPSILON_DECAY > MIN_EPSILON){
-	//	epsilon *= EPSILON_DECAY;
-	//} 
-
-	//std::cout<<"4- Reached here"<<std::endl;
-	//Py_Finalize();
-	//std::cout<<"5- Reached here"<<std::endl;
-	//std::cout<<outport_dirn<<std::endl;
 	auto x = m_outports_dirn2idx[outport_dirn];
-	//std::cout<<"6- Reached here "<<x<<std::endl;
-
-//	return m_outports_dirn2idx[outport_dirn];
 	return x;
-	
 }
 
 
@@ -933,9 +919,7 @@ RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inp
 // Template for implementing custom routing algorithm
 // using port directions. (Example adaptive)
 int
-RoutingUnit::outportComputeCustom(RouteInfo route,
-                                 int inport,
-                                 PortDirection inport_dirn)
+RoutingUnit::outportComputeCustom(RouteInfo route, int inport, PortDirection inport_dirn)
 {
     panic("%s placeholder executed", __FUNCTION__);
 }
