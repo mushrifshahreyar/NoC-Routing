@@ -30811,7 +30811,7 @@
                         "width": 16
                     }
                 ],
-                "routing_algorithm": 1,
+                "routing_algorithm": 4,
                 "ruby_system": "system.ruby",
                 "topology": "Mesh_XY",
                 "vcs_per_vnet": 8

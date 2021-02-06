@@ -1,24 +1,16 @@
 
 ---------- Begin Simulation Statistics ----------
 final_tick                                     100000                       # Number of ticks from beginning of simulation (restored from checkpoints and never reset)
-host_mem_usage                                 783236                       # Number of bytes of host memory used
-host_seconds                                     0.03                       # Real time elapsed on the host
-host_tick_rate                                3950668                       # Simulator tick rate (ticks/s)
+host_mem_usage                                 827072                       # Number of bytes of host memory used
+host_seconds                                     1.28                       # Real time elapsed on the host
+host_tick_rate                                  78057                       # Simulator tick rate (ticks/s)
 sim_freq                                 1000000000000                       # Frequency of simulated ticks
 sim_seconds                                  0.000000                       # Number of seconds simulated
 sim_ticks                                      100000                       # Number of ticks simulated
-system.ruby.Directory_Controller.I.Receive_Forward |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           1     25.00%     25.00% |           0      0.00%     25.00% |           0      0.00%     25.00% |           1     25.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1     25.00%     75.00% |           0      0.00%     75.00% |           1     25.00%    100.00% |           0      0.00%    100.00%
-system.ruby.Directory_Controller.I.Receive_Forward::total            4                      
-system.ruby.Directory_Controller.I.Receive_Request |           0      0.00%      0.00% |           0      0.00%      0.00% |           1     25.00%     25.00% |           0      0.00%     25.00% |           0      0.00%     25.00% |           0      0.00%     25.00% |           0      0.00%     25.00% |           1     25.00%     50.00% |           1     25.00%     75.00% |           0      0.00%     75.00% |           0      0.00%     75.00% |           0      0.00%     75.00% |           1     25.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.Directory_Controller.I.Receive_Request::total            4                      
-system.ruby.Directory_Controller.I.Receive_Response |           0      0.00%      0.00% |           1     25.00%     25.00% |           1     25.00%     50.00% |           0      0.00%     50.00% |           1     25.00%     75.00% |           1     25.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.Directory_Controller.I.Receive_Response::total            4                      
-system.ruby.Directory_Controller.Receive_Forward |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           1     25.00%     25.00% |           0      0.00%     25.00% |           0      0.00%     25.00% |           1     25.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1     25.00%     75.00% |           0      0.00%     75.00% |           1     25.00%    100.00% |           0      0.00%    100.00%
-system.ruby.Directory_Controller.Receive_Forward::total            4                      
-system.ruby.Directory_Controller.Receive_Request |           0      0.00%      0.00% |           0      0.00%      0.00% |           1     25.00%     25.00% |           0      0.00%     25.00% |           0      0.00%     25.00% |           0      0.00%     25.00% |           0      0.00%     25.00% |           1     25.00%     50.00% |           1     25.00%     75.00% |           0      0.00%     75.00% |           0      0.00%     75.00% |           0      0.00%     75.00% |           1     25.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.Directory_Controller.Receive_Request::total            4                      
-system.ruby.Directory_Controller.Receive_Response |           0      0.00%      0.00% |           1     25.00%     25.00% |           1     25.00%     50.00% |           0      0.00%     50.00% |           1     25.00%     75.00% |           1     25.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.Directory_Controller.Receive_Response::total            4                      
+system.ruby.Directory_Controller.I.Receive_Request |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           1    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.Directory_Controller.I.Receive_Request::total            1                      
+system.ruby.Directory_Controller.Receive_Request |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           1    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.Directory_Controller.Receive_Request::total            1                      
 system.ruby.IFETCH.hit_latency_hist_seqr::bucket_size            1                      
 system.ruby.IFETCH.hit_latency_hist_seqr::max_bucket            9                      
 system.ruby.IFETCH.hit_latency_hist_seqr::samples            4                      
@@ -61,28 +53,6 @@ system.ruby.ST.latency_hist_seqr::max_bucket            9
 system.ruby.ST.latency_hist_seqr::samples            4                      
 system.ruby.ST.latency_hist_seqr         |           4    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
 system.ruby.ST.latency_hist_seqr::total             4                      
-system.ruby.dir_cntrl1.responseToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl1.responseToDir.avg_stall_time  7250.027500                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl12.forwardToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl12.forwardToDir.avg_stall_time  5700.018000                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl12.requestToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl12.requestToDir.avg_stall_time   510.079899                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl14.forwardToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl14.forwardToDir.avg_stall_time  5175.023250                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl2.requestToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl2.requestToDir.avg_stall_time  4565.009350                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl2.responseToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl2.responseToDir.avg_stall_time  1935.070649                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl4.responseToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl4.responseToDir.avg_stall_time  5150.048500                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl5.forwardToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl5.forwardToDir.avg_stall_time  1925.035750                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl5.responseToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl5.responseToDir.avg_stall_time  1295.057049                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl7.requestToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl7.requestToDir.avg_stall_time  4500.030000                       # Average number of cycles messages are stalled in this MB
-system.ruby.dir_cntrl8.forwardToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
-system.ruby.dir_cntrl8.forwardToDir.avg_stall_time     0.054999                       # Average number of cycles messages are stalled in this MB
 system.ruby.dir_cntrl8.requestToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
 system.ruby.dir_cntrl8.requestToDir.avg_stall_time  1225.022750                       # Average number of cycles messages are stalled in this MB
 system.ruby.hit_latency_hist_seqr::bucket_size            1                      
@@ -182,110 +152,115 @@ system.ruby.latency_hist_seqr::max_bucket            9
 system.ruby.latency_hist_seqr::samples             13                      
 system.ruby.latency_hist_seqr            |          13    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
 system.ruby.latency_hist_seqr::total               13                      
-system.ruby.network.average_flit_latency         6250                      
-system.ruby.network.average_flit_network_latency         5250                      
+system.ruby.network.average_flit_latency         2500                      
+system.ruby.network.average_flit_network_latency         1500                      
 system.ruby.network.average_flit_queueing_latency         1000                      
-system.ruby.network.average_flit_vnet_latency |        4250                       |        4500                       |        5600                      
-system.ruby.network.average_flit_vqueue_latency |        1000                       |        1000                       |        1000                      
-system.ruby.network.average_hops             2.964286                      
-system.ruby.network.average_packet_latency         6250                      
-system.ruby.network.average_packet_network_latency         5250                      
+system.ruby.network.average_flit_vnet_latency |        1500                       |         nan                       |         nan                      
+system.ruby.network.average_flit_vqueue_latency |        1000                       |         nan                       |         nan                      
+system.ruby.network.average_hops                    0                      
+system.ruby.network.average_packet_latency         2500                      
+system.ruby.network.average_packet_network_latency         1500                      
 system.ruby.network.average_packet_queueing_latency         1000                      
-system.ruby.network.average_packet_vnet_latency |        4250                       |        4500                       |        7000                      
-system.ruby.network.average_packet_vqueue_latency |        1000                       |        1000                       |        1000                      
-system.ruby.network.avg_link_utilization     0.695000                      
-system.ruby.network.avg_vc_load          |    0.090000     12.95%     12.95% |    0.005000      0.72%     13.67% |           0      0.00%     13.67% |           0      0.00%     13.67% |           0      0.00%     13.67% |           0      0.00%     13.67% |           0      0.00%     13.67% |           0      0.00%     13.67% |    0.100000     14.39%     28.06% |           0      0.00%     28.06% |           0      0.00%     28.06% |           0      0.00%     28.06% |           0      0.00%     28.06% |           0      0.00%     28.06% |           0      0.00%     28.06% |           0      0.00%     28.06% |    0.475000     68.35%     96.40% |    0.025000      3.60%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.network.avg_vc_load::total       0.695000                      
+system.ruby.network.average_packet_vnet_latency |        1500                       |         nan                       |         nan                      
+system.ruby.network.average_packet_vqueue_latency |        1000                       |         nan                       |         nan                      
+system.ruby.network.avg_link_utilization     5.630000                      
+system.ruby.network.avg_vc_load          |    0.820000     14.56%     14.56% |    0.010000      0.18%     14.74% |           0      0.00%     14.74% |           0      0.00%     14.74% |           0      0.00%     14.74% |           0      0.00%     14.74% |           0      0.00%     14.74% |           0      0.00%     14.74% |    1.005000     17.85%     32.59% |    0.005000      0.09%     32.68% |           0      0.00%     32.68% |           0      0.00%     32.68% |           0      0.00%     32.68% |           0      0.00%     32.68% |           0      0.00%     32.68% |           0      0.00%     32.68% |    1.405000     24.96%     57.64% |    1.200000     21.31%     78.95% |    1.095000     19.45%     98.40% |    0.065000      1.15%     99.56% |    0.025000      0.44%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.network.avg_vc_load::total       5.630000                      
 system.ruby.network.ext_in_link_utilization           28                      
-system.ruby.network.ext_out_link_utilization           28                      
-system.ruby.network.flit_network_latency |       17000                       |       18000                       |      112000                      
-system.ruby.network.flit_queueing_latency |        4000                       |        4000                       |       20000                      
+system.ruby.network.ext_out_link_utilization            1                      
+system.ruby.network.flit_network_latency |        1500                       |           0                       |           0                      
+system.ruby.network.flit_queueing_latency |        1000                       |           0                       |           0                      
 system.ruby.network.flits_injected       |           4     14.29%     14.29% |           4     14.29%     28.57% |          20     71.43%    100.00%
 system.ruby.network.flits_injected::total           28                      
-system.ruby.network.flits_received       |           4     14.29%     14.29% |           4     14.29%     28.57% |          20     71.43%    100.00%
-system.ruby.network.flits_received::total           28                      
-system.ruby.network.int_link_utilization           83                      
-system.ruby.network.packet_network_latency |       17000                       |       18000                       |       28000                      
-system.ruby.network.packet_queueing_latency |        4000                       |        4000                       |        4000                      
+system.ruby.network.flits_received       |           1    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.network.flits_received::total            1                      
+system.ruby.network.int_link_utilization         1097                      
+system.ruby.network.packet_network_latency |        1500                       |           0                       |           0                      
+system.ruby.network.packet_queueing_latency |        1000                       |           0                       |           0                      
 system.ruby.network.packets_injected     |           4     33.33%     33.33% |           4     33.33%     66.67% |           4     33.33%    100.00%
 system.ruby.network.packets_injected::total           12                      
-system.ruby.network.packets_received     |           4     33.33%     33.33% |           4     33.33%     66.67% |           4     33.33%    100.00%
-system.ruby.network.packets_received::total           12                      
-system.ruby.network.routers00.buffer_reads            8                      
-system.ruby.network.routers00.buffer_writes            8                      
-system.ruby.network.routers00.crossbar_activity            8                      
-system.ruby.network.routers00.sw_input_arbiter_activity            8                      
-system.ruby.network.routers00.sw_output_arbiter_activity            8                      
-system.ruby.network.routers01.buffer_reads           17                      
-system.ruby.network.routers01.buffer_writes           17                      
-system.ruby.network.routers01.crossbar_activity           17                      
-system.ruby.network.routers01.sw_input_arbiter_activity           17                      
-system.ruby.network.routers01.sw_output_arbiter_activity           17                      
-system.ruby.network.routers02.buffer_reads           12                      
-system.ruby.network.routers02.buffer_writes           12                      
-system.ruby.network.routers02.crossbar_activity           12                      
-system.ruby.network.routers02.sw_input_arbiter_activity           12                      
-system.ruby.network.routers02.sw_output_arbiter_activity           12                      
-system.ruby.network.routers03.buffer_reads            5                      
-system.ruby.network.routers03.buffer_writes            5                      
-system.ruby.network.routers03.crossbar_activity            5                      
-system.ruby.network.routers03.sw_input_arbiter_activity            5                      
-system.ruby.network.routers03.sw_output_arbiter_activity            5                      
-system.ruby.network.routers04.buffer_reads            9                      
-system.ruby.network.routers04.buffer_writes            9                      
-system.ruby.network.routers04.crossbar_activity            9                      
-system.ruby.network.routers04.sw_input_arbiter_activity            9                      
-system.ruby.network.routers04.sw_output_arbiter_activity            9                      
-system.ruby.network.routers05.buffer_reads           12                      
-system.ruby.network.routers05.buffer_writes           12                      
-system.ruby.network.routers05.crossbar_activity           12                      
-system.ruby.network.routers05.sw_input_arbiter_activity           12                      
-system.ruby.network.routers05.sw_output_arbiter_activity           12                      
-system.ruby.network.routers06.buffer_reads            7                      
-system.ruby.network.routers06.buffer_writes            7                      
-system.ruby.network.routers06.crossbar_activity            7                      
-system.ruby.network.routers06.sw_input_arbiter_activity            7                      
-system.ruby.network.routers06.sw_output_arbiter_activity            7                      
-system.ruby.network.routers07.buffer_reads            1                      
-system.ruby.network.routers07.buffer_writes            1                      
-system.ruby.network.routers07.crossbar_activity            1                      
-system.ruby.network.routers07.sw_input_arbiter_activity            1                      
-system.ruby.network.routers07.sw_output_arbiter_activity            1                      
-system.ruby.network.routers08.buffer_reads            5                      
-system.ruby.network.routers08.buffer_writes            5                      
-system.ruby.network.routers08.crossbar_activity            5                      
-system.ruby.network.routers08.sw_input_arbiter_activity            5                      
-system.ruby.network.routers08.sw_output_arbiter_activity            5                      
-system.ruby.network.routers09.buffer_reads            7                      
-system.ruby.network.routers09.buffer_writes            7                      
-system.ruby.network.routers09.crossbar_activity            7                      
-system.ruby.network.routers09.sw_input_arbiter_activity            7                      
-system.ruby.network.routers09.sw_output_arbiter_activity            7                      
-system.ruby.network.routers10.buffer_reads            9                      
-system.ruby.network.routers10.buffer_writes            9                      
-system.ruby.network.routers10.crossbar_activity            9                      
-system.ruby.network.routers10.sw_input_arbiter_activity            9                      
-system.ruby.network.routers10.sw_output_arbiter_activity            9                      
-system.ruby.network.routers11.buffer_reads            1                      
-system.ruby.network.routers11.buffer_writes            1                      
-system.ruby.network.routers11.crossbar_activity            1                      
-system.ruby.network.routers11.sw_input_arbiter_activity            1                      
-system.ruby.network.routers11.sw_output_arbiter_activity            1                      
-system.ruby.network.routers12.buffer_reads            2                      
-system.ruby.network.routers12.buffer_writes            2                      
-system.ruby.network.routers12.crossbar_activity            2                      
-system.ruby.network.routers12.sw_input_arbiter_activity            2                      
-system.ruby.network.routers12.sw_output_arbiter_activity            2                      
-system.ruby.network.routers13.buffer_reads            5                      
-system.ruby.network.routers13.buffer_writes            5                      
-system.ruby.network.routers13.crossbar_activity            5                      
-system.ruby.network.routers13.sw_input_arbiter_activity            5                      
-system.ruby.network.routers13.sw_output_arbiter_activity            5                      
-system.ruby.network.routers14.buffer_reads           11                      
-system.ruby.network.routers14.buffer_writes           11                      
-system.ruby.network.routers14.crossbar_activity           11                      
-system.ruby.network.routers14.sw_input_arbiter_activity           11                      
-system.ruby.network.routers14.sw_output_arbiter_activity           11                      
+system.ruby.network.packets_received     |           1    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.network.packets_received::total            1                      
+system.ruby.network.routers00.buffer_reads           46                      
+system.ruby.network.routers00.buffer_writes           46                      
+system.ruby.network.routers00.crossbar_activity           46                      
+system.ruby.network.routers00.sw_input_arbiter_activity           47                      
+system.ruby.network.routers00.sw_output_arbiter_activity           46                      
+system.ruby.network.routers01.buffer_reads           50                      
+system.ruby.network.routers01.buffer_writes           50                      
+system.ruby.network.routers01.crossbar_activity           49                      
+system.ruby.network.routers01.sw_input_arbiter_activity           50                      
+system.ruby.network.routers01.sw_output_arbiter_activity           49                      
+system.ruby.network.routers02.buffer_reads            1                      
+system.ruby.network.routers02.buffer_writes            1                      
+system.ruby.network.routers02.crossbar_activity            1                      
+system.ruby.network.routers02.sw_input_arbiter_activity            1                      
+system.ruby.network.routers02.sw_output_arbiter_activity            1                      
+system.ruby.network.routers03.buffer_reads          121                      
+system.ruby.network.routers03.buffer_writes          121                      
+system.ruby.network.routers03.crossbar_activity          120                      
+system.ruby.network.routers03.sw_input_arbiter_activity          121                      
+system.ruby.network.routers03.sw_output_arbiter_activity          120                      
+system.ruby.network.routers04.buffer_reads           78                      
+system.ruby.network.routers04.buffer_writes           78                      
+system.ruby.network.routers04.crossbar_activity           78                      
+system.ruby.network.routers04.sw_input_arbiter_activity           78                      
+system.ruby.network.routers04.sw_output_arbiter_activity           78                      
+system.ruby.network.routers05.buffer_reads           48                      
+system.ruby.network.routers05.buffer_writes           48                      
+system.ruby.network.routers05.crossbar_activity           48                      
+system.ruby.network.routers05.sw_input_arbiter_activity           49                      
+system.ruby.network.routers05.sw_output_arbiter_activity           48                      
+system.ruby.network.routers06.buffer_reads          158                      
+system.ruby.network.routers06.buffer_writes          158                      
+system.ruby.network.routers06.crossbar_activity          158                      
+system.ruby.network.routers06.sw_input_arbiter_activity          159                      
+system.ruby.network.routers06.sw_output_arbiter_activity          158                      
+system.ruby.network.routers07.buffer_reads          118                      
+system.ruby.network.routers07.buffer_writes          118                      
+system.ruby.network.routers07.crossbar_activity          118                      
+system.ruby.network.routers07.sw_input_arbiter_activity          118                      
+system.ruby.network.routers07.sw_output_arbiter_activity          118                      
+system.ruby.network.routers08.buffer_reads           34                      
+system.ruby.network.routers08.buffer_writes           34                      
+system.ruby.network.routers08.crossbar_activity           34                      
+system.ruby.network.routers08.sw_input_arbiter_activity           34                      
+system.ruby.network.routers08.sw_output_arbiter_activity           34                      
+system.ruby.network.routers09.buffer_reads           82                      
+system.ruby.network.routers09.buffer_writes           82                      
+system.ruby.network.routers09.crossbar_activity           82                      
+system.ruby.network.routers09.sw_input_arbiter_activity           82                      
+system.ruby.network.routers09.sw_output_arbiter_activity           82                      
+system.ruby.network.routers10.buffer_reads          265                      
+system.ruby.network.routers10.buffer_writes          265                      
+system.ruby.network.routers10.crossbar_activity          262                      
+system.ruby.network.routers10.sw_input_arbiter_activity          269                      
+system.ruby.network.routers10.sw_output_arbiter_activity          262                      
+system.ruby.network.routers11.buffer_reads            5                      
+system.ruby.network.routers11.buffer_writes            5                      
+system.ruby.network.routers11.crossbar_activity            5                      
+system.ruby.network.routers11.sw_input_arbiter_activity            5                      
+system.ruby.network.routers11.sw_output_arbiter_activity            5                      
+system.ruby.network.routers12.buffer_reads           36                      
+system.ruby.network.routers12.buffer_writes           36                      
+system.ruby.network.routers12.crossbar_activity           36                      
+system.ruby.network.routers12.sw_input_arbiter_activity           36                      
+system.ruby.network.routers12.sw_output_arbiter_activity           36                      
+system.ruby.network.routers13.buffer_reads           36                      
+system.ruby.network.routers13.buffer_writes           36                      
+system.ruby.network.routers13.crossbar_activity           36                      
+system.ruby.network.routers13.sw_input_arbiter_activity           36                      
+system.ruby.network.routers13.sw_output_arbiter_activity           36                      
+system.ruby.network.routers14.buffer_reads           29                      
+system.ruby.network.routers14.buffer_writes           29                      
+system.ruby.network.routers14.crossbar_activity           29                      
+system.ruby.network.routers14.sw_input_arbiter_activity           29                      
+system.ruby.network.routers14.sw_output_arbiter_activity           29                      
+system.ruby.network.routers15.buffer_reads            5                      
+system.ruby.network.routers15.buffer_writes            5                      
+system.ruby.network.routers15.crossbar_activity            5                      
+system.ruby.network.routers15.sw_input_arbiter_activity            5                      
+system.ruby.network.routers15.sw_output_arbiter_activity            5                      
 system.ruby.outstanding_req_hist_seqr::bucket_size            1                      
 system.ruby.outstanding_req_hist_seqr::max_bucket            9                      
 system.ruby.outstanding_req_hist_seqr::samples           13                      
