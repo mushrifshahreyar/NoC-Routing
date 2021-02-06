@@ -751,16 +751,21 @@ int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection
     int src_y = src_id / num_cols;
 	
 	static bool isInit = false;
-
-	CPyObject pName;
-	CPyObject pModule;
+//	setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
+	std::cout<<"sdsdsd---\n";	
+//	CPyObject pName;
+//	CPyObject pModule;
+    CPyObject pName = PyUnicode_FromString("DQN");
+	CPyObject pModule = PyImport_Import(pName);
+	
 	if(!isInit) {
 		srand(time(NULL));
 		Py_Initialize();
 		isInit = true;
-		pName = PyUnicode_FromString("DQN");
-		pModule = PyImport_Import(pName);
+//		pName = PyUnicode_FromString("DQN");
+//		pModule = PyImport_Import(pName);
 		if(pModule){
+			std::cout<<"reached here\n";
 			CPyObject pFunc = PyObject_GetAttrString(pModule, "initialize");
 			if(pFunc && PyCallable_Check(pFunc)){
 				PyObject_CallObject(pFunc, NULL);
