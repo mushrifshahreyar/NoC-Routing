@@ -34,16 +34,18 @@ def get_action(Q_Table, my_id, dest_id):
 def start(my_Router_id, dest_Router_id):
 
     #--- Getting input about the router id's
-#    my_Router_id = input()
-#    dest_Router_id =  input()
-#    src_Router_id = input()
-
+#   my_Router_id = input()
+#   dest_Router_id =  input()
+#   src_Router_id = input()
+#	print("I was here")
     #--- Reading Q Table from the file
     print(str(my_Router_id) + " " + str(dest_Router_id))
     Q_Table = read_QTableFile()
-    
+    print("I was")    
     #--- get action from Q-Table and return the action
     action = get_action(Q_Table, my_Router_id, dest_Router_id)
     print("Python-Action " + str(action))
     return action
 
+
+start(0, 0)
