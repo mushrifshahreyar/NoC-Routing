@@ -168,3 +168,37 @@ def get_qs(my_id, dest_id):
     optimal_action = np.argmax(actions)
     return optimal_action
 
+
+print("\n\nSTARTING PYTHON\n\n")
+
+
+print("READING VALUES\n")
+isInit = int(input())
+my_id = int(input())
+dest_id = int(input())
+
+prev_router_id = int(input())
+prev_action = int(input())
+queueing_delay = int(input())
+print("READING DONE\n")
+
+
+if(isInit == 0):
+    initialize()
+
+action = get_qs(my_id, dest_id)
+
+f = open("action.txt", "w")
+f.write(str(action))
+f.close()
+
+done = 0
+if(my_id == dest_id):
+    done = 1
+
+update_replay_memory(my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
+
+print("TRAINING STARTED\n")
+train(my_id, dest_id)
+
+print("\nPYTHON EXECUTED\n\n")

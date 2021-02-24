@@ -11,17 +11,17 @@ int main() {
     setenv("PYTHONPATH", ".", 1);
 	CPyInstance hInstance;
 
-    CPyObject pName = PyUnicode_FromString("test");
+    CPyObject pName = PyUnicode_FromString("DQN");
 	CPyObject pModule = PyImport_Import(pName);
 	
 	if(pModule)
 	{   
-		CPyObject pFunc = PyObject_GetAttrString(pModule, "getInteger");
+		CPyObject pFunc = PyObject_GetAttrString(pModule, "initialize");
 		if(pFunc && PyCallable_Check(pFunc))
 		{
-            CPyObject args = PyTuple_Pack(4,PyFloat_FromDouble(2.0),PyFloat_FromDouble(4.0),PyFloat_FromDouble(6.0),PyFloat_FromDouble(8.0));
-			CPyObject pValue = PyObject_CallObject(pFunc, args);
-
+//            CPyObject args = PyTuple_Pack(4,PyFloat_FromDouble(2.0),PyFloat_FromDouble(4.0),PyFloat_FromDouble(6.0),PyFloat_FromDouble(8.0));
+			CPyObject pValue = PyObject_CallObject(pFunc, NULL);
+			cout<<"FROM C: Called";
 			printf("C: getInteger() = %ld\n", PyLong_AsLong(pValue));
 		}
 		else
