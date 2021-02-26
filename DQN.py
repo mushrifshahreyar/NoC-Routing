@@ -19,12 +19,14 @@ NROUTERS = 16
 NSTATES = 2 * NROUTERS # Number of states - 32
 GRIDSIZE = 4
 
-LEARNINGRATE = 0.001
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+
+LEARNINGRATE = 0.01
 DISCOUNT = 0.9
-REPLAY_MEMORY_SIZE = 50_000  # How many last steps to keep for model training
-MIN_REPLAY_MEMORY_SIZE = 1_000  # Minimum number of steps in a memory to start training
-MINIBATCH_SIZE = 64  # How many steps (samples) to use for training
-UPDATE_TARGET_EVERY = 5  # Terminal states (end of episodes)
+REPLAY_MEMORY_SIZE = 200  # How many last steps to keep for model training
+MIN_REPLAY_MEMORY_SIZE = 20  # Minimum number of steps in a memory to start training
+MINIBATCH_SIZE = 10  # How many steps (samples) to use for training
+UPDATE_TARGET_EVERY = 30  # Terminal states (end of episodes)
 
 
 def oneHotEncode(my_id, dest_id):
@@ -102,7 +104,7 @@ def train(my_id, dest_id):
         return
 
     model = tf.keras.models.load_model('./saved_model')
-    target_model = tf.keras.models.load_model('/saved_target_model')
+    target_model = tf.keras.models.load_model('./saved_target_model')
     # Get a minibatch of random samples from memory replay table
     minibatch = random.sample(replay_memory, MINIBATCH_SIZE)
 
@@ -139,7 +141,7 @@ def train(my_id, dest_id):
 
     # Fit on all samples as one batch, log only on terminal state
     model.fit(np.array(X), np.array(y), batch_size=MINIBATCH_SIZE, verbose=0)
-
+    print('TRAINING INSIDE train() FUNCTION')
     # save and load target_update_counter
     # Update target network counter every episode
     target_update_counter = 0
@@ -169,10 +171,10 @@ def get_qs(my_id, dest_id):
     return optimal_action
 
 
-print("\n\nSTARTING PYTHON\n\n")
+print("\n\nSTARTING PYTHON")
+#print("TF VERSION", tf.__version__)
 
-
-print("READING VALUES\n")
+print("READING VALUES")
 isInit = int(input())
 my_id = int(input())
 dest_id = int(input())
@@ -180,14 +182,14 @@ dest_id = int(input())
 prev_router_id = int(input())
 prev_action = int(input())
 queueing_delay = int(input())
-print("READING DONE\n")
+print("READING DONE")
 
 
 if(isInit == 0):
     initialize()
 
 action = get_qs(my_id, dest_id)
-
+print('ACTION FROM PYTHON', action)
 f = open("action.txt", "w")
 f.write(str(action))
 f.close()
@@ -198,7 +200,7 @@ if(my_id == dest_id):
 
 update_replay_memory(my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
 
-print("TRAINING STARTED\n")
+print("TRAINING STARTED")
 train(my_id, dest_id)
 
-print("\nPYTHON EXECUTED\n\n")
+print("PYTHON EXECUTED")
