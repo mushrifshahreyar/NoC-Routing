@@ -999,7 +999,7 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 
 //	New Changes
 
-	std::string filename = "/home/b170330cs/NoC/gem5/DQN.py";
+	std::string filename = "/home/rohitr/NoC-Routing/DQN.py";
 	std::string command = "python3 ";
 	command += filename;
 
@@ -1024,7 +1024,7 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 
 //	Reading from file outputed by Python script
 	
-	std::fstream out("/home/b170330cs/NoC/gem5/action.txt",std::ios_base::in);
+	std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
 	
 	out >> action;
 
