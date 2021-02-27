@@ -42,6 +42,7 @@
 #include "cpu/kvm/base.hh"
 #include <Python.h>
 #include "pyhelper.hpp"
+#include <unistd.h>
 
 RoutingUnit::RoutingUnit(Router *router)
 {
@@ -726,6 +727,7 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 
 
 int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn) {
+		
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
     
@@ -999,11 +1001,11 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 
 //	New Changes
 
-	std::string filename = "/home/rohitr/NoC-Routing/DQN.py";
+	std::string filename = "/home/b170330cs/NoC/gem5/DQN.py &";
 	std::string command = "python3 ";
 	command += filename;
 
-	FILE* in = popen(command.c_str(),"w");
+/*	FILE* in = popen(command.c_str(),"w");
 	
 	fprintf(in,"%d\n",isInit);
 	fprintf(in,"%d\n",my_id);
@@ -1013,23 +1015,51 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	fprintf(in,"%d",queueing_delay);
 	
 	pclose(in);
-
+*/
 //	-----
 	if(!isInit) {
 		srand(time(NULL));
 		isInit = true;
+	
+		pid_t pid = vfork();
+		if(pid == 0) {
+			std::cout<<"\n\nExecuting python process\n";
+			system(command.c_str());
+		}
 	}
+	std::cout<<"Printing in file\n";
+	
+	std::ofstream file;
+	file.open("/home/b170330cs/NoC/gem5/input.txt");
+	file << my_id << "\n";
+	file << dest_id << "\n";
+	file << prev_router_id <<"\n";
+	file << prev_action << "\n";
+	file << queueing_delay;
 
-
+	file.close();
+	
 
 //	Reading from file outputed by Python script
 	
-	std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+	while (1) {
+		std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/b170330cs/NoC/gem5/action.txt";
+		struct stat buffer;
+		if(stat(filename.c_str(), &buffer) == 0) {
+			break;
+		}
+	}
+	std::cout<<"\nFile created\n";
+	std::fstream out("/home/b170330cs/NoC/gem5/action.txt",std::ios_base::in);
 	
 	out >> action;
 
 	std::cout<<"Action = "<<action<<"\n";
 
+	if(std::remove("/home/b170330cs/NoC/gem5/action.txt") == 0) {
+		std::cout<<"File removed\n";
+	}
 //	-----
 
 
@@ -1062,6 +1092,7 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 			action = random % 4;
 		}	
 	}while(outport_dirn == "Unknown");
+
 
 	if(my_id == src_id) {
 		return m_outports_dirn2idx[outport_dirn];

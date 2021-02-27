@@ -10,7 +10,7 @@ import time
 import random
 import os
 import pickle
-
+from os import path
 
 REPLAYMEM = "replay.dat"
 VARIABLES = "variable.dat"
@@ -175,32 +175,75 @@ print("\n\nSTARTING PYTHON")
 #print("TF VERSION", tf.__version__)
 
 print("READING VALUES")
-isInit = int(input())
-my_id = int(input())
-dest_id = int(input())
+#isInit = int(input())
+#my_id = int(input())
+#dest_id = int(input())
 
-prev_router_id = int(input())
-prev_action = int(input())
-queueing_delay = int(input())
-print("READING DONE")
+#prev_router_id = int(input())
+#prev_action = int(input())
+#queueing_delay = int(input())
+#print("READING DONE")
 
 
-if(isInit == 0):
+#if(isInit == 0):
+#    initialize()
+
+#action = get_qs(my_id, dest_id)
+#print('ACTION FROM PYTHON', action)
+#f = open("action.txt", "w")
+#f.write(str(action))
+#f.close()
+
+#done = 0
+#if(my_id == dest_id):
+#    done = 1
+
+#update_replay_memory(my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
+
+#print("TRAINING STARTED")
+#train(my_id, dest_id)
+
+#print("PYTHON EXECUTED")
+
+if(__name__ == "__main__"):
     initialize()
 
-action = get_qs(my_id, dest_id)
-print('ACTION FROM PYTHON', action)
-f = open("action.txt", "w")
-f.write(str(action))
-f.close()
+    while(1):
+        while(1):
+            if(path.exists("input.txt")):
+                break
 
-done = 0
-if(my_id == dest_id):
-    done = 1
+        my_id = 0
+        dest_id = 0
+        prev_router_id = 0
+        prev_action = 0
+        queueing_delay = 0
 
-update_replay_memory(my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
 
-print("TRAINING STARTED")
-train(my_id, dest_id)
+        with open('input.txt','r') as f:
+            lines = f.readlines():
+            my_id = int(lines[0])
+            dest_id = int(lines[1])
+            prev_router_id = int(lines[2])
+            prev_action = int(lines[3])
+            queueing_delay = int(lines[4])
 
-print("PYTHON EXECUTED")
+        os.remove("input.txt")
+        
+        action = get_qs(my_id, dest_id)
+
+        f = open("action.txt","w")
+        f.write(str(action))
+        f.close()
+
+        done = 0
+        if(my_id == dest_id):
+            done = 1
+        
+        update_replay_memory(my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
+        train(my_id, dest_id)
+
+    
+    
+
+
