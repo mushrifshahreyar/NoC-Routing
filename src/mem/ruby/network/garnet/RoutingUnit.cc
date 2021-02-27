@@ -1030,34 +1030,34 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	std::cout<<"Printing in file\n";
 	
 	std::ofstream file;
-	file.open("/home/b170330cs/NoC/gem5/input.txt");
+	file.open("/home/rohitr/NoC-Routing/input.txt");
 	file << my_id << "\n";
 	file << dest_id << "\n";
 	file << prev_router_id <<"\n";
 	file << prev_action << "\n";
-	file << queueing_delay;
-
+	file << queueing_delay<< "\n";
+	file << curTick();
 	file.close();
 	
 
 //	Reading from file outputed by Python script
 	
 	while (1) {
-//		std::cout<<"\nWaiting for file\n";
-		std::string filename = "/home/b170330cs/NoC/gem5/action.txt";
+		//std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/rohitr/NoC-Routing/action.txt";
 		struct stat buffer;
-		if(stat(filename.c_str(), &buffer) == 0) {
+		if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
 			break;
 		}
 	}
 	std::cout<<"\nFile created\n";
-	std::fstream out("/home/b170330cs/NoC/gem5/action.txt",std::ios_base::in);
+	std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
 	
 	out >> action;
 
 	std::cout<<"Action = "<<action<<"\n";
 
-	if(std::remove("/home/b170330cs/NoC/gem5/action.txt") == 0) {
+	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
 		std::cout<<"File removed\n";
 	}
 //	-----

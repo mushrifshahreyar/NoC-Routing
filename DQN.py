@@ -46,20 +46,20 @@ def initialize():
     target_model = create_model()
     target_model.set_weights(model.get_weights())
 
-    model.save('./saved_model')
-    target_model.save('./saved_target_model')
+#    model.save('./saved_model')
+#    target_model.save('./saved_target_model')
     # An array with last n steps for training
     replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
 
-    with open(REPLAYMEM, "wb") as f:
-        pickle.dump(replay_memory, f)
+#    with open(REPLAYMEM, "wb") as f:
+#        pickle.dump(replay_memory, f)
 
     # Used to count when to update target network with main network's weights
     target_update_counter = 0
 
-    with open(VARIABLES, "wb") as f:
-        pickle.dump(target_update_counter, f)
-
+#    with open(VARIABLES, "wb") as f:
+#        pickle.dump(target_update_counter, f)
+    return model, target_model, replay_memory, target_update_counter
 
 def create_model():
     model = Sequential()
@@ -80,31 +80,32 @@ def create_model():
 
 # Adds step's data to a memory replay array
 # (observation space, action, reward, new observation space, done)
-def update_replay_memory(my_id, dest_id, prev_router_id, prev_action, queueing_delay, done):
-    replay_memory = []
-    with open(REPLAYMEM, "rb") as f:
-        replay_memory = pickle.load(f)
+def update_replay_memory(replay_memory, my_id, dest_id, prev_router_id, prev_action, queueing_delay, done):
+#    replay_memory = []
+#    with open(REPLAYMEM, "rb") as f:
+#        replay_memory = pickle.load(f)
 
     transition = [my_id, dest_id, prev_router_id, prev_action, queueing_delay, done]
     replay_memory.append(transition)
 
-    with open(REPLAYMEM, "wb") as f:
-        pickle.dump(replay_memory, f)
+#    with open(REPLAYMEM, "wb") as f:
+#        pickle.dump(replay_memory, f)
+    return replay_memory
 
 
 # Trains main network every step during episode
-def train(my_id, dest_id):
+def train(model, target_model, replay_memory, target_update_counter, my_id, dest_id):
 
-    replay_memory = []
-    with open(REPLAYMEM, "rb") as f:
-        replay_memory = pickle.load(f)
+#    replay_memory = []
+#    with open(REPLAYMEM, "rb") as f:
+#        replay_memory = pickle.load(f)
 
     # Start training only if certain number of samples is already saved
     if len(replay_memory) < MIN_REPLAY_MEMORY_SIZE:
-        return
+        return model, target_model, replay_memory, target_update_counter
 
-    model = tf.keras.models.load_model('./saved_model')
-    target_model = tf.keras.models.load_model('./saved_target_model')
+#    model = tf.keras.models.load_model('./saved_model')
+#    target_model = tf.keras.models.load_model('./saved_target_model')
     # Get a minibatch of random samples from memory replay table
     minibatch = random.sample(replay_memory, MINIBATCH_SIZE)
 
@@ -144,37 +145,39 @@ def train(my_id, dest_id):
     print('TRAINING INSIDE train() FUNCTION')
     # save and load target_update_counter
     # Update target network counter every episode
-    target_update_counter = 0
-    with open(VARIABLES, "rb") as f:
-        target_update_counter = pickle.load(f)
+#    target_update_counter = 0
+#    with open(VARIABLES, "rb") as f:
+#        target_update_counter = pickle.load(f)
 
     if done:
         target_update_counter += 1
-        with open(VARIABLES, "wb") as f:
-            pickle.dump(target_update_counter, f)
+#        with open(VARIABLES, "wb") as f:
+#            pickle.dump(target_update_counter, f)
 
     # If counter reaches set value, update target network with weights of main network
     if target_update_counter > UPDATE_TARGET_EVERY:
         target_model.set_weights(model.get_weights())
         target_update_counter = 0
-        target_model.save('./saved_target_model')
+#        target_model.save('./saved_target_model')
     
-    model.save('./saved_model')
-    
+#    model.save('./saved_model')
+    return model, target_model, replay_memory, target_update_counter
+
+
 
 # Queries main network for Q values given current observation space (environment state)
-def get_qs(my_id, dest_id):
-    model = tf.keras.models.load_model('./saved_model')
+def get_qs(model, my_id, dest_id):
+#    model = tf.keras.models.load_model('./saved_model')
     state = oneHotEncode(my_id, dest_id)
     actions = model.predict(np.array(state).reshape(-1, NROUTERS*2))
     optimal_action = np.argmax(actions)
-    return optimal_action
+    return model, optimal_action
 
 
 print("\n\nSTARTING PYTHON")
 #print("TF VERSION", tf.__version__)
 
-print("READING VALUES")
+#print("READING VALUES")
 #isInit = int(input())
 #my_id = int(input())
 #dest_id = int(input())
@@ -206,10 +209,26 @@ print("READING VALUES")
 #print("PYTHON EXECUTED")
 
 if __name__ == "__main__":
-    print("Started")
-    initialize()
+#    print("Started")
+    iter = 0
+    ITERATIONS = 0
+    m = None
+    tm = None
+    rm = None
+    tuc = None
+#    m, tm, rm, tuc = initialize()
+
+    m = tf.keras.models.load_model('./saved_model')
+    tm = tf.keras.models.load_model('./saved_target_model')
+    with open('REPLAYMEM', 'rb') as f:
+        rm = pickle.load(f)
+    with open('VARIABLES', 'rb') as f:
+        tuc = pickle.load(f)
+
 
     while(1):
+        iter += 1
+        print('Iteration:', iter)
         while(1):
             print("Waiting for file: Python")
             if(path.exists("input.txt")):
@@ -229,15 +248,17 @@ if __name__ == "__main__":
             prev_router_id = int(lines[2])
             prev_action = int(lines[3])
             queueing_delay = int(lines[4])
+            cur_tick = int(lines[5])
 
         print(my_id)
         print(dest_id)
         print(prev_router_id)
         print(prev_action)
         print(queueing_delay)
+        print(cur_tick)
         os.remove("input.txt")
         
-        action = get_qs(my_id, dest_id)
+        m, action = get_qs(m, my_id, dest_id)
 
         f = open("action.txt","w")
         f.write(str(action))
@@ -247,11 +268,18 @@ if __name__ == "__main__":
         if(my_id == dest_id):
             done = 1
         
-        update_replay_memory(my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
-        train(my_id, dest_id)
+        rm = update_replay_memory(rm, my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
+        m, tm, rm, tuc = train(m, tm, rm, tuc, my_id, dest_id)
         print(action)
-        
-    
-    
+        if cur_tick == 100000:
+            m.save('./saved_model')
+            tm.save('./saved_target_model')
+            with open('REPLAYMEM', 'wb') as f:
+                pickle.dump(rm, f)
+            with open('VARIABLES', 'wb') as f:
+                pickle.dump(tuc, f)
+            ITERATIONS += 1
 
+        if ITERATIONS == 200:
+            exit(0)
 
