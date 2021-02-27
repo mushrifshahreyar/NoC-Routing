@@ -205,11 +205,13 @@ print("READING VALUES")
 
 #print("PYTHON EXECUTED")
 
-if(__name__ == "__main__"):
+if __name__ == "__main__":
+    print("Started")
     initialize()
 
     while(1):
         while(1):
+            print("Waiting for file: Python")
             if(path.exists("input.txt")):
                 break
 
@@ -221,13 +223,18 @@ if(__name__ == "__main__"):
 
 
         with open('input.txt','r') as f:
-            lines = f.readlines():
+            lines = f.readlines()
             my_id = int(lines[0])
             dest_id = int(lines[1])
             prev_router_id = int(lines[2])
             prev_action = int(lines[3])
             queueing_delay = int(lines[4])
 
+        print(my_id)
+        print(dest_id)
+        print(prev_router_id)
+        print(prev_action)
+        print(queueing_delay)
         os.remove("input.txt")
         
         action = get_qs(my_id, dest_id)
@@ -242,7 +249,8 @@ if(__name__ == "__main__"):
         
         update_replay_memory(my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
         train(my_id, dest_id)
-
+        print(action)
+        
     
     
 

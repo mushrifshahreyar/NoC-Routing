@@ -1021,11 +1021,11 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 		srand(time(NULL));
 		isInit = true;
 	
-		pid_t pid = vfork();
-		if(pid == 0) {
-			std::cout<<"\n\nExecuting python process\n";
-			system(command.c_str());
-		}
+	//	pid_t pid = vfork();
+	//	if(pid == 0) {
+	//		std::cout<<"\n\nExecuting python process\n";
+	//		system(command.c_str());
+	//	}
 	}
 	std::cout<<"Printing in file\n";
 	
@@ -1043,7 +1043,7 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 //	Reading from file outputed by Python script
 	
 	while (1) {
-		std::cout<<"\nWaiting for file\n";
+//		std::cout<<"\nWaiting for file\n";
 		std::string filename = "/home/b170330cs/NoC/gem5/action.txt";
 		struct stat buffer;
 		if(stat(filename.c_str(), &buffer) == 0) {
