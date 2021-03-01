@@ -23,10 +23,14 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 LEARNINGRATE = 0.01
 DISCOUNT = 0.9
+EPSILON = 1
+EPSILON_DECAY = 0.99975
+MIN_EPSILON = 0.001
+
 REPLAY_MEMORY_SIZE = 200  # How many last steps to keep for model training
-MIN_REPLAY_MEMORY_SIZE = 20  # Minimum number of steps in a memory to start training
-MINIBATCH_SIZE = 10  # How many steps (samples) to use for training
-UPDATE_TARGET_EVERY = 30  # Terminal states (end of episodes)
+MIN_REPLAY_MEMORY_SIZE = 64  # Minimum number of steps in a memory to start training
+MINIBATCH_SIZE = 16  # How many steps (samples) to use for training
+UPDATE_TARGET_EVERY = 32  # Terminal states (end of episodes)
 
 
 def oneHotEncode(my_id, dest_id):
@@ -212,25 +216,28 @@ if __name__ == "__main__":
 #    print("Started")
     iter = 0
     ITERATIONS = 0
+    
     m = None
     tm = None
     rm = None
     tuc = None
-#    m, tm, rm, tuc = initialize()
 
-    m = tf.keras.models.load_model('./saved_model')
-    tm = tf.keras.models.load_model('./saved_target_model')
-    with open('REPLAYMEM', 'rb') as f:
-        rm = pickle.load(f)
-    with open('VARIABLES', 'rb') as f:
-        tuc = pickle.load(f)
+    if ITERATIONS == 0:
+        m, tm, rm, tuc = initialize()
+    else:
+        m = tf.keras.models.load_model('./saved_model')
+        tm = tf.keras.models.load_model('./saved_target_model')
+        with open('REPLAYMEM', 'rb') as f:
+            rm = pickle.load(f)
+        with open('VARIABLES', 'rb') as f:
+            tuc = pickle.load(f)
 
 
     while(1):
         iter += 1
         print('Iteration:', iter)
         while(1):
-            print("Waiting for file: Python")
+#            print("Waiting for file: Python")
             if(path.exists("input.txt")):
                 break
 
@@ -244,21 +251,41 @@ if __name__ == "__main__":
         with open('input.txt','r') as f:
             lines = f.readlines()
             my_id = int(lines[0])
-            dest_id = int(lines[1])
-            prev_router_id = int(lines[2])
-            prev_action = int(lines[3])
-            queueing_delay = int(lines[4])
-            cur_tick = int(lines[5])
+            src_id = int(lines[1])
+            dest_id = int(lines[2])
+            prev_router_id = int(lines[3])
+            prev_action = int(lines[4])
+            queueing_delay = int(lines[5])
+            cur_tick = int(lines[6])
 
-        print(my_id)
-        print(dest_id)
-        print(prev_router_id)
-        print(prev_action)
-        print(queueing_delay)
-        print(cur_tick)
+        print('Current Router ID:', my_id)
+        print('Destination Router ID:', dest_id)
+#        print(prev_router_id)
+#        print(prev_action)
+        print('Queueing Delay:', queueing_delay)
+        print('Current Tick:', cur_tick)
         os.remove("input.txt")
         
-        m, action = get_qs(m, my_id, dest_id)
+        if np.random.random() > EPSILON:
+            m, action = get_qs(m, my_id, dest_id)
+        else:
+            action = np.random.randint(0, NACTIONS)
+
+        my_x = my_id % GRIDSIZE
+        my_y = my_id // GRIDSIZE
+        while True:
+            if(action == 0 and my_y < GRIDSIZE-1):
+                 break
+            elif(action == 1 and my_x < GRIDSIZE-1):
+                 break
+            elif(action == 2 and my_y>0):
+                 break
+            elif(action == 3 and my_x>0):
+                 break
+            elif(my_id == dest_id):
+                 break
+            else:
+                 action = np.random.randint(0, NACTIONS);
 
         f = open("action.txt","w")
         f.write(str(action))
@@ -268,9 +295,18 @@ if __name__ == "__main__":
         if(my_id == dest_id):
             done = 1
         
-        rm = update_replay_memory(rm, my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
-        m, tm, rm, tuc = train(m, tm, rm, tuc, my_id, dest_id)
-        print(action)
+        if my_id != src_id:
+            rm = update_replay_memory(rm, my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
+
+        if my_id == dest_id:
+            print('Inside python train function')
+            m, tm, rm, tuc = train(m, tm, rm, tuc, my_id, dest_id)
+            if EPSILON > MIN_EPSILON:
+                EPSILON *= EPSILON_DECAY
+                EPSILON = max(MIN_EPSILON, EPSILON)
+
+        print('Action from Python:', action)
+
         if cur_tick == 100000:
             m.save('./saved_model')
             tm.save('./saved_target_model')

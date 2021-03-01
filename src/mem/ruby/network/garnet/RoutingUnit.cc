@@ -170,14 +170,14 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 {
     int outport = -1;
 	RouteInfo route = t_flit->get_route();
-    if (route.dest_router == m_router->get_id()) {
+//    if (route.dest_router == m_router->get_id()) {
 
         // Multiple NIs may be connected to this router,
         // all with output port direction = "Local"
         // Get exact outport id from table
-        outport = lookupRoutingTable(route.vnet, route.net_dest);
-        return outport;
-    }
+  //      outport = lookupRoutingTable(route.vnet, route.net_dest);
+   //     return outport;
+   // }
 
     // Routing Algorithm set in GarnetNetwork.py
     // Can be over-ridden from command line using --routing-algorithm = 1
@@ -419,12 +419,8 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
     int my_y = my_id / num_cols;
 
     int dest_id = route.dest_router;
-    int dest_x = dest_id % num_cols;
-    int dest_y = dest_id / num_cols;
 
     int src_id = route.src_router;
-    int src_x = src_id % num_cols;
-    int src_y = src_id / num_cols;
 	
 	int action = epsilon_greedy(Q, my_id, dest_id);
 	int prev_router_id;
@@ -558,19 +554,21 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 	int num_cols = m_router->get_net_ptr()->getNumCols();
     assert(num_rows > 0 && num_cols > 0);
     int my_id = m_router->get_id();
-    int my_x = my_id % num_cols;
-    int my_y = my_id / num_cols;
 
     int dest_id = route.dest_router;
-    int dest_x = dest_id % num_cols;
-    int dest_y = dest_id / num_cols;
 
     int src_id = route.src_router;
-    int src_x = src_id % num_cols;
-    int src_y = src_id / num_cols;
 	
 	//---- Get action
 	int action = std::distance(Q[my_id][dest_id].begin(), std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end()));
+
+
+	if(my_id == dest_id){
+	    int outport = lookupRoutingTable(route.vnet, route.net_dest);	
+    	return outport;
+	}
+
+
 	
 	std::cout<<"------\n";
 	std::cout<<action<<std::endl;
@@ -614,21 +612,10 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 
 	std::cout<<"0.5- Reached here\n";
     int my_id = m_router->get_id();
-    //int my_x = my_id % num_cols;
-    //int my_y = my_id / num_cols;
-
-
 
     int dest_id = route.dest_router;
-    //int dest_x = dest_id % num_cols;
-    //int dest_y = dest_id / num_cols;
 
     int src_id = route.src_router;
-    //int src_x = src_id % num_cols;
-    //int src_y = src_id / num_cols;
-	
-
-	std::cout<<"1- Reached here\n";
 	//std::cout<<"Current path is "<<std::filesystem::current_path()<<std::endl;
 
 	//char result[1000];
@@ -654,8 +641,6 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 		CPyObject pFunc = PyObject_GetAttrString(pModule, "start");
 		if(pFunc && PyCallable_Check(pFunc))
 		{
-			long temp = my_id;
-			long temp2 = dest_id;
             CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
 			pValue = PyObject_CallObject(pFunc, args);
 
@@ -743,14 +728,9 @@ int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection
     int my_id = m_router->get_id();
     int my_x = my_id % num_cols;
     int my_y = my_id / num_cols;
-
     int dest_id = route.dest_router;
-    int dest_x = dest_id % num_cols;
-    int dest_y = dest_id / num_cols;
 
     int src_id = route.src_router;
-    int src_x = src_id % num_cols;
-    int src_y = src_id / num_cols;
 	
 	static bool isInit = false;
 //	setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
@@ -847,8 +827,6 @@ int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection
 		if(p > epsilon) {
 			CPyObject pFunc = PyObject_GetAttrString(pModule, "get_qs");
 			if(pFunc && PyCallable_Check(pFunc)){
-				long temp = my_id;
-				long temp2 = dest_id;
         	    CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
 				pValue = PyObject_CallObject(pFunc, args);
 				action = (int) PyLong_AsLong(pValue);
@@ -938,13 +916,11 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
     int my_x = my_id % num_cols;
     int my_y = my_id / num_cols;
 
+	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+
     int dest_id = route.dest_router;
-    int dest_x = dest_id % num_cols;
-    int dest_y = dest_id / num_cols;
 
     int src_id = route.src_router;
-    int src_x = src_id % num_cols;
-    int src_y = src_id / num_cols;
 	
 	static bool isInit = false;
 
@@ -1000,38 +976,17 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	}
 
 //	New Changes
-
-	std::string filename = "/home/b170330cs/NoC/gem5/DQN.py &";
-	std::string command = "python3 ";
-	command += filename;
-
-/*	FILE* in = popen(command.c_str(),"w");
-	
-	fprintf(in,"%d\n",isInit);
-	fprintf(in,"%d\n",my_id);
-	fprintf(in,"%d\n",dest_id);
-	fprintf(in,"%d\n",prev_router_id);
-	fprintf(in,"%d\n",prev_action);
-	fprintf(in,"%d",queueing_delay);
-	
-	pclose(in);
-*/
 //	-----
 	if(!isInit) {
 		srand(time(NULL));
 		isInit = true;
-	
-	//	pid_t pid = vfork();
-	//	if(pid == 0) {
-	//		std::cout<<"\n\nExecuting python process\n";
-	//		system(command.c_str());
-	//	}
 	}
 	std::cout<<"Printing in file\n";
 	
 	std::ofstream file;
 	file.open("/home/rohitr/NoC-Routing/input.txt");
 	file << my_id << "\n";
+	file << src_id << "\n";
 	file << dest_id << "\n";
 	file << prev_router_id <<"\n";
 	file << prev_action << "\n";
@@ -1039,6 +994,23 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	file << curTick();
 	file.close();
 	
+	if(my_id == dest_id){
+	    int outport = lookupRoutingTable(route.vnet, route.net_dest);	
+		while (1) {
+			//std::cout<<"\nWaiting for file\n";
+			std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+			struct stat buffer;
+			if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+				break;
+			}
+		}
+		if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+			std::cout<<"File removed\n";
+		}
+		std::cout << "If myid == destid\n";
+    	return outport;
+	}
+
 
 //	Reading from file outputed by Python script
 	
@@ -1061,42 +1033,25 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 		std::cout<<"File removed\n";
 	}
 //	-----
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
 
+		case 1: outport_dirn = "East";
+				break;
 
-// Check if random action needs to be performed
-	float p = (float) rand() / RAND_MAX;
-	if(p <= epsilon) {
-		action = rand() % 4;
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
 	}
+	
 
-
-	do{
-		if(action == 0 && my_y < num_rows-1) {
-			outport_dirn = "North";
-		}
-		else if(action == 1 && my_x < num_cols-1) {
-			outport_dirn = "East";
-		}
-		else if(action == 2 && my_y>0) {
-			outport_dirn = "South";
-		}
-		else if(action == 3 && my_x>0){
-			outport_dirn = "West";
-		}
-		else if(my_id == dest_id){
-	//		std::cout << "Output direction: Local port." << std::endl;
-			outport_dirn = "Local";
-		}
-		else{
-			long long random = rand();
-			action = random % 4;
-		}	
-	}while(outport_dirn == "Unknown");
-
-
-	if(my_id == src_id) {
-		return m_outports_dirn2idx[outport_dirn];
-	}
 
 	auto x = m_outports_dirn2idx[outport_dirn];
 	return x;
