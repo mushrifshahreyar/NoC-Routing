@@ -24,8 +24,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 LEARNINGRATE = 0.01
 DISCOUNT = 0.9
 EPSILON = 1
-EPSILON_DECAY = 0.99975
-MIN_EPSILON = 0.001
+EPSILON_DECAY = 0.99955
+MIN_EPSILON = 0.01
 
 REPLAY_MEMORY_SIZE = 200  # How many last steps to keep for model training
 MIN_REPLAY_MEMORY_SIZE = 64  # Minimum number of steps in a memory to start training
@@ -146,7 +146,7 @@ def train(model, target_model, replay_memory, target_update_counter, my_id, dest
 
     # Fit on all samples as one batch, log only on terminal state
     model.fit(np.array(X), np.array(y), batch_size=MINIBATCH_SIZE, verbose=0)
-    print('TRAINING INSIDE train() FUNCTION')
+    #print('TRAINING INSIDE train() FUNCTION')
     # save and load target_update_counter
     # Update target network counter every episode
 #    target_update_counter = 0
@@ -214,15 +214,15 @@ print("\n\nSTARTING PYTHON")
 
 if __name__ == "__main__":
 #    print("Started")
-    iter = 0
-    ITERATIONS = 0
+    iterations = 0
+    EPISODES = 0
     destcount = 0    
     m = None
     tm = None
     rm = None
     tuc = None
 
-    if ITERATIONS == 0:
+    if EPISODES == 0:
         m, tm, rm, tuc = initialize()
     else:
         m = tf.keras.models.load_model('./saved_model')
@@ -234,8 +234,10 @@ if __name__ == "__main__":
 
 
     while(1):
-        iter += 1
-        print('Iteration:', iter)
+        iterations += 1
+        EPISODES += 1
+        print('Episode:', EPISODES)
+        print('Iteration:', iterations)
         while(1):
 #            print("Waiting for file: Python")
             if(path.exists("input.txt")):
@@ -252,7 +254,6 @@ if __name__ == "__main__":
             with open('input.txt','r') as f:
                 lines = f.readlines()
                 if(len(lines) == 7):
-                    print("inside")
                     break
 
         my_id = int(lines[0])
@@ -263,14 +264,14 @@ if __name__ == "__main__":
         queueing_delay = int(lines[5])
         cur_tick = int(lines[6])
 
-        print('Current Router ID:', my_id)
-        print('Destination Router ID:', dest_id)
+#        print('Current Router ID:', my_id)
+#        print('Destination Router ID:', dest_id)
         print('Epsilon:', EPSILON)
 #        print(prev_router_id)
 #        print(prev_action)
-        print('Queueing Delay:', queueing_delay)
+#        print('Queueing Delay:', queueing_delay)
         print('Current Tick:', cur_tick)
-        print('ITERATION:', ITERATIONS)
+#        print('ITERATION:', ITERATIONS)
         os.remove("input.txt")
         
         if np.random.random() > EPSILON:
@@ -312,13 +313,13 @@ if __name__ == "__main__":
             rm = update_replay_memory(rm, my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
 
         if my_id == dest_id:
-            print('Inside python train function')
+            #print('Inside python train function')
             m, tm, rm, tuc = train(m, tm, rm, tuc, my_id, dest_id)
             if EPSILON > MIN_EPSILON:
                 EPSILON *= EPSILON_DECAY
                 EPSILON = max(MIN_EPSILON, EPSILON)
 
-        print('Action from Python:', action)
+        #print('Action from Python:', action)
 
         if cur_tick == 100000:
             m.save('./saved_model')
@@ -327,9 +328,11 @@ if __name__ == "__main__":
                 pickle.dump(rm, f)
             with open('VARIABLES', 'wb') as f:
                 pickle.dump(tuc, f)
-            ITERATIONS += 1
+            EPISODES += 1
             print('Extra lines:', destcount)            
 
 #        if ITERATIONS == 30:
             #exit(0)
+        print('----------------------')
+
 

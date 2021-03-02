@@ -916,7 +916,7 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
     int my_x = my_id % num_cols;
     int my_y = my_id / num_cols;
 
-	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+//	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
 
     int dest_id = route.dest_router;
 
@@ -1039,11 +1039,12 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	//out >> action;
 
 	std::cout<<"Action = "<<action<<"\n";
+	std:: cout << "Tick = " << curTick() << "\n";
 	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
 	fl << action << "\n";
 	fl.close();
 	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
-		std::cout<<"File removed\n";
+		std::cout<<"File removed\n\n";
 	}
 //	-----
 	switch(action) {
