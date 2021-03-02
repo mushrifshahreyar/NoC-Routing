@@ -558,7 +558,15 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
     int dest_id = route.dest_router;
 
     int src_id = route.src_router;
+
+	std::ofstream file;
+	file.open("/home/b170330cs/NoC/gem5/test1.txt",std::ios::app);
+	file << my_id << " ";
+	file << src_id << " ";
+	file << dest_id << "\n";
+	file.close();
 	
+
 	//---- Get action
 	int action = std::distance(Q[my_id][dest_id].begin(), std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end()));
 

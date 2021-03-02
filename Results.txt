@@ -1,0 +1,198 @@
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.1
+average_packet_latency 3583.333333
+
+average_packet_network_latency 2583.333333
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 169
+
+packets_received::total 18
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.2
+average_packet_latency 3263.888889
+
+average_packet_network_latency 2263.888889
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 310
+
+packets_received::total 36
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.3
+average_packet_latency 3312.500000
+
+average_packet_network_latency 2312.500000
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 486
+
+packets_received::total 64
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.4
+average_packet_latency 3480.263158
+
+average_packet_network_latency 2480.263158
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 622
+
+packets_received::total 76
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.5
+average_packet_latency 3383.333333
+
+average_packet_network_latency 2383.333333
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 742
+
+packets_received::total 90
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.6
+average_packet_latency 3756.410256
+
+average_packet_network_latency 2756.410256
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 868
+
+packets_received::total 117
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.7
+average_packet_latency 5634.328358
+
+average_packet_network_latency 4634.328358
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 949
+
+packets_received::total 134
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.8
+average_packet_latency 4982.758621
+
+average_packet_network_latency 3982.758621
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 1020
+
+packets_received::total 145
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.9
+average_packet_latency 8548.076923
+
+average_packet_network_latency 7506.410256
+
+average_packet_queueing_latency 1041.666667
+
+packets_injected::total 1079
+
+packets_received::total 156
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.1
+average_packet_latency 2769.230769
+
+average_packet_network_latency 1769.230769
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 169
+
+packets_received::total 13
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.2
+average_packet_latency 2875
+
+average_packet_network_latency 1875
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 308
+
+packets_received::total 20
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.3
+average_packet_latency 3392.857143
+
+average_packet_network_latency 2392.857143
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 496
+
+packets_received::total 28
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.4
+average_packet_latency 4513.888889
+
+average_packet_network_latency 3513.888889
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 646
+
+packets_received::total 36
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.5
+average_packet_latency 3916.666667
+
+average_packet_network_latency 2916.666667
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 749
+
+packets_received::total 36
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.6
+average_packet_latency 4892.857143
+
+average_packet_network_latency 3776.785714
+
+average_packet_queueing_latency 1116.071429
+
+packets_injected::total 891
+
+packets_received::total 56
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.7
+average_packet_latency 6057.142857
+
+average_packet_network_latency 4642.857143
+
+average_packet_queueing_latency 1414.285714
+
+packets_injected::total 999
+
+packets_received::total 70
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.8
+average_packet_latency 6162.162162
+
+average_packet_network_latency 4722.972973
+
+average_packet_queueing_latency 1439.189189
+
+packets_injected::total 1076
+
+packets_received::total 74
+
+Traffic: uniform_random	 Algorithm: Q_Routing_CPP	 Injection rate: 0.9
+average_packet_latency 8185.185185
+
+average_packet_network_latency 5500
+
+average_packet_queueing_latency 2685.185185
+
+packets_injected::total 1140
+
+packets_received::total 54
+
