@@ -216,7 +216,7 @@ if __name__ == "__main__":
 #    print("Started")
     iter = 0
     ITERATIONS = 0
-    
+    destcount = 0    
     m = None
     tm = None
     rm = None
@@ -241,29 +241,36 @@ if __name__ == "__main__":
             if(path.exists("input.txt")):
                 break
 
-        my_id = 0
+        my_id = -1
         dest_id = 0
         prev_router_id = 0
         prev_action = 0
         queueing_delay = 0
 
+        while(True):
+            #print("here")
+            with open('input.txt','r') as f:
+                lines = f.readlines()
+                if(len(lines) == 7):
+                    print("inside")
+                    break
 
-        with open('input.txt','r') as f:
-            lines = f.readlines()
-            my_id = int(lines[0])
-            src_id = int(lines[1])
-            dest_id = int(lines[2])
-            prev_router_id = int(lines[3])
-            prev_action = int(lines[4])
-            queueing_delay = int(lines[5])
-            cur_tick = int(lines[6])
+        my_id = int(lines[0])
+        src_id = int(lines[1])
+        dest_id = int(lines[2])
+        prev_router_id = int(lines[3])
+        prev_action = int(lines[4])
+        queueing_delay = int(lines[5])
+        cur_tick = int(lines[6])
 
         print('Current Router ID:', my_id)
         print('Destination Router ID:', dest_id)
+        print('Epsilon:', EPSILON)
 #        print(prev_router_id)
 #        print(prev_action)
         print('Queueing Delay:', queueing_delay)
         print('Current Tick:', cur_tick)
+        print('ITERATION:', ITERATIONS)
         os.remove("input.txt")
         
         if np.random.random() > EPSILON:
@@ -291,10 +298,16 @@ if __name__ == "__main__":
         f.write(str(action))
         f.close()
 
+        if my_id != dest_id:
+            outf = open("pythonaction.txt", "a")
+            outf.write(str(action) + "\n")
+            outf.close()
+        
+
         done = 0
         if(my_id == dest_id):
             done = 1
-        
+            destcount += 1
         if my_id != src_id:
             rm = update_replay_memory(rm, my_id, dest_id, prev_router_id, prev_action, queueing_delay, done)
 
@@ -315,7 +328,8 @@ if __name__ == "__main__":
             with open('VARIABLES', 'wb') as f:
                 pickle.dump(tuc, f)
             ITERATIONS += 1
+            print('Extra lines:', destcount)            
 
-        if ITERATIONS == 200:
-            exit(0)
+#        if ITERATIONS == 30:
+            #exit(0)
 

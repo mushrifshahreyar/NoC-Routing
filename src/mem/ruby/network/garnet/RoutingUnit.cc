@@ -924,7 +924,7 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	
 	static bool isInit = false;
 
-	int action = 0;
+	int action = -1;
 	int prev_router_id;
 
 	int temp_x = 0;
@@ -1022,13 +1022,26 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 			break;
 		}
 	}
-	std::cout<<"\nFile created\n";
-	std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+
+	do {
+//        std::cout<<"Looping \n";
+        std::ifstream out("/home/rohitr/NoC-Routing/action.txt");
+
+        out >> action;
+
+        out.close();
+    }while(action == -1);
+
+
+	//std::cout<<"\nFile created\n";
+	//std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
 	
-	out >> action;
+	//out >> action;
 
 	std::cout<<"Action = "<<action<<"\n";
-
+	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
+	fl << action << "\n";
+	fl.close();
 	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
 		std::cout<<"File removed\n";
 	}
