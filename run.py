@@ -3,7 +3,7 @@ import progressbar
 import time
 import subprocess
 
-ITERATIONS = 1000
+ITERATIONS = 200
 #i = 0
 
 #print("Deleting existing Q-Table")

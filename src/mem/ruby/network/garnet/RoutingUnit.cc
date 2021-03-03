@@ -170,14 +170,14 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 {
     int outport = -1;
 	RouteInfo route = t_flit->get_route();
-//    if (route.dest_router == m_router->get_id()) {
+    if (route.dest_router == m_router->get_id()) {
 
         // Multiple NIs may be connected to this router,
         // all with output port direction = "Local"
         // Get exact outport id from table
-  //      outport = lookupRoutingTable(route.vnet, route.net_dest);
-   //     return outport;
-   // }
+       outport = lookupRoutingTable(route.vnet, route.net_dest);
+       return outport;
+    }
 
     // Routing Algorithm set in GarnetNetwork.py
     // Can be over-ridden from command line using --routing-algorithm = 1
@@ -196,6 +196,7 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
             outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn); break;
 		case 4: outport = outportComputeQ_RoutingPython(t_flit, inport, inport_dirn); break;
 		case 5: outport = outportComputeDQNPython_1(t_flit, inport, inport_dirn); break;
+		case 6: outport = outportComputeDQNPythonTesting(t_flit, inport, inport_dirn); break;
         default: outport =
             lookupRoutingTable(route.vnet, route.net_dest); break;
     }
@@ -1070,6 +1071,104 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	auto x = m_outports_dirn2idx[outport_dirn];
 	return x;
 }
+
+
+
+int RoutingUnit::outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
+	RouteInfo route = t_flit->get_route();
+	PortDirection outport_dirn = "Unknown";
+    
+	Tick src_queueing_delay = t_flit->get_src_delay();
+    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
+    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
+
+	//---Geting source and destination router details
+	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+//	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+
+    int dest_id = route.dest_router;
+
+    int src_id = route.src_router;
+	
+	static bool isInit = false;
+
+	int action = -1;
+	int prev_router_id;
+
+	
+	std::ofstream file;
+	file.open("/home/rohitr/NoC-Routing/input.txt");
+	file << my_id << "\n";
+	file << dest_id << "\n";
+	file.close();
+	
+
+//	Reading from file outputed by Python script
+	
+	while (1) {
+		//std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+		struct stat buffer;
+		if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+			break;
+		}
+	}
+
+	do {
+//        std::cout<<"Looping \n";
+        std::ifstream out("/home/rohitr/NoC-Routing/action.txt");
+
+        out >> action;
+
+        out.close();
+    }while(action == -1);
+
+
+	//std::cout<<"\nFile created\n";
+	//std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+	
+	//out >> action;
+
+	std::cout<<"Action = "<<action<<"\n";
+	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
+	fl << action << "\n";
+	fl.close();
+	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+		std::cout<<"File removed\n\n";
+	}
+//	-----
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
+	}
+	
+
+
+	auto x = m_outports_dirn2idx[outport_dirn];
+	return x;
+}
+
+
 
 
 

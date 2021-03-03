@@ -24,7 +24,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 LEARNINGRATE = 0.01
 DISCOUNT = 0.9
 EPSILON = 1
-EPSILON_DECAY = 0.99955
+EPSILON_DECAY = 0.9992
 MIN_EPSILON = 0.01
 
 REPLAY_MEMORY_SIZE = 200  # How many last steps to keep for model training
@@ -174,7 +174,7 @@ def get_qs(model, my_id, dest_id):
 #    model = tf.keras.models.load_model('./saved_model')
     state = oneHotEncode(my_id, dest_id)
     actions = model.predict(np.array(state).reshape(-1, NROUTERS*2))
-    optimal_action = np.argmax(actions)
+    optimal_action = np.argmin(actions)
     return model, optimal_action
 
 
