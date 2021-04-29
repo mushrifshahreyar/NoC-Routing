@@ -23,7 +23,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 LEARNINGRATE = 0.01
 DISCOUNT = 0.9
-EPSILON = 1
+EPSILON = 0.01
 EPSILON_DECAY = 0.9992
 MIN_EPSILON = 0.01
 
@@ -215,7 +215,7 @@ print("\n\nSTARTING PYTHON")
 if __name__ == "__main__":
 #    print("Started")
     iterations = 0
-    EPISODES = 0
+    EPISODES = 700
     destcount = 0    
     m = None
     tm = None
@@ -321,7 +321,7 @@ if __name__ == "__main__":
 
         #print('Action from Python:', action)
 
-        if cur_tick == 100000:
+        if cur_tick == -100000:
             m.save('./saved_model')
             tm.save('./saved_target_model')
             with open('REPLAYMEM', 'wb') as f:

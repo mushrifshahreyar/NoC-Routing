@@ -1,249 +1,398 @@
 
 ---------- Begin Simulation Statistics ----------
 final_tick                                     100000                       # Number of ticks from beginning of simulation (restored from checkpoints and never reset)
-host_mem_usage                                1808112                       # Number of bytes of host memory used
-host_seconds                                     5.33                       # Real time elapsed on the host
-host_tick_rate                                  18772                       # Simulator tick rate (ticks/s)
+host_mem_usage                                1808108                       # Number of bytes of host memory used
+host_seconds                                     2.75                       # Real time elapsed on the host
+host_tick_rate                                  36427                       # Simulator tick rate (ticks/s)
 sim_freq                                 1000000000000                       # Frequency of simulated ticks
 sim_seconds                                  0.000000                       # Number of seconds simulated
 sim_ticks                                      100000                       # Number of ticks simulated
-system.ruby.L1Cache_Controller.I.Ifetch  |           1      2.70%      2.70% |           4     10.81%     13.51% |           3      8.11%     21.62% |           3      8.11%     29.73% |           3      8.11%     37.84% |           1      2.70%     40.54% |           4     10.81%     51.35% |           4     10.81%     62.16% |           1      2.70%     64.86% |           1      2.70%     67.57% |           1      2.70%     70.27% |           2      5.41%     75.68% |           1      2.70%     78.38% |           3      8.11%     86.49% |           2      5.41%     91.89% |           3      8.11%    100.00%
-system.ruby.L1Cache_Controller.I.Ifetch::total           37                      
-system.ruby.L1Cache_Controller.I.Load    |           5     12.20%     12.20% |           4      9.76%     21.95% |           1      2.44%     24.39% |           1      2.44%     26.83% |           2      4.88%     31.71% |           2      4.88%     36.59% |           3      7.32%     43.90% |           4      9.76%     53.66% |           3      7.32%     60.98% |           3      7.32%     68.29% |           4      9.76%     78.05% |           2      4.88%     82.93% |           3      7.32%     90.24% |           2      4.88%     95.12% |           2      4.88%    100.00% |           0      0.00%    100.00%
-system.ruby.L1Cache_Controller.I.Load::total           41                      
-system.ruby.L1Cache_Controller.I.Store   |           1      2.78%      2.78% |           0      0.00%      2.78% |           3      8.33%     11.11% |           6     16.67%     27.78% |           1      2.78%     30.56% |           3      8.33%     38.89% |           0      0.00%     38.89% |           2      5.56%     44.44% |           3      8.33%     52.78% |           4     11.11%     63.89% |           1      2.78%     66.67% |           0      0.00%     66.67% |           1      2.78%     69.44% |           2      5.56%     75.00% |           5     13.89%     88.89% |           4     11.11%    100.00%
-system.ruby.L1Cache_Controller.I.Store::total           36                      
-system.ruby.L1Cache_Controller.Ifetch    |           1      2.70%      2.70% |           4     10.81%     13.51% |           3      8.11%     21.62% |           3      8.11%     29.73% |           3      8.11%     37.84% |           1      2.70%     40.54% |           4     10.81%     51.35% |           4     10.81%     62.16% |           1      2.70%     64.86% |           1      2.70%     67.57% |           1      2.70%     70.27% |           2      5.41%     75.68% |           1      2.70%     78.38% |           3      8.11%     86.49% |           2      5.41%     91.89% |           3      8.11%    100.00%
-system.ruby.L1Cache_Controller.Ifetch::total           37                      
-system.ruby.L1Cache_Controller.Load      |           5     12.20%     12.20% |           4      9.76%     21.95% |           1      2.44%     24.39% |           1      2.44%     26.83% |           2      4.88%     31.71% |           2      4.88%     36.59% |           3      7.32%     43.90% |           4      9.76%     53.66% |           3      7.32%     60.98% |           3      7.32%     68.29% |           4      9.76%     78.05% |           2      4.88%     82.93% |           3      7.32%     90.24% |           2      4.88%     95.12% |           2      4.88%    100.00% |           0      0.00%    100.00%
-system.ruby.L1Cache_Controller.Load::total           41                      
-system.ruby.L1Cache_Controller.Store     |           1      2.78%      2.78% |           0      0.00%      2.78% |           3      8.33%     11.11% |           6     16.67%     27.78% |           1      2.78%     30.56% |           3      8.33%     38.89% |           0      0.00%     38.89% |           2      5.56%     44.44% |           3      8.33%     52.78% |           4     11.11%     63.89% |           1      2.78%     66.67% |           0      0.00%     66.67% |           1      2.78%     69.44% |           2      5.56%     75.00% |           5     13.89%     88.89% |           4     11.11%    100.00%
-system.ruby.L1Cache_Controller.Store::total           36                      
-system.ruby.l1_cntrl0.cacheMemory.demand_accesses            7                       # Number of cache demand accesses
-system.ruby.l1_cntrl0.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl0.cacheMemory.demand_misses            7                       # Number of cache demand misses
-system.ruby.l1_cntrl0.mandatoryQueue.avg_buf_msgs     0.035000                       # Average number of messages in buffer
-system.ruby.l1_cntrl0.mandatoryQueue.avg_stall_time   482.500175                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl0.requestFromCache.avg_buf_msgs     0.069999                       # Average number of messages in buffer
-system.ruby.l1_cntrl0.requestFromCache.avg_stall_time   955.000450                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl1.cacheMemory.demand_accesses            8                       # Number of cache demand accesses
+system.ruby.Directory.miss_latency_hist_seqr.first_response_to_completion::bucket_size           16                      
+system.ruby.Directory.miss_latency_hist_seqr.first_response_to_completion::max_bucket          159                      
+system.ruby.Directory.miss_latency_hist_seqr.first_response_to_completion::samples            2                      
+system.ruby.Directory.miss_latency_hist_seqr.first_response_to_completion::mean          145                      
+system.ruby.Directory.miss_latency_hist_seqr.first_response_to_completion::gmean   145.000000                      
+system.ruby.Directory.miss_latency_hist_seqr.first_response_to_completion |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           2    100.00%    100.00%
+system.ruby.Directory.miss_latency_hist_seqr.first_response_to_completion::total            2                      
+system.ruby.Directory.miss_latency_hist_seqr.forward_to_first_response::bucket_size            1                      
+system.ruby.Directory.miss_latency_hist_seqr.forward_to_first_response::max_bucket            9                      
+system.ruby.Directory.miss_latency_hist_seqr.forward_to_first_response::samples            2                      
+system.ruby.Directory.miss_latency_hist_seqr.forward_to_first_response |           2    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.Directory.miss_latency_hist_seqr.forward_to_first_response::total            2                      
+system.ruby.Directory.miss_latency_hist_seqr.initial_to_forward::bucket_size            1                      
+system.ruby.Directory.miss_latency_hist_seqr.initial_to_forward::max_bucket            9                      
+system.ruby.Directory.miss_latency_hist_seqr.initial_to_forward::samples            2                      
+system.ruby.Directory.miss_latency_hist_seqr.initial_to_forward |           2    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.Directory.miss_latency_hist_seqr.initial_to_forward::total            2                      
+system.ruby.Directory.miss_latency_hist_seqr.issue_to_initial_request::bucket_size            1                      
+system.ruby.Directory.miss_latency_hist_seqr.issue_to_initial_request::max_bucket            9                      
+system.ruby.Directory.miss_latency_hist_seqr.issue_to_initial_request::samples            2                      
+system.ruby.Directory.miss_latency_hist_seqr.issue_to_initial_request |           2    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.Directory.miss_latency_hist_seqr.issue_to_initial_request::total            2                      
+system.ruby.Directory.miss_mach_latency_hist_seqr::bucket_size           16                      
+system.ruby.Directory.miss_mach_latency_hist_seqr::max_bucket          159                      
+system.ruby.Directory.miss_mach_latency_hist_seqr::samples            2                      
+system.ruby.Directory.miss_mach_latency_hist_seqr::mean          145                      
+system.ruby.Directory.miss_mach_latency_hist_seqr::gmean   145.000000                      
+system.ruby.Directory.miss_mach_latency_hist_seqr |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           2    100.00%    100.00%
+system.ruby.Directory.miss_mach_latency_hist_seqr::total            2                      
+system.ruby.Directory_Controller.GETX    |           1     50.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1     50.00%    100.00%
+system.ruby.Directory_Controller.GETX::total            2                      
+system.ruby.Directory_Controller.I.GETX  |           1     50.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1     50.00%    100.00%
+system.ruby.Directory_Controller.I.GETX::total            2                      
+system.ruby.Directory_Controller.IM.Memory_Data |           1     50.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1     50.00%    100.00%
+system.ruby.Directory_Controller.IM.Memory_Data::total            2                      
+system.ruby.Directory_Controller.Memory_Data |           1     50.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1     50.00%    100.00%
+system.ruby.Directory_Controller.Memory_Data::total            2                      
+system.ruby.IFETCH.hit_latency_hist_seqr::bucket_size            1                      
+system.ruby.IFETCH.hit_latency_hist_seqr::max_bucket            9                      
+system.ruby.IFETCH.hit_latency_hist_seqr::samples           14                      
+system.ruby.IFETCH.hit_latency_hist_seqr |          14    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.IFETCH.hit_latency_hist_seqr::total           14                      
+system.ruby.IFETCH.latency_hist_seqr::bucket_size            1                      
+system.ruby.IFETCH.latency_hist_seqr::max_bucket            9                      
+system.ruby.IFETCH.latency_hist_seqr::samples           14                      
+system.ruby.IFETCH.latency_hist_seqr     |          14    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.IFETCH.latency_hist_seqr::total           14                      
+system.ruby.L1Cache_Controller.Data      |           1     50.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1     50.00%    100.00%
+system.ruby.L1Cache_Controller.Data::total            2                      
+system.ruby.L1Cache_Controller.I.Ifetch  |           0      0.00%      0.00% |           1     16.67%     16.67% |           0      0.00%     16.67% |           0      0.00%     16.67% |           0      0.00%     16.67% |           0      0.00%     16.67% |           0      0.00%     16.67% |           1     16.67%     33.33% |           0      0.00%     33.33% |           1     16.67%     50.00% |           1     16.67%     66.67% |           1     16.67%     83.33% |           0      0.00%     83.33% |           1     16.67%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.L1Cache_Controller.I.Ifetch::total            6                      
+system.ruby.L1Cache_Controller.I.Load    |           1     14.29%     14.29% |           0      0.00%     14.29% |           0      0.00%     14.29% |           1     14.29%     28.57% |           1     14.29%     42.86% |           1     14.29%     57.14% |           1     14.29%     71.43% |           0      0.00%     71.43% |           0      0.00%     71.43% |           0      0.00%     71.43% |           0      0.00%     71.43% |           0      0.00%     71.43% |           1     14.29%     85.71% |           0      0.00%     85.71% |           0      0.00%     85.71% |           1     14.29%    100.00%
+system.ruby.L1Cache_Controller.I.Load::total            7                      
+system.ruby.L1Cache_Controller.I.Store   |           0      0.00%      0.00% |           0      0.00%      0.00% |           1     33.33%     33.33% |           0      0.00%     33.33% |           0      0.00%     33.33% |           0      0.00%     33.33% |           0      0.00%     33.33% |           0      0.00%     33.33% |           1     33.33%     66.67% |           0      0.00%     66.67% |           0      0.00%     66.67% |           0      0.00%     66.67% |           0      0.00%     66.67% |           0      0.00%     66.67% |           1     33.33%    100.00% |           0      0.00%    100.00%
+system.ruby.L1Cache_Controller.I.Store::total            3                      
+system.ruby.L1Cache_Controller.IS.Data   |           1     50.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1     50.00%    100.00%
+system.ruby.L1Cache_Controller.IS.Data::total            2                      
+system.ruby.L1Cache_Controller.Ifetch    |           9     45.00%     45.00% |           1      5.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           1      5.00%     55.00% |           0      0.00%     55.00% |           1      5.00%     60.00% |           1      5.00%     65.00% |           1      5.00%     70.00% |           0      0.00%     70.00% |           1      5.00%     75.00% |           0      0.00%     75.00% |           5     25.00%    100.00%
+system.ruby.L1Cache_Controller.Ifetch::total           20                      
+system.ruby.L1Cache_Controller.Load      |           9     37.50%     37.50% |           0      0.00%     37.50% |           0      0.00%     37.50% |           1      4.17%     41.67% |           1      4.17%     45.83% |           1      4.17%     50.00% |           1      4.17%     54.17% |           0      0.00%     54.17% |           0      0.00%     54.17% |           0      0.00%     54.17% |           0      0.00%     54.17% |           0      0.00%     54.17% |           1      4.17%     58.33% |           0      0.00%     58.33% |           0      0.00%     58.33% |          10     41.67%    100.00%
+system.ruby.L1Cache_Controller.Load::total           24                      
+system.ruby.L1Cache_Controller.M.Ifetch  |           9     64.29%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           0      0.00%     64.29% |           5     35.71%    100.00%
+system.ruby.L1Cache_Controller.M.Ifetch::total           14                      
+system.ruby.L1Cache_Controller.M.Load    |           8     47.06%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           9     52.94%    100.00%
+system.ruby.L1Cache_Controller.M.Load::total           17                      
+system.ruby.L1Cache_Controller.M.Store   |           7     50.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           0      0.00%     50.00% |           7     50.00%    100.00%
+system.ruby.L1Cache_Controller.M.Store::total           14                      
+system.ruby.L1Cache_Controller.Store     |           7     41.18%     41.18% |           0      0.00%     41.18% |           1      5.88%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           0      0.00%     47.06% |           1      5.88%     52.94% |           0      0.00%     52.94% |           0      0.00%     52.94% |           0      0.00%     52.94% |           0      0.00%     52.94% |           0      0.00%     52.94% |           1      5.88%     58.82% |           7     41.18%    100.00%
+system.ruby.L1Cache_Controller.Store::total           17                      
+system.ruby.LD.Directory.miss_type_mach_latency_hist_seqr::bucket_size           16                      
+system.ruby.LD.Directory.miss_type_mach_latency_hist_seqr::max_bucket          159                      
+system.ruby.LD.Directory.miss_type_mach_latency_hist_seqr::samples            2                      
+system.ruby.LD.Directory.miss_type_mach_latency_hist_seqr::mean          145                      
+system.ruby.LD.Directory.miss_type_mach_latency_hist_seqr::gmean   145.000000                      
+system.ruby.LD.Directory.miss_type_mach_latency_hist_seqr |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           2    100.00%    100.00%
+system.ruby.LD.Directory.miss_type_mach_latency_hist_seqr::total            2                      
+system.ruby.LD.hit_latency_hist_seqr::bucket_size            1                      
+system.ruby.LD.hit_latency_hist_seqr::max_bucket            9                      
+system.ruby.LD.hit_latency_hist_seqr::samples           17                      
+system.ruby.LD.hit_latency_hist_seqr     |          17    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.LD.hit_latency_hist_seqr::total           17                      
+system.ruby.LD.latency_hist_seqr::bucket_size           16                      
+system.ruby.LD.latency_hist_seqr::max_bucket          159                      
+system.ruby.LD.latency_hist_seqr::samples           19                      
+system.ruby.LD.latency_hist_seqr::mean      15.263158                      
+system.ruby.LD.latency_hist_seqr::stdev     45.718756                      
+system.ruby.LD.latency_hist_seqr         |          17     89.47%     89.47% |           0      0.00%     89.47% |           0      0.00%     89.47% |           0      0.00%     89.47% |           0      0.00%     89.47% |           0      0.00%     89.47% |           0      0.00%     89.47% |           0      0.00%     89.47% |           0      0.00%     89.47% |           2     10.53%    100.00%
+system.ruby.LD.latency_hist_seqr::total            19                      
+system.ruby.LD.miss_latency_hist_seqr::bucket_size           16                      
+system.ruby.LD.miss_latency_hist_seqr::max_bucket          159                      
+system.ruby.LD.miss_latency_hist_seqr::samples            2                      
+system.ruby.LD.miss_latency_hist_seqr::mean          145                      
+system.ruby.LD.miss_latency_hist_seqr::gmean   145.000000                      
+system.ruby.LD.miss_latency_hist_seqr    |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           2    100.00%    100.00%
+system.ruby.LD.miss_latency_hist_seqr::total            2                      
+system.ruby.ST.hit_latency_hist_seqr::bucket_size            1                      
+system.ruby.ST.hit_latency_hist_seqr::max_bucket            9                      
+system.ruby.ST.hit_latency_hist_seqr::samples           14                      
+system.ruby.ST.hit_latency_hist_seqr     |          14    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.ST.hit_latency_hist_seqr::total           14                      
+system.ruby.ST.latency_hist_seqr::bucket_size            1                      
+system.ruby.ST.latency_hist_seqr::max_bucket            9                      
+system.ruby.ST.latency_hist_seqr::samples           14                      
+system.ruby.ST.latency_hist_seqr         |          14    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.ST.latency_hist_seqr::total            14                      
+system.ruby.delayHist::bucket_size                  1                       # delay histogram for all message
+system.ruby.delayHist::max_bucket                   9                       # delay histogram for all message
+system.ruby.delayHist::samples                      2                       # delay histogram for all message
+system.ruby.delayHist::mean                         9                       # delay histogram for all message
+system.ruby.delayHist::gmean                 9.000000                       # delay histogram for all message
+system.ruby.delayHist                    |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           2    100.00%    100.00% # delay histogram for all message
+system.ruby.delayHist::total                        2                       # delay histogram for all message
+system.ruby.delayVCHist.vnet_1::bucket_size            1                       # delay histogram for vnet_1
+system.ruby.delayVCHist.vnet_1::max_bucket            9                       # delay histogram for vnet_1
+system.ruby.delayVCHist.vnet_1::samples             2                       # delay histogram for vnet_1
+system.ruby.delayVCHist.vnet_1::mean                9                       # delay histogram for vnet_1
+system.ruby.delayVCHist.vnet_1::gmean        9.000000                       # delay histogram for vnet_1
+system.ruby.delayVCHist.vnet_1           |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           2    100.00%    100.00% # delay histogram for vnet_1
+system.ruby.delayVCHist.vnet_1::total               2                       # delay histogram for vnet_1
+system.ruby.dir_cntrl0.requestToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.dir_cntrl0.requestToDir.avg_stall_time  3360.001400                       # Average number of cycles messages are stalled in this MB
+system.ruby.dir_cntrl0.requestToMemory.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.dir_cntrl0.requestToMemory.avg_stall_time   477.500225                       # Average number of cycles messages are stalled in this MB
+system.ruby.dir_cntrl0.responseFromDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.dir_cntrl0.responseFromDir.avg_stall_time   162.503375                       # Average number of cycles messages are stalled in this MB
+system.ruby.dir_cntrl0.responseFromMemory.avg_buf_msgs     0.007500                       # Average number of messages in buffer
+system.ruby.dir_cntrl0.responseFromMemory.avg_stall_time   165.003350                       # Average number of cycles messages are stalled in this MB
+system.ruby.dir_cntrl15.requestToDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.dir_cntrl15.requestToDir.avg_stall_time  3360.001400                       # Average number of cycles messages are stalled in this MB
+system.ruby.dir_cntrl15.requestToMemory.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.dir_cntrl15.requestToMemory.avg_stall_time   477.500225                       # Average number of cycles messages are stalled in this MB
+system.ruby.dir_cntrl15.responseFromDir.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.dir_cntrl15.responseFromDir.avg_stall_time   162.503375                       # Average number of cycles messages are stalled in this MB
+system.ruby.dir_cntrl15.responseFromMemory.avg_buf_msgs     0.007500                       # Average number of messages in buffer
+system.ruby.dir_cntrl15.responseFromMemory.avg_stall_time   165.003350                       # Average number of cycles messages are stalled in this MB
+system.ruby.hit_latency_hist_seqr::bucket_size            1                      
+system.ruby.hit_latency_hist_seqr::max_bucket            9                      
+system.ruby.hit_latency_hist_seqr::samples           45                      
+system.ruby.hit_latency_hist_seqr        |          45    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.hit_latency_hist_seqr::total           45                      
+system.ruby.l1_cntrl0.cacheMemory.demand_accesses           25                       # Number of cache demand accesses
+system.ruby.l1_cntrl0.cacheMemory.demand_hits           24                       # Number of cache demand hits
+system.ruby.l1_cntrl0.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl0.mandatoryQueue.avg_buf_msgs     0.125009                       # Average number of messages in buffer
+system.ruby.l1_cntrl0.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl0.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl0.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl0.responseToCache.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl0.responseToCache.avg_stall_time  1512.539875                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl1.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl1.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl1.cacheMemory.demand_misses            8                       # Number of cache demand misses
-system.ruby.l1_cntrl1.mandatoryQueue.avg_buf_msgs     0.040000                       # Average number of messages in buffer
-system.ruby.l1_cntrl1.mandatoryQueue.avg_stall_time   437.500625                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl1.requestFromCache.avg_buf_msgs     0.079999                       # Average number of messages in buffer
-system.ruby.l1_cntrl1.requestFromCache.avg_stall_time   865.001350                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl10.cacheMemory.demand_accesses            6                       # Number of cache demand accesses
+system.ruby.l1_cntrl1.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl1.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl1.mandatoryQueue.avg_stall_time   492.500075                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl1.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl1.requestFromCache.avg_stall_time   975.000250                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl10.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl10.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl10.cacheMemory.demand_misses            6                       # Number of cache demand misses
-system.ruby.l1_cntrl10.mandatoryQueue.avg_buf_msgs     0.030000                       # Average number of messages in buffer
+system.ruby.l1_cntrl10.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl10.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
 system.ruby.l1_cntrl10.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl10.requestFromCache.avg_buf_msgs     0.059999                       # Average number of messages in buffer
+system.ruby.l1_cntrl10.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
 system.ruby.l1_cntrl10.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl11.cacheMemory.demand_accesses            4                       # Number of cache demand accesses
+system.ruby.l1_cntrl11.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl11.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl11.cacheMemory.demand_misses            4                       # Number of cache demand misses
-system.ruby.l1_cntrl11.mandatoryQueue.avg_buf_msgs     0.020000                       # Average number of messages in buffer
+system.ruby.l1_cntrl11.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl11.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
 system.ruby.l1_cntrl11.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl11.requestFromCache.avg_buf_msgs     0.040000                       # Average number of messages in buffer
+system.ruby.l1_cntrl11.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
 system.ruby.l1_cntrl11.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl12.cacheMemory.demand_accesses            5                       # Number of cache demand accesses
+system.ruby.l1_cntrl12.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl12.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl12.cacheMemory.demand_misses            5                       # Number of cache demand misses
-system.ruby.l1_cntrl12.mandatoryQueue.avg_buf_msgs     0.025000                       # Average number of messages in buffer
-system.ruby.l1_cntrl12.mandatoryQueue.avg_stall_time   432.500675                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl12.requestFromCache.avg_buf_msgs     0.050000                       # Average number of messages in buffer
-system.ruby.l1_cntrl12.requestFromCache.avg_stall_time   855.001450                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl13.cacheMemory.demand_accesses            7                       # Number of cache demand accesses
+system.ruby.l1_cntrl12.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl12.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl12.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl12.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl12.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl13.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl13.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl13.cacheMemory.demand_misses            7                       # Number of cache demand misses
-system.ruby.l1_cntrl13.mandatoryQueue.avg_buf_msgs     0.035000                       # Average number of messages in buffer
-system.ruby.l1_cntrl13.mandatoryQueue.avg_stall_time   487.500125                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl13.requestFromCache.avg_buf_msgs     0.069999                       # Average number of messages in buffer
-system.ruby.l1_cntrl13.requestFromCache.avg_stall_time   965.000350                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl14.cacheMemory.demand_accesses            9                       # Number of cache demand accesses
+system.ruby.l1_cntrl13.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl13.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl13.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl13.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl13.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl14.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl14.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl14.cacheMemory.demand_misses            9                       # Number of cache demand misses
-system.ruby.l1_cntrl14.mandatoryQueue.avg_buf_msgs     0.045000                       # Average number of messages in buffer
-system.ruby.l1_cntrl14.mandatoryQueue.avg_stall_time   487.500125                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl14.requestFromCache.avg_buf_msgs     0.089999                       # Average number of messages in buffer
-system.ruby.l1_cntrl14.requestFromCache.avg_stall_time   965.000350                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl15.cacheMemory.demand_accesses            7                       # Number of cache demand accesses
-system.ruby.l1_cntrl15.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl15.cacheMemory.demand_misses            7                       # Number of cache demand misses
-system.ruby.l1_cntrl15.mandatoryQueue.avg_buf_msgs     0.035000                       # Average number of messages in buffer
-system.ruby.l1_cntrl15.mandatoryQueue.avg_stall_time   382.501175                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl15.requestFromCache.avg_buf_msgs     0.069999                       # Average number of messages in buffer
-system.ruby.l1_cntrl15.requestFromCache.avg_stall_time   755.002450                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl2.cacheMemory.demand_accesses            7                       # Number of cache demand accesses
+system.ruby.l1_cntrl14.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl14.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl14.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl14.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl14.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl15.cacheMemory.demand_accesses           22                       # Number of cache demand accesses
+system.ruby.l1_cntrl15.cacheMemory.demand_hits           21                       # Number of cache demand hits
+system.ruby.l1_cntrl15.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl15.mandatoryQueue.avg_buf_msgs     0.109999                       # Average number of messages in buffer
+system.ruby.l1_cntrl15.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl15.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl15.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl15.responseToCache.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl15.responseToCache.avg_stall_time  1512.539875                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl2.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl2.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl2.cacheMemory.demand_misses            7                       # Number of cache demand misses
-system.ruby.l1_cntrl2.mandatoryQueue.avg_buf_msgs     0.035000                       # Average number of messages in buffer
-system.ruby.l1_cntrl2.mandatoryQueue.avg_stall_time   437.500625                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl2.requestFromCache.avg_buf_msgs     0.069999                       # Average number of messages in buffer
-system.ruby.l1_cntrl2.requestFromCache.avg_stall_time   865.001350                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl3.cacheMemory.demand_accesses           10                       # Number of cache demand accesses
+system.ruby.l1_cntrl2.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl2.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl2.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl2.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl2.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl3.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl3.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl3.cacheMemory.demand_misses           10                       # Number of cache demand misses
-system.ruby.l1_cntrl3.mandatoryQueue.avg_buf_msgs     0.050000                       # Average number of messages in buffer
-system.ruby.l1_cntrl3.mandatoryQueue.avg_stall_time   382.501175                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl3.requestFromCache.avg_buf_msgs     0.099999                       # Average number of messages in buffer
-system.ruby.l1_cntrl3.requestFromCache.avg_stall_time   755.002450                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl4.cacheMemory.demand_accesses            6                       # Number of cache demand accesses
+system.ruby.l1_cntrl3.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl3.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl3.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl3.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl3.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl4.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl4.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl4.cacheMemory.demand_misses            6                       # Number of cache demand misses
-system.ruby.l1_cntrl4.mandatoryQueue.avg_buf_msgs     0.030000                       # Average number of messages in buffer
-system.ruby.l1_cntrl4.mandatoryQueue.avg_stall_time   482.500175                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl4.requestFromCache.avg_buf_msgs     0.059999                       # Average number of messages in buffer
-system.ruby.l1_cntrl4.requestFromCache.avg_stall_time   955.000450                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl5.cacheMemory.demand_accesses            6                       # Number of cache demand accesses
+system.ruby.l1_cntrl4.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl4.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl4.mandatoryQueue.avg_stall_time   492.500075                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl4.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl4.requestFromCache.avg_stall_time   975.000250                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl5.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl5.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl5.cacheMemory.demand_misses            6                       # Number of cache demand misses
-system.ruby.l1_cntrl5.mandatoryQueue.avg_buf_msgs     0.030000                       # Average number of messages in buffer
-system.ruby.l1_cntrl5.mandatoryQueue.avg_stall_time   352.501475                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl5.requestFromCache.avg_buf_msgs     0.059999                       # Average number of messages in buffer
-system.ruby.l1_cntrl5.requestFromCache.avg_stall_time   695.003050                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl6.cacheMemory.demand_accesses            7                       # Number of cache demand accesses
+system.ruby.l1_cntrl5.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl5.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl5.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl5.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl5.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl6.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl6.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl6.cacheMemory.demand_misses            7                       # Number of cache demand misses
-system.ruby.l1_cntrl6.mandatoryQueue.avg_buf_msgs     0.035000                       # Average number of messages in buffer
-system.ruby.l1_cntrl6.mandatoryQueue.avg_stall_time   417.500825                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl6.requestFromCache.avg_buf_msgs     0.069999                       # Average number of messages in buffer
-system.ruby.l1_cntrl6.requestFromCache.avg_stall_time   825.001750                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl7.cacheMemory.demand_accesses           10                       # Number of cache demand accesses
+system.ruby.l1_cntrl6.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl6.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl6.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl6.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl6.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl7.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl7.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl7.cacheMemory.demand_misses           10                       # Number of cache demand misses
-system.ruby.l1_cntrl7.mandatoryQueue.avg_buf_msgs     0.050000                       # Average number of messages in buffer
-system.ruby.l1_cntrl7.mandatoryQueue.avg_stall_time   472.500275                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl7.requestFromCache.avg_buf_msgs     0.099999                       # Average number of messages in buffer
-system.ruby.l1_cntrl7.requestFromCache.avg_stall_time   935.000650                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl8.cacheMemory.demand_accesses            7                       # Number of cache demand accesses
+system.ruby.l1_cntrl7.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl7.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl7.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl7.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl7.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl8.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl8.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl8.cacheMemory.demand_misses            7                       # Number of cache demand misses
-system.ruby.l1_cntrl8.mandatoryQueue.avg_buf_msgs     0.035000                       # Average number of messages in buffer
-system.ruby.l1_cntrl8.mandatoryQueue.avg_stall_time   417.500825                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl8.requestFromCache.avg_buf_msgs     0.069999                       # Average number of messages in buffer
-system.ruby.l1_cntrl8.requestFromCache.avg_stall_time   825.001750                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl9.cacheMemory.demand_accesses            8                       # Number of cache demand accesses
+system.ruby.l1_cntrl8.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl8.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl8.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl8.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl8.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl9.cacheMemory.demand_accesses            1                       # Number of cache demand accesses
 system.ruby.l1_cntrl9.cacheMemory.demand_hits            0                       # Number of cache demand hits
-system.ruby.l1_cntrl9.cacheMemory.demand_misses            8                       # Number of cache demand misses
-system.ruby.l1_cntrl9.mandatoryQueue.avg_buf_msgs     0.040000                       # Average number of messages in buffer
-system.ruby.l1_cntrl9.mandatoryQueue.avg_stall_time   492.500075                       # Average number of cycles messages are stalled in this MB
-system.ruby.l1_cntrl9.requestFromCache.avg_buf_msgs     0.079999                       # Average number of messages in buffer
-system.ruby.l1_cntrl9.requestFromCache.avg_stall_time   975.000250                       # Average number of cycles messages are stalled in this MB
-system.ruby.network.average_flit_latency          nan                      
-system.ruby.network.average_flit_network_latency          nan                      
-system.ruby.network.average_flit_queueing_latency          nan                      
-system.ruby.network.average_flit_vnet_latency |         nan                       |         nan                       |         nan                       |         nan                       |         nan                      
-system.ruby.network.average_flit_vqueue_latency |         nan                       |         nan                       |         nan                       |         nan                       |         nan                      
-system.ruby.network.average_hops                  nan                      
-system.ruby.network.average_packet_latency          nan                      
-system.ruby.network.average_packet_network_latency          nan                      
-system.ruby.network.average_packet_queueing_latency          nan                      
-system.ruby.network.average_packet_vnet_latency |         nan                       |         nan                       |         nan                       |         nan                       |         nan                      
-system.ruby.network.average_packet_vqueue_latency |         nan                       |         nan                       |         nan                       |         nan                       |         nan                      
-system.ruby.network.avg_link_utilization    22.195000                      
-system.ruby.network.avg_vc_load          |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |    7.325000     33.00%     33.00% |    5.435000     24.49%     57.49% |    4.110000     18.52%     76.01% |    2.950000     13.29%     89.30% |    1.285000      5.79%     95.09% |    0.635000      2.86%     97.95% |    0.315000      1.42%     99.37% |    0.140000      0.63%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.network.avg_vc_load::total      22.195000                      
-system.ruby.network.ext_in_link_utilization          114                      
-system.ruby.network.ext_out_link_utilization            0                      
-system.ruby.network.flit_network_latency |           0                       |           0                       |           0                       |           0                       |           0                      
-system.ruby.network.flit_queueing_latency |           0                       |           0                       |           0                       |           0                       |           0                      
-system.ruby.network.flits_injected       |           0      0.00%      0.00% |           0      0.00%      0.00% |         114    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.network.flits_injected::total          114                      
-system.ruby.network.int_link_utilization         4325                      
-system.ruby.network.packet_network_latency |           0                       |           0                       |           0                       |           0                       |           0                      
-system.ruby.network.packet_queueing_latency |           0                       |           0                       |           0                       |           0                       |           0                      
-system.ruby.network.packets_injected     |           0      0.00%      0.00% |           0      0.00%      0.00% |         114    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.network.packets_injected::total          114                      
-system.ruby.network.routers00.buffer_reads          173                      
-system.ruby.network.routers00.buffer_writes          173                      
-system.ruby.network.routers00.crossbar_activity          172                      
-system.ruby.network.routers00.sw_input_arbiter_activity          175                      
-system.ruby.network.routers00.sw_output_arbiter_activity          172                      
-system.ruby.network.routers01.buffer_reads          376                      
-system.ruby.network.routers01.buffer_writes          376                      
-system.ruby.network.routers01.crossbar_activity          369                      
-system.ruby.network.routers01.sw_input_arbiter_activity          388                      
-system.ruby.network.routers01.sw_output_arbiter_activity          369                      
-system.ruby.network.routers02.buffer_reads          148                      
-system.ruby.network.routers02.buffer_writes          148                      
-system.ruby.network.routers02.crossbar_activity          148                      
-system.ruby.network.routers02.sw_input_arbiter_activity          149                      
-system.ruby.network.routers02.sw_output_arbiter_activity          148                      
-system.ruby.network.routers03.buffer_reads          211                      
-system.ruby.network.routers03.buffer_writes          211                      
-system.ruby.network.routers03.crossbar_activity          211                      
-system.ruby.network.routers03.sw_input_arbiter_activity          217                      
-system.ruby.network.routers03.sw_output_arbiter_activity          211                      
-system.ruby.network.routers04.buffer_reads          274                      
-system.ruby.network.routers04.buffer_writes          274                      
-system.ruby.network.routers04.crossbar_activity          271                      
-system.ruby.network.routers04.sw_input_arbiter_activity          281                      
-system.ruby.network.routers04.sw_output_arbiter_activity          271                      
-system.ruby.network.routers05.buffer_reads          417                      
-system.ruby.network.routers05.buffer_writes          417                      
-system.ruby.network.routers05.crossbar_activity          411                      
-system.ruby.network.routers05.sw_input_arbiter_activity          429                      
-system.ruby.network.routers05.sw_output_arbiter_activity          411                      
-system.ruby.network.routers06.buffer_reads          247                      
-system.ruby.network.routers06.buffer_writes          247                      
-system.ruby.network.routers06.crossbar_activity          236                      
-system.ruby.network.routers06.sw_input_arbiter_activity          252                      
-system.ruby.network.routers06.sw_output_arbiter_activity          236                      
-system.ruby.network.routers07.buffer_reads          242                      
-system.ruby.network.routers07.buffer_writes          242                      
-system.ruby.network.routers07.crossbar_activity          242                      
-system.ruby.network.routers07.sw_input_arbiter_activity          247                      
-system.ruby.network.routers07.sw_output_arbiter_activity          242                      
-system.ruby.network.routers08.buffer_reads          393                      
-system.ruby.network.routers08.buffer_writes          393                      
-system.ruby.network.routers08.crossbar_activity          392                      
-system.ruby.network.routers08.sw_input_arbiter_activity          402                      
-system.ruby.network.routers08.sw_output_arbiter_activity          392                      
-system.ruby.network.routers09.buffer_reads          423                      
-system.ruby.network.routers09.buffer_writes          423                      
-system.ruby.network.routers09.crossbar_activity          417                      
-system.ruby.network.routers09.sw_input_arbiter_activity          431                      
-system.ruby.network.routers09.sw_output_arbiter_activity          417                      
-system.ruby.network.routers10.buffer_reads          498                      
-system.ruby.network.routers10.buffer_writes          498                      
-system.ruby.network.routers10.crossbar_activity          485                      
-system.ruby.network.routers10.sw_input_arbiter_activity          501                      
-system.ruby.network.routers10.sw_output_arbiter_activity          485                      
-system.ruby.network.routers11.buffer_reads          192                      
-system.ruby.network.routers11.buffer_writes          192                      
-system.ruby.network.routers11.crossbar_activity          191                      
-system.ruby.network.routers11.sw_input_arbiter_activity          198                      
-system.ruby.network.routers11.sw_output_arbiter_activity          191                      
-system.ruby.network.routers12.buffer_reads          264                      
-system.ruby.network.routers12.buffer_writes          264                      
-system.ruby.network.routers12.crossbar_activity          264                      
-system.ruby.network.routers12.sw_input_arbiter_activity          267                      
-system.ruby.network.routers12.sw_output_arbiter_activity          264                      
-system.ruby.network.routers13.buffer_reads          238                      
-system.ruby.network.routers13.buffer_writes          238                      
-system.ruby.network.routers13.crossbar_activity          235                      
-system.ruby.network.routers13.sw_input_arbiter_activity          239                      
-system.ruby.network.routers13.sw_output_arbiter_activity          235                      
-system.ruby.network.routers14.buffer_reads          219                      
-system.ruby.network.routers14.buffer_writes          219                      
-system.ruby.network.routers14.crossbar_activity          219                      
-system.ruby.network.routers14.sw_input_arbiter_activity          230                      
-system.ruby.network.routers14.sw_output_arbiter_activity          219                      
-system.ruby.network.routers15.buffer_reads           96                      
-system.ruby.network.routers15.buffer_writes           96                      
-system.ruby.network.routers15.crossbar_activity           96                      
-system.ruby.network.routers15.sw_input_arbiter_activity           96                      
-system.ruby.network.routers15.sw_output_arbiter_activity           96                      
-system.ruby.outstanding_req_hist_seqr::bucket_size            2                      
-system.ruby.outstanding_req_hist_seqr::max_bucket           19                      
-system.ruby.outstanding_req_hist_seqr::samples          114                      
-system.ruby.outstanding_req_hist_seqr::mean     5.078947                      
-system.ruby.outstanding_req_hist_seqr::gmean     3.961520                      
-system.ruby.outstanding_req_hist_seqr::stdev     3.237350                      
-system.ruby.outstanding_req_hist_seqr    |          16     14.04%     14.04% |          29     25.44%     39.47% |          22     19.30%     58.77% |          16     14.04%     72.81% |          21     18.42%     91.23% |           5      4.39%     95.61% |           4      3.51%     99.12% |           1      0.88%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
-system.ruby.outstanding_req_hist_seqr::total          114                      
+system.ruby.l1_cntrl9.cacheMemory.demand_misses            1                       # Number of cache demand misses
+system.ruby.l1_cntrl9.mandatoryQueue.avg_buf_msgs     0.005000                       # Average number of messages in buffer
+system.ruby.l1_cntrl9.mandatoryQueue.avg_stall_time   497.500025                       # Average number of cycles messages are stalled in this MB
+system.ruby.l1_cntrl9.requestFromCache.avg_buf_msgs     0.010000                       # Average number of messages in buffer
+system.ruby.l1_cntrl9.requestFromCache.avg_stall_time   985.000150                       # Average number of cycles messages are stalled in this MB
+system.ruby.latency_hist_seqr::bucket_size           16                      
+system.ruby.latency_hist_seqr::max_bucket          159                      
+system.ruby.latency_hist_seqr::samples             47                      
+system.ruby.latency_hist_seqr::mean          6.170213                      
+system.ruby.latency_hist_seqr::stdev        29.584308                      
+system.ruby.latency_hist_seqr            |          45     95.74%     95.74% |           0      0.00%     95.74% |           0      0.00%     95.74% |           0      0.00%     95.74% |           0      0.00%     95.74% |           0      0.00%     95.74% |           0      0.00%     95.74% |           0      0.00%     95.74% |           0      0.00%     95.74% |           2      4.26%    100.00%
+system.ruby.latency_hist_seqr::total               47                      
+system.ruby.miss_latency_hist_seqr::bucket_size           16                      
+system.ruby.miss_latency_hist_seqr::max_bucket          159                      
+system.ruby.miss_latency_hist_seqr::samples            2                      
+system.ruby.miss_latency_hist_seqr::mean          145                      
+system.ruby.miss_latency_hist_seqr::gmean   145.000000                      
+system.ruby.miss_latency_hist_seqr       |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           2    100.00%    100.00%
+system.ruby.miss_latency_hist_seqr::total            2                      
+system.ruby.network.average_flit_latency         3000                      
+system.ruby.network.average_flit_network_latency  2416.666667                      
+system.ruby.network.average_flit_queueing_latency   583.333333                      
+system.ruby.network.average_flit_vnet_latency |         nan                       |         nan                       |        1500                       |         nan                       |        2600                      
+system.ruby.network.average_flit_vqueue_latency |         nan                       |         nan                       |        1000                       |         nan                       |         500                      
+system.ruby.network.average_hops                    0                      
+system.ruby.network.average_packet_latency         3500                      
+system.ruby.network.average_packet_network_latency         2750                      
+system.ruby.network.average_packet_queueing_latency          750                      
+system.ruby.network.average_packet_vnet_latency |         nan                       |         nan                       |        1500                       |         nan                       |        4000                      
+system.ruby.network.average_packet_vqueue_latency |         nan                       |         nan                       |        1000                       |         nan                       |         500                      
+system.ruby.network.avg_link_utilization     7.005000                      
+system.ruby.network.avg_vc_load          |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |           0      0.00%      0.00% |    3.075000     43.90%     43.90% |    1.940000     27.69%     71.59% |    0.960000     13.70%     85.30% |    0.930000     13.28%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |           0      0.00%     98.57% |    0.100000      1.43%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.network.avg_vc_load::total       7.005000                      
+system.ruby.network.ext_in_link_utilization           26                      
+system.ruby.network.ext_out_link_utilization           12                      
+system.ruby.network.flit_network_latency |           0                       |           0                       |        3000                       |           0                       |       26000                      
+system.ruby.network.flit_queueing_latency |           0                       |           0                       |        2000                       |           0                       |        5000                      
+system.ruby.network.flits_injected       |           0      0.00%      0.00% |           0      0.00%      0.00% |          16     61.54%     61.54% |           0      0.00%     61.54% |          10     38.46%    100.00%
+system.ruby.network.flits_injected::total           26                      
+system.ruby.network.flits_received       |           0      0.00%      0.00% |           0      0.00%      0.00% |           2     16.67%     16.67% |           0      0.00%     16.67% |          10     83.33%    100.00%
+system.ruby.network.flits_received::total           12                      
+system.ruby.network.int_link_utilization         1363                      
+system.ruby.network.packet_network_latency |           0                       |           0                       |        3000                       |           0                       |        8000                      
+system.ruby.network.packet_queueing_latency |           0                       |           0                       |        2000                       |           0                       |        1000                      
+system.ruby.network.packets_injected     |           0      0.00%      0.00% |           0      0.00%      0.00% |          16     88.89%     88.89% |           0      0.00%     88.89% |           2     11.11%    100.00%
+system.ruby.network.packets_injected::total           18                      
+system.ruby.network.packets_received     |           0      0.00%      0.00% |           0      0.00%      0.00% |           2     50.00%     50.00% |           0      0.00%     50.00% |           2     50.00%    100.00%
+system.ruby.network.packets_received::total            4                      
+system.ruby.network.routers00.buffer_reads            7                      
+system.ruby.network.routers00.buffer_writes            7                      
+system.ruby.network.routers00.crossbar_activity            7                      
+system.ruby.network.routers00.sw_input_arbiter_activity            7                      
+system.ruby.network.routers00.sw_output_arbiter_activity            7                      
+system.ruby.network.routers01.buffer_reads            2                      
+system.ruby.network.routers01.buffer_writes            2                      
+system.ruby.network.routers01.crossbar_activity            2                      
+system.ruby.network.routers01.sw_input_arbiter_activity            2                      
+system.ruby.network.routers01.sw_output_arbiter_activity            2                      
+system.ruby.network.routers02.buffer_reads            1                      
+system.ruby.network.routers02.buffer_writes            1                      
+system.ruby.network.routers02.crossbar_activity            1                      
+system.ruby.network.routers02.sw_input_arbiter_activity            1                      
+system.ruby.network.routers02.sw_output_arbiter_activity            1                      
+system.ruby.network.routers03.buffer_reads            2                      
+system.ruby.network.routers03.buffer_writes            2                      
+system.ruby.network.routers03.crossbar_activity            2                      
+system.ruby.network.routers03.sw_input_arbiter_activity            2                      
+system.ruby.network.routers03.sw_output_arbiter_activity            2                      
+system.ruby.network.routers04.buffer_reads            1                      
+system.ruby.network.routers04.buffer_writes            1                      
+system.ruby.network.routers04.crossbar_activity            1                      
+system.ruby.network.routers04.sw_input_arbiter_activity            1                      
+system.ruby.network.routers04.sw_output_arbiter_activity            1                      
+system.ruby.network.routers05.buffer_reads            5                      
+system.ruby.network.routers05.buffer_writes            5                      
+system.ruby.network.routers05.crossbar_activity            5                      
+system.ruby.network.routers05.sw_input_arbiter_activity            6                      
+system.ruby.network.routers05.sw_output_arbiter_activity            5                      
+system.ruby.network.routers06.buffer_reads          145                      
+system.ruby.network.routers06.buffer_writes          145                      
+system.ruby.network.routers06.crossbar_activity          145                      
+system.ruby.network.routers06.sw_input_arbiter_activity          145                      
+system.ruby.network.routers06.sw_output_arbiter_activity          145                      
+system.ruby.network.routers07.buffer_reads           50                      
+system.ruby.network.routers07.buffer_writes           50                      
+system.ruby.network.routers07.crossbar_activity           50                      
+system.ruby.network.routers07.sw_input_arbiter_activity           50                      
+system.ruby.network.routers07.sw_output_arbiter_activity           50                      
+system.ruby.network.routers08.buffer_reads            1                      
+system.ruby.network.routers08.buffer_writes            1                      
+system.ruby.network.routers08.crossbar_activity            1                      
+system.ruby.network.routers08.sw_input_arbiter_activity            1                      
+system.ruby.network.routers08.sw_output_arbiter_activity            1                      
+system.ruby.network.routers09.buffer_reads          194                      
+system.ruby.network.routers09.buffer_writes          194                      
+system.ruby.network.routers09.crossbar_activity          194                      
+system.ruby.network.routers09.sw_input_arbiter_activity          195                      
+system.ruby.network.routers09.sw_output_arbiter_activity          194                      
+system.ruby.network.routers10.buffer_reads          285                      
+system.ruby.network.routers10.buffer_writes          285                      
+system.ruby.network.routers10.crossbar_activity          285                      
+system.ruby.network.routers10.sw_input_arbiter_activity          286                      
+system.ruby.network.routers10.sw_output_arbiter_activity          285                      
+system.ruby.network.routers11.buffer_reads           51                      
+system.ruby.network.routers11.buffer_writes           51                      
+system.ruby.network.routers11.crossbar_activity           51                      
+system.ruby.network.routers11.sw_input_arbiter_activity           51                      
+system.ruby.network.routers11.sw_output_arbiter_activity           51                      
+system.ruby.network.routers12.buffer_reads            2                      
+system.ruby.network.routers12.buffer_writes            2                      
+system.ruby.network.routers12.crossbar_activity            2                      
+system.ruby.network.routers12.sw_input_arbiter_activity            2                      
+system.ruby.network.routers12.sw_output_arbiter_activity            2                      
+system.ruby.network.routers13.buffer_reads          290                      
+system.ruby.network.routers13.buffer_writes          290                      
+system.ruby.network.routers13.crossbar_activity          290                      
+system.ruby.network.routers13.sw_input_arbiter_activity          293                      
+system.ruby.network.routers13.sw_output_arbiter_activity          290                      
+system.ruby.network.routers14.buffer_reads          288                      
+system.ruby.network.routers14.buffer_writes          288                      
+system.ruby.network.routers14.crossbar_activity          288                      
+system.ruby.network.routers14.sw_input_arbiter_activity          290                      
+system.ruby.network.routers14.sw_output_arbiter_activity          288                      
+system.ruby.network.routers15.buffer_reads           56                      
+system.ruby.network.routers15.buffer_writes           56                      
+system.ruby.network.routers15.crossbar_activity           56                      
+system.ruby.network.routers15.sw_input_arbiter_activity           56                      
+system.ruby.network.routers15.sw_output_arbiter_activity           56                      
+system.ruby.outstanding_req_hist_seqr::bucket_size            1                      
+system.ruby.outstanding_req_hist_seqr::max_bucket            9                      
+system.ruby.outstanding_req_hist_seqr::samples           60                      
+system.ruby.outstanding_req_hist_seqr::mean            1                      
+system.ruby.outstanding_req_hist_seqr::gmean            1                      
+system.ruby.outstanding_req_hist_seqr    |           0      0.00%      0.00% |          60    100.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00% |           0      0.00%    100.00%
+system.ruby.outstanding_req_hist_seqr::total           60                      
 system.clk_domain.clock                          1000                       # Clock period in ticks
 system.cpu0.power_state.pwrStateResidencyTicks::UNDEFINED       100000                       # Cumulative time (in ticks) in various power states
 system.cpu1.power_state.pwrStateResidencyTicks::UNDEFINED       100000                       # Cumulative time (in ticks) in various power states
@@ -261,20 +410,21 @@ system.cpu6.power_state.pwrStateResidencyTicks::UNDEFINED       100000          
 system.cpu7.power_state.pwrStateResidencyTicks::UNDEFINED       100000                       # Cumulative time (in ticks) in various power states
 system.cpu8.power_state.pwrStateResidencyTicks::UNDEFINED       100000                       # Cumulative time (in ticks) in various power states
 system.cpu9.power_state.pwrStateResidencyTicks::UNDEFINED       100000                       # Cumulative time (in ticks) in various power states
-system.mem_ctrls0.priorityMinLatency     0.000000000000                       # per QoS priority minimum request to response latency (s)
-system.mem_ctrls0.priorityMaxLatency     0.000000000000                       # per QoS priority maximum request to response latency (s)
+system.mem_ctrls0.avgPriority_.ruby.dir_cntrl0::samples         1.00                       # Average QoS priority value for accepted requests
+system.mem_ctrls0.priorityMinLatency     0.000000041750                       # per QoS priority minimum request to response latency (s)
+system.mem_ctrls0.priorityMaxLatency     0.000000041750                       # per QoS priority maximum request to response latency (s)
 system.mem_ctrls0.numReadWriteTurnArounds            0                       # Number of turnarounds from READ to WRITE
 system.mem_ctrls0.numWriteReadTurnArounds            0                       # Number of turnarounds from WRITE to READ
-system.mem_ctrls0.numStayReadState                  0                       # Number of times bus staying in READ state
+system.mem_ctrls0.numStayReadState                  2                       # Number of times bus staying in READ state
 system.mem_ctrls0.numStayWriteState                 0                       # Number of times bus staying in WRITE state
-system.mem_ctrls0.readReqs                          0                       # Number of read requests accepted
+system.mem_ctrls0.readReqs                          1                       # Number of read requests accepted
 system.mem_ctrls0.writeReqs                         0                       # Number of write requests accepted
-system.mem_ctrls0.readBursts                        0                       # Number of controller read bursts, including those serviced by the write queue
+system.mem_ctrls0.readBursts                        1                       # Number of controller read bursts, including those serviced by the write queue
 system.mem_ctrls0.writeBursts                       0                       # Number of controller write bursts, including those merged in the write queue
 system.mem_ctrls0.servicedByWrQ                     0                       # Number of controller read bursts serviced by the write queue
 system.mem_ctrls0.mergedWrBursts                    0                       # Number of controller write bursts merged with an existing one
 system.mem_ctrls0.neitherReadNorWriteReqs            0                       # Number of requests that are neither read nor write
-system.mem_ctrls0.avgRdQLen                      0.00                       # Average read queue length when enqueuing
+system.mem_ctrls0.avgRdQLen                      0.96                       # Average read queue length when enqueuing
 system.mem_ctrls0.avgWrQLen                      0.00                       # Average write queue length when enqueuing
 system.mem_ctrls0.numRdRetry                        0                       # Number of times read queue was full causing retry
 system.mem_ctrls0.numWrRetry                        0                       # Number of times write queue was full causing retry
@@ -284,7 +434,7 @@ system.mem_ctrls0.readPktSize::2                    0                       # Re
 system.mem_ctrls0.readPktSize::3                    0                       # Read request sizes (log2)
 system.mem_ctrls0.readPktSize::4                    0                       # Read request sizes (log2)
 system.mem_ctrls0.readPktSize::5                    0                       # Read request sizes (log2)
-system.mem_ctrls0.readPktSize::6                    0                       # Read request sizes (log2)
+system.mem_ctrls0.readPktSize::6                    1                       # Read request sizes (log2)
 system.mem_ctrls0.writePktSize::0                   0                       # Write request sizes (log2)
 system.mem_ctrls0.writePktSize::1                   0                       # Write request sizes (log2)
 system.mem_ctrls0.writePktSize::2                   0                       # Write request sizes (log2)
@@ -292,7 +442,7 @@ system.mem_ctrls0.writePktSize::3                   0                       # Wr
 system.mem_ctrls0.writePktSize::4                   0                       # Write request sizes (log2)
 system.mem_ctrls0.writePktSize::5                   0                       # Write request sizes (log2)
 system.mem_ctrls0.writePktSize::6                   0                       # Write request sizes (log2)
-system.mem_ctrls0.rdQLenPdf::0                      0                       # What read queue length does an incoming req see
+system.mem_ctrls0.rdQLenPdf::0                      1                       # What read queue length does an incoming req see
 system.mem_ctrls0.rdQLenPdf::1                      0                       # What read queue length does an incoming req see
 system.mem_ctrls0.rdQLenPdf::2                      0                       # What read queue length does an incoming req see
 system.mem_ctrls0.rdQLenPdf::3                      0                       # What read queue length does an incoming req see
@@ -389,15 +539,28 @@ system.mem_ctrls0.wrQLenPdf::61                     0                       # Wh
 system.mem_ctrls0.wrQLenPdf::62                     0                       # What write queue length does an incoming req see
 system.mem_ctrls0.wrQLenPdf::63                     0                       # What write queue length does an incoming req see
 system.mem_ctrls0.bytesReadWrQ                      0                       # Total number of bytes read from write queue
-system.mem_ctrls0.bytesReadSys                      0                       # Total read bytes from the system interface side
+system.mem_ctrls0.bytesReadSys                     64                       # Total read bytes from the system interface side
 system.mem_ctrls0.bytesWrittenSys                   0                       # Total written bytes from the system interface side
-system.mem_ctrls0.avgRdBWSys                     0.00                       # Average system read bandwidth in MiByte/s
+system.mem_ctrls0.avgRdBWSys                   640.00                       # Average system read bandwidth in MiByte/s
 system.mem_ctrls0.avgWrBWSys                     0.00                       # Average system write bandwidth in MiByte/s
 system.mem_ctrls0.totGap                            0                       # Total gap between requests
-system.mem_ctrls0.avgGap                          nan                       # Average gap between requests
-system.mem_ctrls0.dram.readBursts                   0                       # Number of DRAM read bursts
+system.mem_ctrls0.avgGap                         0.00                       # Average gap between requests
+system.mem_ctrls0.requestorReadBytes::.ruby.dir_cntrl0           64                       # Per-requestor bytes read from memory
+system.mem_ctrls0.requestorReadRate::.ruby.dir_cntrl0 640000000.000000000000                       # Per-requestor bytes read from memory rate (Bytes/sec)
+system.mem_ctrls0.requestorReadAccesses::.ruby.dir_cntrl0            1                       # Per-requestor read serviced memory accesses
+system.mem_ctrls0.requestorReadTotalLat::.ruby.dir_cntrl0        41750                       # Per-requestor read total memory access latency
+system.mem_ctrls0.requestorReadAvgLat::.ruby.dir_cntrl0     41750.00                       # Per-requestor read average memory access latency
+system.mem_ctrls0.dram.bytes_read::.ruby.dir_cntrl0           64                       # Number of bytes read from this memory
+system.mem_ctrls0.dram.bytes_read::total           64                       # Number of bytes read from this memory
+system.mem_ctrls0.dram.num_reads::.ruby.dir_cntrl0            1                       # Number of read requests responded to by this memory
+system.mem_ctrls0.dram.num_reads::total             1                       # Number of read requests responded to by this memory
+system.mem_ctrls0.dram.bw_read::.ruby.dir_cntrl0    640000000                       # Total read bandwidth from this memory (bytes/s)
+system.mem_ctrls0.dram.bw_read::total       640000000                       # Total read bandwidth from this memory (bytes/s)
+system.mem_ctrls0.dram.bw_total::.ruby.dir_cntrl0    640000000                       # Total bandwidth to/from this memory (bytes/s)
+system.mem_ctrls0.dram.bw_total::total      640000000                       # Total bandwidth to/from this memory (bytes/s)
+system.mem_ctrls0.dram.readBursts                   1                       # Number of DRAM read bursts
 system.mem_ctrls0.dram.writeBursts                  0                       # Number of DRAM write bursts
-system.mem_ctrls0.dram.perBankRdBursts::0            0                       # Per bank write bursts
+system.mem_ctrls0.dram.perBankRdBursts::0            1                       # Per bank write bursts
 system.mem_ctrls0.dram.perBankRdBursts::1            0                       # Per bank write bursts
 system.mem_ctrls0.dram.perBankRdBursts::2            0                       # Per bank write bursts
 system.mem_ctrls0.dram.perBankRdBursts::3            0                       # Per bank write bursts
@@ -429,44 +592,44 @@ system.mem_ctrls0.dram.perBankWrBursts::12            0                       # 
 system.mem_ctrls0.dram.perBankWrBursts::13            0                       # Per bank write bursts
 system.mem_ctrls0.dram.perBankWrBursts::14            0                       # Per bank write bursts
 system.mem_ctrls0.dram.perBankWrBursts::15            0                       # Per bank write bursts
-system.mem_ctrls0.dram.totQLat                      0                       # Total ticks spent queuing
-system.mem_ctrls0.dram.totBusLat                    0                       # Total ticks spent in databus transfers
-system.mem_ctrls0.dram.totMemAccLat                 0                       # Total ticks spent from burst creation until serviced by the DRAM
-system.mem_ctrls0.dram.avgQLat                    nan                       # Average queueing delay per DRAM burst
-system.mem_ctrls0.dram.avgBusLat                  nan                       # Average bus latency per DRAM burst
-system.mem_ctrls0.dram.avgMemAccLat               nan                       # Average memory access latency per DRAM burst
+system.mem_ctrls0.dram.totQLat                  23000                       # Total ticks spent queuing
+system.mem_ctrls0.dram.totBusLat                 5000                       # Total ticks spent in databus transfers
+system.mem_ctrls0.dram.totMemAccLat             41750                       # Total ticks spent from burst creation until serviced by the DRAM
+system.mem_ctrls0.dram.avgQLat               23000.00                       # Average queueing delay per DRAM burst
+system.mem_ctrls0.dram.avgBusLat              5000.00                       # Average bus latency per DRAM burst
+system.mem_ctrls0.dram.avgMemAccLat          41750.00                       # Average memory access latency per DRAM burst
 system.mem_ctrls0.dram.readRowHits                  0                       # Number of row buffer hits during reads
 system.mem_ctrls0.dram.writeRowHits                 0                       # Number of row buffer hits during writes
-system.mem_ctrls0.dram.readRowHitRate             nan                       # Row buffer hit rate for reads
+system.mem_ctrls0.dram.readRowHitRate            0.00                       # Row buffer hit rate for reads
 system.mem_ctrls0.dram.writeRowHitRate            nan                       # Row buffer hit rate for writes
-system.mem_ctrls0.dram.bytesRead                    0                       # Total number of bytes read from DRAM
+system.mem_ctrls0.dram.bytesRead                   64                       # Total number of bytes read from DRAM
 system.mem_ctrls0.dram.bytesWritten                 0                       # Total number of bytes written to DRAM
-system.mem_ctrls0.dram.avgRdBW                      0                       # Average DRAM read bandwidth in MiBytes/s
+system.mem_ctrls0.dram.avgRdBW                    640                       # Average DRAM read bandwidth in MiBytes/s
 system.mem_ctrls0.dram.avgWrBW                      0                       # Average DRAM write bandwidth in MiBytes/s
 system.mem_ctrls0.dram.peakBW                12800.00                       # Theoretical peak bandwidth in MiByte/s
-system.mem_ctrls0.dram.busUtil                   0.00                       # Data bus utilization in percentage
-system.mem_ctrls0.dram.busUtilRead               0.00                       # Data bus utilization in percentage for reads
+system.mem_ctrls0.dram.busUtil                   5.00                       # Data bus utilization in percentage
+system.mem_ctrls0.dram.busUtilRead               5.00                       # Data bus utilization in percentage for reads
 system.mem_ctrls0.dram.busUtilWrite              0.00                       # Data bus utilization in percentage for writes
-system.mem_ctrls0.dram.pageHitRate                nan                       # Row buffer hit rate, read and write combined
+system.mem_ctrls0.dram.pageHitRate               0.00                       # Row buffer hit rate, read and write combined
 system.mem_ctrls0.dram.power_state.pwrStateResidencyTicks::UNDEFINED       100000                       # Cumulative time (in ticks) in various power states
-system.mem_ctrls0.dram.rank0.actEnergy              0                       # Energy for activate commands per rank (pJ)
+system.mem_ctrls0.dram.rank0.actEnergy           7140                       # Energy for activate commands per rank (pJ)
 system.mem_ctrls0.dram.rank0.preEnergy              0                       # Energy for precharge commands per rank (pJ)
-system.mem_ctrls0.dram.rank0.readEnergy             0                       # Energy for read commands per rank (pJ)
+system.mem_ctrls0.dram.rank0.readEnergy          7140                       # Energy for read commands per rank (pJ)
 system.mem_ctrls0.dram.rank0.writeEnergy            0                       # Energy for write commands per rank (pJ)
 system.mem_ctrls0.dram.rank0.refreshEnergy            0                       # Energy for refresh commands per rank (pJ)
-system.mem_ctrls0.dram.rank0.actBackEnergy            0                       # Energy for active background per rank (pJ)
-system.mem_ctrls0.dram.rank0.preBackEnergy        38400                       # Energy for precharge background per rank (pJ)
+system.mem_ctrls0.dram.rank0.actBackEnergy        43320                       # Energy for active background per rank (pJ)
+system.mem_ctrls0.dram.rank0.preBackEnergy         1920                       # Energy for precharge background per rank (pJ)
 system.mem_ctrls0.dram.rank0.actPowerDownEnergy            0                       # Energy for active power-down per rank (pJ)
 system.mem_ctrls0.dram.rank0.prePowerDownEnergy            0                       # Energy for precharge power-down per rank (pJ)
 system.mem_ctrls0.dram.rank0.selfRefreshEnergy            0                       # Energy for self refresh per rank (pJ)
-system.mem_ctrls0.dram.rank0.totalEnergy        38400                       # Total energy per rank (pJ)
-system.mem_ctrls0.dram.rank0.averagePower          384                       # Core power per rank (mW)
+system.mem_ctrls0.dram.rank0.totalEnergy        59520                       # Total energy per rank (pJ)
+system.mem_ctrls0.dram.rank0.averagePower   595.200000                       # Core power per rank (mW)
 system.mem_ctrls0.dram.rank0.totalIdleTime            0                       # Total Idle time Per DRAM Rank
-system.mem_ctrls0.dram.rank0.pwrStateTime::IDLE       100000                       # Time in different power states
+system.mem_ctrls0.dram.rank0.pwrStateTime::IDLE         4500                       # Time in different power states
 system.mem_ctrls0.dram.rank0.pwrStateTime::REF            0                       # Time in different power states
 system.mem_ctrls0.dram.rank0.pwrStateTime::SREF            0                       # Time in different power states
 system.mem_ctrls0.dram.rank0.pwrStateTime::PRE_PDN            0                       # Time in different power states
-system.mem_ctrls0.dram.rank0.pwrStateTime::ACT            0                       # Time in different power states
+system.mem_ctrls0.dram.rank0.pwrStateTime::ACT        95500                       # Time in different power states
 system.mem_ctrls0.dram.rank0.pwrStateTime::ACT_PDN            0                       # Time in different power states
 system.mem_ctrls0.dram.rank1.actEnergy              0                       # Energy for activate commands per rank (pJ)
 system.mem_ctrls0.dram.rank1.preEnergy              0                       # Energy for precharge commands per rank (pJ)
@@ -1850,20 +2013,21 @@ system.mem_ctrls14.dram.rank1.pwrStateTime::PRE_PDN            0                
 system.mem_ctrls14.dram.rank1.pwrStateTime::ACT            0                       # Time in different power states
 system.mem_ctrls14.dram.rank1.pwrStateTime::ACT_PDN            0                       # Time in different power states
 system.mem_ctrls14.power_state.pwrStateResidencyTicks::UNDEFINED       100000                       # Cumulative time (in ticks) in various power states
-system.mem_ctrls15.priorityMinLatency    0.000000000000                       # per QoS priority minimum request to response latency (s)
-system.mem_ctrls15.priorityMaxLatency    0.000000000000                       # per QoS priority maximum request to response latency (s)
+system.mem_ctrls15.avgPriority_.ruby.dir_cntrl15::samples         1.00                       # Average QoS priority value for accepted requests
+system.mem_ctrls15.priorityMinLatency    0.000000041750                       # per QoS priority minimum request to response latency (s)
+system.mem_ctrls15.priorityMaxLatency    0.000000041750                       # per QoS priority maximum request to response latency (s)
 system.mem_ctrls15.numReadWriteTurnArounds            0                       # Number of turnarounds from READ to WRITE
 system.mem_ctrls15.numWriteReadTurnArounds            0                       # Number of turnarounds from WRITE to READ
-system.mem_ctrls15.numStayReadState                 0                       # Number of times bus staying in READ state
+system.mem_ctrls15.numStayReadState                 2                       # Number of times bus staying in READ state
 system.mem_ctrls15.numStayWriteState                0                       # Number of times bus staying in WRITE state
-system.mem_ctrls15.readReqs                         0                       # Number of read requests accepted
+system.mem_ctrls15.readReqs                         1                       # Number of read requests accepted
 system.mem_ctrls15.writeReqs                        0                       # Number of write requests accepted
-system.mem_ctrls15.readBursts                       0                       # Number of controller read bursts, including those serviced by the write queue
+system.mem_ctrls15.readBursts                       1                       # Number of controller read bursts, including those serviced by the write queue
 system.mem_ctrls15.writeBursts                      0                       # Number of controller write bursts, including those merged in the write queue
 system.mem_ctrls15.servicedByWrQ                    0                       # Number of controller read bursts serviced by the write queue
 system.mem_ctrls15.mergedWrBursts                   0                       # Number of controller write bursts merged with an existing one
 system.mem_ctrls15.neitherReadNorWriteReqs            0                       # Number of requests that are neither read nor write
-system.mem_ctrls15.avgRdQLen                     0.00                       # Average read queue length when enqueuing
+system.mem_ctrls15.avgRdQLen                     0.96                       # Average read queue length when enqueuing
 system.mem_ctrls15.avgWrQLen                     0.00                       # Average write queue length when enqueuing
 system.mem_ctrls15.numRdRetry                       0                       # Number of times read queue was full causing retry
 system.mem_ctrls15.numWrRetry                       0                       # Number of times write queue was full causing retry
@@ -1873,7 +2037,7 @@ system.mem_ctrls15.readPktSize::2                   0                       # Re
 system.mem_ctrls15.readPktSize::3                   0                       # Read request sizes (log2)
 system.mem_ctrls15.readPktSize::4                   0                       # Read request sizes (log2)
 system.mem_ctrls15.readPktSize::5                   0                       # Read request sizes (log2)
-system.mem_ctrls15.readPktSize::6                   0                       # Read request sizes (log2)
+system.mem_ctrls15.readPktSize::6                   1                       # Read request sizes (log2)
 system.mem_ctrls15.writePktSize::0                  0                       # Write request sizes (log2)
 system.mem_ctrls15.writePktSize::1                  0                       # Write request sizes (log2)
 system.mem_ctrls15.writePktSize::2                  0                       # Write request sizes (log2)
@@ -1881,7 +2045,7 @@ system.mem_ctrls15.writePktSize::3                  0                       # Wr
 system.mem_ctrls15.writePktSize::4                  0                       # Write request sizes (log2)
 system.mem_ctrls15.writePktSize::5                  0                       # Write request sizes (log2)
 system.mem_ctrls15.writePktSize::6                  0                       # Write request sizes (log2)
-system.mem_ctrls15.rdQLenPdf::0                     0                       # What read queue length does an incoming req see
+system.mem_ctrls15.rdQLenPdf::0                     1                       # What read queue length does an incoming req see
 system.mem_ctrls15.rdQLenPdf::1                     0                       # What read queue length does an incoming req see
 system.mem_ctrls15.rdQLenPdf::2                     0                       # What read queue length does an incoming req see
 system.mem_ctrls15.rdQLenPdf::3                     0                       # What read queue length does an incoming req see
@@ -1978,15 +2142,28 @@ system.mem_ctrls15.wrQLenPdf::61                    0                       # Wh
 system.mem_ctrls15.wrQLenPdf::62                    0                       # What write queue length does an incoming req see
 system.mem_ctrls15.wrQLenPdf::63                    0                       # What write queue length does an incoming req see
 system.mem_ctrls15.bytesReadWrQ                     0                       # Total number of bytes read from write queue
-system.mem_ctrls15.bytesReadSys                     0                       # Total read bytes from the system interface side
+system.mem_ctrls15.bytesReadSys                    64                       # Total read bytes from the system interface side
 system.mem_ctrls15.bytesWrittenSys                  0                       # Total written bytes from the system interface side
-system.mem_ctrls15.avgRdBWSys                    0.00                       # Average system read bandwidth in MiByte/s
+system.mem_ctrls15.avgRdBWSys                  640.00                       # Average system read bandwidth in MiByte/s
 system.mem_ctrls15.avgWrBWSys                    0.00                       # Average system write bandwidth in MiByte/s
 system.mem_ctrls15.totGap                           0                       # Total gap between requests
-system.mem_ctrls15.avgGap                         nan                       # Average gap between requests
-system.mem_ctrls15.dram.readBursts                  0                       # Number of DRAM read bursts
+system.mem_ctrls15.avgGap                        0.00                       # Average gap between requests
+system.mem_ctrls15.requestorReadBytes::.ruby.dir_cntrl15           64                       # Per-requestor bytes read from memory
+system.mem_ctrls15.requestorReadRate::.ruby.dir_cntrl15 640000000.000000000000                       # Per-requestor bytes read from memory rate (Bytes/sec)
+system.mem_ctrls15.requestorReadAccesses::.ruby.dir_cntrl15            1                       # Per-requestor read serviced memory accesses
+system.mem_ctrls15.requestorReadTotalLat::.ruby.dir_cntrl15        41750                       # Per-requestor read total memory access latency
+system.mem_ctrls15.requestorReadAvgLat::.ruby.dir_cntrl15     41750.00                       # Per-requestor read average memory access latency
+system.mem_ctrls15.dram.bytes_read::.ruby.dir_cntrl15           64                       # Number of bytes read from this memory
+system.mem_ctrls15.dram.bytes_read::total           64                       # Number of bytes read from this memory
+system.mem_ctrls15.dram.num_reads::.ruby.dir_cntrl15            1                       # Number of read requests responded to by this memory
+system.mem_ctrls15.dram.num_reads::total            1                       # Number of read requests responded to by this memory
+system.mem_ctrls15.dram.bw_read::.ruby.dir_cntrl15    640000000                       # Total read bandwidth from this memory (bytes/s)
+system.mem_ctrls15.dram.bw_read::total      640000000                       # Total read bandwidth from this memory (bytes/s)
+system.mem_ctrls15.dram.bw_total::.ruby.dir_cntrl15    640000000                       # Total bandwidth to/from this memory (bytes/s)
+system.mem_ctrls15.dram.bw_total::total     640000000                       # Total bandwidth to/from this memory (bytes/s)
+system.mem_ctrls15.dram.readBursts                  1                       # Number of DRAM read bursts
 system.mem_ctrls15.dram.writeBursts                 0                       # Number of DRAM write bursts
-system.mem_ctrls15.dram.perBankRdBursts::0            0                       # Per bank write bursts
+system.mem_ctrls15.dram.perBankRdBursts::0            1                       # Per bank write bursts
 system.mem_ctrls15.dram.perBankRdBursts::1            0                       # Per bank write bursts
 system.mem_ctrls15.dram.perBankRdBursts::2            0                       # Per bank write bursts
 system.mem_ctrls15.dram.perBankRdBursts::3            0                       # Per bank write bursts
@@ -2018,44 +2195,44 @@ system.mem_ctrls15.dram.perBankWrBursts::12            0                       #
 system.mem_ctrls15.dram.perBankWrBursts::13            0                       # Per bank write bursts
 system.mem_ctrls15.dram.perBankWrBursts::14            0                       # Per bank write bursts
 system.mem_ctrls15.dram.perBankWrBursts::15            0                       # Per bank write bursts
-system.mem_ctrls15.dram.totQLat                     0                       # Total ticks spent queuing
-system.mem_ctrls15.dram.totBusLat                   0                       # Total ticks spent in databus transfers
-system.mem_ctrls15.dram.totMemAccLat                0                       # Total ticks spent from burst creation until serviced by the DRAM
-system.mem_ctrls15.dram.avgQLat                   nan                       # Average queueing delay per DRAM burst
-system.mem_ctrls15.dram.avgBusLat                 nan                       # Average bus latency per DRAM burst
-system.mem_ctrls15.dram.avgMemAccLat              nan                       # Average memory access latency per DRAM burst
+system.mem_ctrls15.dram.totQLat                 23000                       # Total ticks spent queuing
+system.mem_ctrls15.dram.totBusLat                5000                       # Total ticks spent in databus transfers
+system.mem_ctrls15.dram.totMemAccLat            41750                       # Total ticks spent from burst creation until serviced by the DRAM
+system.mem_ctrls15.dram.avgQLat              23000.00                       # Average queueing delay per DRAM burst
+system.mem_ctrls15.dram.avgBusLat             5000.00                       # Average bus latency per DRAM burst
+system.mem_ctrls15.dram.avgMemAccLat         41750.00                       # Average memory access latency per DRAM burst
 system.mem_ctrls15.dram.readRowHits                 0                       # Number of row buffer hits during reads
 system.mem_ctrls15.dram.writeRowHits                0                       # Number of row buffer hits during writes
-system.mem_ctrls15.dram.readRowHitRate            nan                       # Row buffer hit rate for reads
+system.mem_ctrls15.dram.readRowHitRate           0.00                       # Row buffer hit rate for reads
 system.mem_ctrls15.dram.writeRowHitRate           nan                       # Row buffer hit rate for writes
-system.mem_ctrls15.dram.bytesRead                   0                       # Total number of bytes read from DRAM
+system.mem_ctrls15.dram.bytesRead                  64                       # Total number of bytes read from DRAM
 system.mem_ctrls15.dram.bytesWritten                0                       # Total number of bytes written to DRAM
-system.mem_ctrls15.dram.avgRdBW                     0                       # Average DRAM read bandwidth in MiBytes/s
+system.mem_ctrls15.dram.avgRdBW                   640                       # Average DRAM read bandwidth in MiBytes/s
 system.mem_ctrls15.dram.avgWrBW                     0                       # Average DRAM write bandwidth in MiBytes/s
 system.mem_ctrls15.dram.peakBW               12800.00                       # Theoretical peak bandwidth in MiByte/s
-system.mem_ctrls15.dram.busUtil                  0.00                       # Data bus utilization in percentage
-system.mem_ctrls15.dram.busUtilRead              0.00                       # Data bus utilization in percentage for reads
+system.mem_ctrls15.dram.busUtil                  5.00                       # Data bus utilization in percentage
+system.mem_ctrls15.dram.busUtilRead              5.00                       # Data bus utilization in percentage for reads
 system.mem_ctrls15.dram.busUtilWrite             0.00                       # Data bus utilization in percentage for writes
-system.mem_ctrls15.dram.pageHitRate               nan                       # Row buffer hit rate, read and write combined
+system.mem_ctrls15.dram.pageHitRate              0.00                       # Row buffer hit rate, read and write combined
 system.mem_ctrls15.dram.power_state.pwrStateResidencyTicks::UNDEFINED       100000                       # Cumulative time (in ticks) in various power states
-system.mem_ctrls15.dram.rank0.actEnergy             0                       # Energy for activate commands per rank (pJ)
+system.mem_ctrls15.dram.rank0.actEnergy          7140                       # Energy for activate commands per rank (pJ)
 system.mem_ctrls15.dram.rank0.preEnergy             0                       # Energy for precharge commands per rank (pJ)
-system.mem_ctrls15.dram.rank0.readEnergy            0                       # Energy for read commands per rank (pJ)
+system.mem_ctrls15.dram.rank0.readEnergy         7140                       # Energy for read commands per rank (pJ)
 system.mem_ctrls15.dram.rank0.writeEnergy            0                       # Energy for write commands per rank (pJ)
 system.mem_ctrls15.dram.rank0.refreshEnergy            0                       # Energy for refresh commands per rank (pJ)
-system.mem_ctrls15.dram.rank0.actBackEnergy            0                       # Energy for active background per rank (pJ)
-system.mem_ctrls15.dram.rank0.preBackEnergy        38400                       # Energy for precharge background per rank (pJ)
+system.mem_ctrls15.dram.rank0.actBackEnergy        43320                       # Energy for active background per rank (pJ)
+system.mem_ctrls15.dram.rank0.preBackEnergy         1920                       # Energy for precharge background per rank (pJ)
 system.mem_ctrls15.dram.rank0.actPowerDownEnergy            0                       # Energy for active power-down per rank (pJ)
 system.mem_ctrls15.dram.rank0.prePowerDownEnergy            0                       # Energy for precharge power-down per rank (pJ)
 system.mem_ctrls15.dram.rank0.selfRefreshEnergy            0                       # Energy for self refresh per rank (pJ)
-system.mem_ctrls15.dram.rank0.totalEnergy        38400                       # Total energy per rank (pJ)
-system.mem_ctrls15.dram.rank0.averagePower          384                       # Core power per rank (mW)
+system.mem_ctrls15.dram.rank0.totalEnergy        59520                       # Total energy per rank (pJ)
+system.mem_ctrls15.dram.rank0.averagePower   595.200000                       # Core power per rank (mW)
 system.mem_ctrls15.dram.rank0.totalIdleTime            0                       # Total Idle time Per DRAM Rank
-system.mem_ctrls15.dram.rank0.pwrStateTime::IDLE       100000                       # Time in different power states
+system.mem_ctrls15.dram.rank0.pwrStateTime::IDLE         4500                       # Time in different power states
 system.mem_ctrls15.dram.rank0.pwrStateTime::REF            0                       # Time in different power states
 system.mem_ctrls15.dram.rank0.pwrStateTime::SREF            0                       # Time in different power states
 system.mem_ctrls15.dram.rank0.pwrStateTime::PRE_PDN            0                       # Time in different power states
-system.mem_ctrls15.dram.rank0.pwrStateTime::ACT            0                       # Time in different power states
+system.mem_ctrls15.dram.rank0.pwrStateTime::ACT        95500                       # Time in different power states
 system.mem_ctrls15.dram.rank0.pwrStateTime::ACT_PDN            0                       # Time in different power states
 system.mem_ctrls15.dram.rank1.actEnergy             0                       # Energy for activate commands per rank (pJ)
 system.mem_ctrls15.dram.rank1.preEnergy             0                       # Energy for precharge commands per rank (pJ)

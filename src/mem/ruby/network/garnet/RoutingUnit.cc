@@ -170,7 +170,9 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 {
     int outport = -1;
 	RouteInfo route = t_flit->get_route();
-    if (route.dest_router == m_router->get_id()) {
+	RoutingAlgorithm routing_algorithm = (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
+
+    if (route.dest_router == m_router->get_id() && routing_algorithm != 7) {
 
         // Multiple NIs may be connected to this router,
         // all with output port direction = "Local"
@@ -181,24 +183,35 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 
     // Routing Algorithm set in GarnetNetwork.py
     // Can be over-ridden from command line using --routing-algorithm = 1
-    RoutingAlgorithm routing_algorithm =
-        (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
 
     switch (routing_algorithm) {
-        case TABLE_:  outport =
-            lookupRoutingTable(route.vnet, route.net_dest); break;
-        case XY_:     outport =
-            outportComputeXY(route, inport, inport_dirn); break;
-        // any custom algorithm
-        case CUSTOM_: outport =
-            outportComputeOE(route, inport, inport_dirn); break;
-        case 3: outport =
-            outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn); break;
-		case 4: outport = outportComputeQ_RoutingPython(t_flit, inport, inport_dirn); break;
-		case 5: outport = outportComputeDQNPython_1(t_flit, inport, inport_dirn); break;
-		case 6: outport = outportComputeDQNPythonTesting(t_flit, inport, inport_dirn); break;
-        default: outport =
-            lookupRoutingTable(route.vnet, route.net_dest); break;
+        case TABLE_:
+			outport = lookupRoutingTable(route.vnet, route.net_dest);
+			 break;
+        case 2:
+			outport = outportComputeXY(route, inport, inport_dirn);
+			 break;
+        case 3:
+			 outport = outportComputeOE(route, inport, inport_dirn);
+			 break;
+		case 4:
+			 outport = outportComputeQ_Routing(t_flit, inport, inport_dirn);
+			 break;
+        case 5:
+			 outport = outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn);
+			 break;
+		case 6:
+			 outport = outportComputeQ_RoutingPythonTesting(t_flit, inport, inport_dirn);
+			 break;
+		case 7:
+			 outport = outportComputeDQNPython(t_flit, inport, inport_dirn);
+			 break;
+		case 8:
+			 outport = outportComputeDQNPythonTesting(t_flit, inport, inport_dirn);
+			 break;
+        default:
+			 outport = lookupRoutingTable(route.vnet, route.net_dest);
+			 break;
     }
 
     assert(outport != -1);
@@ -601,7 +614,7 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 }
 
 int
-RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirection inport_dirn) {
+RoutingUnit::outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
 	std::cout<<"0- Reached here\n";
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
@@ -710,197 +723,7 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 }
 
 
-
-
 int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn) {
-		
-	RouteInfo route = t_flit->get_route();
-	PortDirection outport_dirn = "Unknown";
-    
-	Tick src_queueing_delay = t_flit->get_src_delay();
-    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
-    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
-
-	//---Geting source and destination router details
-	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
-	int num_cols = m_router->get_net_ptr()->getNumCols();
-    assert(num_rows > 0 && num_cols > 0);
-
-    int my_id = m_router->get_id();
-    int my_x = my_id % num_cols;
-    int my_y = my_id / num_cols;
-    int dest_id = route.dest_router;
-
-    int src_id = route.src_router;
-	
-	static bool isInit = false;
-//	setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
-	std::cout<<"sdsdsd---\n";	
-//	CPyObject pName;
-//	CPyObject pModule;
-    CPyObject pName = PyUnicode_FromString("DQN");
-	CPyObject pModule = PyImport_Import(pName);
-	
-	if(!isInit) {
-		srand(time(NULL));
-		Py_Initialize();
-		isInit = true;
-//		pName = PyUnicode_FromString("DQN");
-//		pModule = PyImport_Import(pName);
-		if(pModule){
-			std::cout<<"reached here\n";
-			CPyObject pFunc = PyObject_GetAttrString(pModule, "initialize");
-			if(pFunc && PyCallable_Check(pFunc)){
-				PyObject_CallObject(pFunc, NULL);
-			}
-			else{
-				printf("ERROR: function initialize()\n");
-			}
-		}
-		else{
-			printf("Module not imported in initialize function\n");
-		}
-	}
-
-	int action = 0;
-	int prev_router_id;
-
-	int temp_x = 0;
-	int temp_y = 0;
-	
-	if(inport_dirn == "North"){
-		if(my_y < num_rows - 1) {
-			temp_y = my_y + 1;
-			temp_x = my_x;
-		}
-	}
-	else if(inport_dirn == "South") {
-		if(my_y > 0) {
-			temp_y = my_y - 1;
-			temp_x = my_x;
-		}
-	
-	}
-	else if(inport_dirn == "East") {
-		if(my_x < num_cols -1) {
-			temp_x = my_x + 1;
-			temp_y = my_y;
-		}
-	}
-	else if(inport_dirn == "West"){
-		if(my_x > 0) {
-			temp_x = my_x - 1;
-			temp_y = my_y;
-		}
-	
-	}
-	else{
-	}
-
-	prev_router_id = temp_y * num_cols + temp_x;
-
-	int prev_action = 0;
-	if(inport_dirn == "North") {
-		prev_action = 2;
-	}
-	else if(inport_dirn == "East") {
-		prev_action = 3;
-	}
-	else if(inport_dirn == "South") {
-		prev_action = 0;
-	}
-	else {
-		prev_action = 1;
-	}
-
-//	Py_Initialize();
-    //pName = PyUnicode_FromString("DQN");
-	//pModule = PyImport_Import(pName);
-	
-	//std::cout<<"3- Reached here\n";
-	CPyObject pValue = 0;
-
-	if(pModule)
-	{
-		std::cout<<"Inside if-else\n";
-		// Check if random action needs to be performed
-		float p = (float) rand() / RAND_MAX;
-		if(p > epsilon) {
-			CPyObject pFunc = PyObject_GetAttrString(pModule, "get_qs");
-			if(pFunc && PyCallable_Check(pFunc)){
-        	    CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
-				pValue = PyObject_CallObject(pFunc, args);
-				action = (int) PyLong_AsLong(pValue);
-			}
-			else{
-				printf("ERROR: function get_qs()\n");
-			}
-		}
-		else{
-			action = rand() % 4;
-		}
-
-
-		do{
-			if(action == 0 && my_y < num_rows-1) {
-				outport_dirn = "North";
-			}
-			else if(action == 1 && my_x < num_cols-1) {
-				outport_dirn = "East";
-			}
-			else if(action == 2 && my_y>0) {
-				outport_dirn = "South";
-			}
-			else if(action == 3 && my_x>0){
-				outport_dirn = "West";
-			}
-			else if(my_id == dest_id){
-	//			std::cout << "Output direction: Local port." << std::endl;
-			}
-			else{
-				long long random = rand();
-				action = random % 4;
-			}	
-		}while(outport_dirn == "Unknown");
-
-		if(my_id == src_id) {
-			return m_outports_dirn2idx[outport_dirn];
-		}
-
-		CPyObject pFunc = PyObject_GetAttrString(pModule, "update_replay_memory");
-		
-		if(pFunc && PyCallable_Check(pFunc)){
-			// pass done variable
-			int done = 0;
-			if (dest_id == my_id){
-				done = 1;
-			}
-			CPyObject args = PyTuple_Pack(6,PyLong_FromLong(my_id),PyLong_FromLong(dest_id),PyLong_FromLong(prev_router_id),PyLong_FromLong(prev_action),PyLong_FromLong(queueing_delay), PyLong_FromLong(done));
-			pValue = PyObject_CallObject(pFunc, args);
-		}
-		else{
-			std::cout << "Error calling update memory func\n";	
-		}
-		
-		pFunc = PyObject_GetAttrString(pModule, "train");
-
-		if(pFunc && PyCallable_Check(pFunc)){
-        	CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
-	        pValue = PyObject_CallObject(pFunc, args);
-	 	}
-		else{
-			std::cout << "Error calling train() func\n";
-		}
-	}
-	else{
-		printf("ERROR: Module not imported in main functions\n");
-	}
-	
-	auto x = m_outports_dirn2idx[outport_dirn];
-	return x;
-}
-
-int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirection inport_dirn) {
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
     
