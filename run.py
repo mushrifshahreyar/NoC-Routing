@@ -3,7 +3,7 @@ import progressbar
 import time
 import subprocess
 
-ITERATIONS = 200
+ITERATIONS = 2
 #i = 0
 
 #print("Deleting existing Q-Table")
@@ -21,9 +21,10 @@ if return_code == 0:
 #        bar.update(i)
 #        result = os.system('python3 DQN.py &')
         print("Iteration Number:", i)
-        result = os.system('./build/X86/gem5.opt -d m5out/ configs/example/garnet_synth_traffic.py --num-cpus=16 --num-dirs=16 --network=garnet --topology=Mesh_XY --mesh-rows=4 --sim-cycles=100000 --inj-vnet=-1 --vcs-per-vnet=8 --injectionrate=0.1 --synthetic=shuffle   --routing-algorithm=4')
+        result = os.system('./build/X86/gem5.opt -d m5out/ configs/example/garnet_synth_traffic.py --num-cpus=16 --num-dirs=16 --network=garnet --topology=Mesh_XY --mesh-rows=4 --sim-cycles=100000 --inj-vnet=-1 --vcs-per-vnet=8 --injectionrate=0.1 --synthetic=shuffle   --routing-algorithm=7')
 
     print("Training Phase Ended")
+    #os.system('pkill -9 -f DQN.py')
 
 else:
     print('Error occured while compiling!')

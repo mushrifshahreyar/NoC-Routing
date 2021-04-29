@@ -72,17 +72,15 @@ class RoutingUnit
 	// Q_Routing Algorithm for Training
 	int epsilon_greedy(std::vector<std::vector<std::vector<double>>> Q, int state, int destination);
 
-	int outportComputeQ_Routing_0(flit *t_flit, int inport, PortDirection inport_dirn);
-	int outportComputeQ_Routing_1(flit *t_flit, int inport, PortDirection inport_dirn);
-
+	int outportComputeQ_Routing(flit *t_flit, int inport, PortDirection inport_dirn);
 
 	// Q Routing Algorithm for Testing
 	int outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDirection inport_dirn);
 
-	int outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirection inport_dirn);
+	int outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn);
 	int outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn);
-   	int outportComputeDQNPython_1(flit *t_flit, int inport, PortDirection inport_dirn);
- int outportComputeCustom(RouteInfo route,
+    int outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn);
+int outportComputeCustom(RouteInfo route,
                              int inport,
                              PortDirection inport_dirn);
 

@@ -170,34 +170,48 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 {
     int outport = -1;
 	RouteInfo route = t_flit->get_route();
-//    if (route.dest_router == m_router->get_id()) {
+	RoutingAlgorithm routing_algorithm = (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
+
+    if (route.dest_router == m_router->get_id() && routing_algorithm != 7) {
 
         // Multiple NIs may be connected to this router,
         // all with output port direction = "Local"
         // Get exact outport id from table
-  //      outport = lookupRoutingTable(route.vnet, route.net_dest);
-   //     return outport;
-   // }
+       outport = lookupRoutingTable(route.vnet, route.net_dest);
+       return outport;
+    }
 
     // Routing Algorithm set in GarnetNetwork.py
     // Can be over-ridden from command line using --routing-algorithm = 1
-    RoutingAlgorithm routing_algorithm =
-        (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
 
     switch (routing_algorithm) {
-        case TABLE_:  outport =
-            lookupRoutingTable(route.vnet, route.net_dest); break;
-        case XY_:     outport =
-            outportComputeXY(route, inport, inport_dirn); break;
-        // any custom algorithm
-        case CUSTOM_: outport =
-            outportComputeOE(route, inport, inport_dirn); break;
-		case 3: outport = outportComputeQ_Routing_0(t_flit, inport, inport_dirn); break;
-		case 4: outport = outportComputeQ_Routing_1(t_flit, inport, inport_dirn); break;
-	    case 5: outport = outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn); break;
-	   	case 6: outport = outportComputeQ_RoutingPython(t_flit, inport, inport_dirn); break;
-	    case 7: outport = outportComputeDQNPython_1(t_flit, inport, inport_dirn); break;
-		default: outport = lookupRoutingTable(route.vnet, route.net_dest); break;
+        case TABLE_:
+			outport = lookupRoutingTable(route.vnet, route.net_dest);
+			 break;
+        case 2:
+			outport = outportComputeXY(route, inport, inport_dirn);
+			 break;
+        case 3:
+			 outport = outportComputeOE(route, inport, inport_dirn);
+			 break;
+		case 4:
+			 outport = outportComputeQ_Routing(t_flit, inport, inport_dirn);
+			 break;
+        case 5:
+			 outport = outportComputeQ_RoutingTesting(t_flit, inport, inport_dirn);
+			 break;
+		case 6:
+			 outport = outportComputeQ_RoutingPythonTesting(t_flit, inport, inport_dirn);
+			 break;
+		case 7:
+			 outport = outportComputeDQNPython(t_flit, inport, inport_dirn);
+			 break;
+		case 8:
+			 outport = outportComputeDQNPythonTesting(t_flit, inport, inport_dirn);
+			 break;
+        default:
+			 outport = lookupRoutingTable(route.vnet, route.net_dest);
+			 break;
     }
 
     assert(outport != -1);
@@ -363,7 +377,8 @@ int RoutingUnit::epsilon_greedy(std::vector<std::vector<std::vector<double>>> Q,
 	return randomAction;
 }
 
-int RoutingUnit::outportComputeQ_Routing_0(flit *t_flit, int inport, PortDirection inport_dirn) {
+
+int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection inport_dirn) {
 	Tick src_queueing_delay = t_flit->get_src_delay();
     Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
     Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
@@ -527,189 +542,6 @@ int RoutingUnit::outportComputeQ_Routing_0(flit *t_flit, int inport, PortDirecti
     return m_outports_dirn2idx[outport_dirn];
 }
 
-
-int RoutingUnit::outportComputeQ_Routing_1(flit *t_flit, int inport, PortDirection inport_dirn) {
-	Tick src_queueing_delay = t_flit->get_src_delay();
-    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
-    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
-//	std::cout<<"CURRENT TICK "<<curTick()<<"\n";	
-	static int SEED = 0;
-	if(SEED == 0){
-		srand(time(NULL));
-//		std::cout << "Reaching srand()" << std::endl;
-		SEED += 1;
-	}
-	static int iter = 0;
-	//std::cout << "Number of iterations: " << iter << std::endl;
-	iter++;
-
-    PortDirection outport_dirn = "Unknown";
-    static bool isQTableInitialized = false;
-	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, INT_MAX)));
-	if(!isQTableInitialized){
-		isQTableInitialized = true;
-		if(access("Q_Table_hops.txt", F_OK) == 0) {
-			std::ifstream f_qTable {"Q_Table_hops.txt"};
-			for(int i=0;i<NROUTERS;++i) {
-				for(int j=0;j<NROUTERS;++j) {
-					for(int k=0;k<NACTIONS;++k) {
-						f_qTable >> Q[i][j][k];
-					}
-				}
-			}
-			//f_qTable >> EPSILON;
-			std::cout<<"File exist\n";
-			//for(int i=0;i<NROUTERS;++i) {
-			//	for(int j=0;j<NROUTERS;++j) {
-			//		for(int k=0;k<NACTIONS;++k) {
-			//				std::cout<<Q[i][j][k]<<" ";
-			//		}
-			//		std::cout<<"\n";
-			//	}
-			//	std::cout<<"\n";
-			//}
-		}
-	}
-
-	//---Initializing Q-Table---
-	RouteInfo route = t_flit->get_route();
-
-	//---Geting source and destination router details
-	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
-	int num_cols = m_router->get_net_ptr()->getNumCols();
-    assert(num_rows > 0 && num_cols > 0);
-    int my_id = m_router->get_id();
-    int my_x = my_id % num_cols;
-    int my_y = my_id / num_cols;
-
-    int dest_id = route.dest_router;
-	int dest_x = dest_id % num_cols;
-	int dest_y = dest_id / num_cols;
-
-    int src_id = route.src_router;
-	int x_hops = abs(dest_x - my_x);
-	int y_hops = abs(dest_y - my_y);
-
-	int outport = -1;
-//	RouteInfo route = t_flit->get_route();
-    if (route.dest_router == m_router->get_id()) {
-
-        // Multiple NIs may be connected to this router,
-        // all with output port direction = "Local"
-        // Get exact outport id from table
-        outport = lookupRoutingTable(route.vnet, route.net_dest);
-    	return outport;
-    }
-
-
-	int action = epsilon_greedy(Q, my_id, dest_id);
-	int prev_router_id;
-
-	int temp_x = 0;
-	int temp_y = 0;
-	if(inport_dirn == "North"){
-		if(my_y < num_rows - 1) {
-			temp_y = my_y + 1;
-			temp_x = my_x;
-		}
-	}
-	else if(inport_dirn == "South") {
-		if(my_y > 0) {
-			temp_y = my_y - 1;
-			temp_x = my_x;
-		}
-	
-	}
-	else if(inport_dirn == "East") {
-		if(my_x < num_cols -1) {
-			temp_x = my_x + 1;
-			temp_y = my_y;
-		}
-	}
-	else if(inport_dirn == "West"){
-		if(my_x > 0) {
-			temp_x = my_x - 1;
-			temp_y = my_y;
-		}
-	
-	}
-	else{
-	}
-
-	prev_router_id = temp_y * num_cols + temp_x;
-
-	do{
-		if(action == 0 && my_y < num_rows-1) {
-			outport_dirn = "North";
-		}
-		else if(action == 1 && my_x < num_cols-1) {
-			outport_dirn = "East";
-		}
-		else if(action == 2 && my_y>0) {
-			outport_dirn = "South";
-		}
-		else if(action == 3 && my_x>0){
-			outport_dirn = "West";
-		}
-		else if(my_id == dest_id){
-//			std::cout << "Output direction: Local port." << std::endl;
-		}
-		else{
-			std::cout<<"Looping here\n";
-			long long random = rand();
-            action = random % 4;
-		}
-		
-	}while(outport_dirn == "Unknown");
-
-	
-	if(my_id == src_id) {
-		return m_outports_dirn2idx[outport_dirn];
-	}
-	int prev_action = 0;
-	if(inport_dirn == "North") {
-		prev_action = 2;
-	}
-	else if(inport_dirn == "East") {
-		prev_action = 3;
-	}
-	else if(inport_dirn == "South") {
-		prev_action = 0;
-	}
-	else {
-		prev_action = 1;
-	}
-	
-	int optimal_hops = (x_hops + y_hops) * queueing_delay;
-	std::cout << "Iterations: " << iter <<std::endl;
-	//Updating Q-Table
-	//std::cout << "Queueing Delay: " << queueing_delay << std::endl;
-	double Qy_min = *std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end());
-	std::cout << "Q-tavle value before updation: " << Q[prev_router_id][dest_id][prev_action] << std::endl;
-	std::cout << "Qy_min: " << Qy_min << " Optimal hops: " << optimal_hops<< std::endl;
-	Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (DISCOUNTRATE*Qy_min + optimal_hops - Q[prev_router_id][dest_id][prev_action]);
-	std::cout << "Q-tavle value after updation: " << Q[prev_router_id][dest_id][prev_action] << std::endl;
-	if(curTick() == 100000) {
-		std::ofstream f_qTable;
-		//std::cout<<"Updating File\n";
-		f_qTable.open("Q_Table_hops.txt", std::ios::out | std::ios::trunc);
-		for(int i=0;i<NROUTERS;++i) {
-			for(int j=0;j<NROUTERS;++j) {
-				for(int k=0;k<NACTIONS;++k) {
-					f_qTable << Q[i][j][k] << " ";
-				}
-				f_qTable << "\n";
-			}
-			f_qTable << "\n";
-		}
-
-		//std::cout<<"File Updated\n";
-	}
-	//std::cout.precision(10);
-	//std::cout << std::fixed << EPSILON << std::endl;
-    return m_outports_dirn2idx[outport_dirn];
-}
-
 int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
 
 	static bool isQTableInitialized = false;
@@ -740,15 +572,7 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
     int dest_id = route.dest_router;
 
     int src_id = route.src_router;
-
-	std::ofstream file;
-	file.open("/home/b170330cs/NoC/gem5/test1.txt",std::ios::app);
-	file << my_id << " ";
-	file << src_id << " ";
-	file << dest_id << "\n";
-	file.close();
 	
-
 	//---- Get action
 	int action = std::distance(Q[my_id][dest_id].begin(), std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end()));
 
@@ -790,7 +614,7 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 }
 
 int
-RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirection inport_dirn) {
+RoutingUnit::outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
 	std::cout<<"0- Reached here\n";
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
@@ -805,13 +629,7 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 
     int dest_id = route.dest_router;
 
-	int outport = -1;
-	if(my_id == dest_id){
-	    int outport = lookupRoutingTable(route.vnet, route.net_dest);	
-    	return outport;
-	}
-
-	int src_id = route.src_router;
+    int src_id = route.src_router;
 	//std::cout<<"Current path is "<<std::filesystem::current_path()<<std::endl;
 
 	//char result[1000];
@@ -853,6 +671,8 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 		printf("ERROR: Module not imported\n");
 	}
 
+	
+	
 	int action = (int) PyLong_AsLong(pValue);
 //	Py_Finalize();
 	//std::cout<<"Exiting\n";
@@ -903,197 +723,7 @@ RoutingUnit::outportComputeQ_RoutingPython(flit *t_flit, int inport, PortDirecti
 }
 
 
-
-
 int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn) {
-		
-	RouteInfo route = t_flit->get_route();
-	PortDirection outport_dirn = "Unknown";
-    
-	Tick src_queueing_delay = t_flit->get_src_delay();
-    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
-    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
-
-	//---Geting source and destination router details
-	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
-	int num_cols = m_router->get_net_ptr()->getNumCols();
-    assert(num_rows > 0 && num_cols > 0);
-
-    int my_id = m_router->get_id();
-    int my_x = my_id % num_cols;
-    int my_y = my_id / num_cols;
-    int dest_id = route.dest_router;
-
-    int src_id = route.src_router;
-	
-	static bool isInit = false;
-//	setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
-	std::cout<<"sdsdsd---\n";	
-//	CPyObject pName;
-//	CPyObject pModule;
-    CPyObject pName = PyUnicode_FromString("DQN");
-	CPyObject pModule = PyImport_Import(pName);
-	
-	if(!isInit) {
-		srand(time(NULL));
-		Py_Initialize();
-		isInit = true;
-//		pName = PyUnicode_FromString("DQN");
-//		pModule = PyImport_Import(pName);
-		if(pModule){
-			std::cout<<"reached here\n";
-			CPyObject pFunc = PyObject_GetAttrString(pModule, "initialize");
-			if(pFunc && PyCallable_Check(pFunc)){
-				PyObject_CallObject(pFunc, NULL);
-			}
-			else{
-				printf("ERROR: function initialize()\n");
-			}
-		}
-		else{
-			printf("Module not imported in initialize function\n");
-		}
-	}
-
-	int action = 0;
-	int prev_router_id;
-
-	int temp_x = 0;
-	int temp_y = 0;
-	
-	if(inport_dirn == "North"){
-		if(my_y < num_rows - 1) {
-			temp_y = my_y + 1;
-			temp_x = my_x;
-		}
-	}
-	else if(inport_dirn == "South") {
-		if(my_y > 0) {
-			temp_y = my_y - 1;
-			temp_x = my_x;
-		}
-	
-	}
-	else if(inport_dirn == "East") {
-		if(my_x < num_cols -1) {
-			temp_x = my_x + 1;
-			temp_y = my_y;
-		}
-	}
-	else if(inport_dirn == "West"){
-		if(my_x > 0) {
-			temp_x = my_x - 1;
-			temp_y = my_y;
-		}
-	
-	}
-	else{
-	}
-
-	prev_router_id = temp_y * num_cols + temp_x;
-
-	int prev_action = 0;
-	if(inport_dirn == "North") {
-		prev_action = 2;
-	}
-	else if(inport_dirn == "East") {
-		prev_action = 3;
-	}
-	else if(inport_dirn == "South") {
-		prev_action = 0;
-	}
-	else {
-		prev_action = 1;
-	}
-
-//	Py_Initialize();
-    //pName = PyUnicode_FromString("DQN");
-	//pModule = PyImport_Import(pName);
-	
-	//std::cout<<"3- Reached here\n";
-	CPyObject pValue = 0;
-
-	if(pModule)
-	{
-		std::cout<<"Inside if-else\n";
-		// Check if random action needs to be performed
-		float p = (float) rand() / RAND_MAX;
-		if(p > epsilon) {
-			CPyObject pFunc = PyObject_GetAttrString(pModule, "get_qs");
-			if(pFunc && PyCallable_Check(pFunc)){
-        	    CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
-				pValue = PyObject_CallObject(pFunc, args);
-				action = (int) PyLong_AsLong(pValue);
-			}
-			else{
-				printf("ERROR: function get_qs()\n");
-			}
-		}
-		else{
-			action = rand() % 4;
-		}
-
-
-		do{
-			if(action == 0 && my_y < num_rows-1) {
-				outport_dirn = "North";
-			}
-			else if(action == 1 && my_x < num_cols-1) {
-				outport_dirn = "East";
-			}
-			else if(action == 2 && my_y>0) {
-				outport_dirn = "South";
-			}
-			else if(action == 3 && my_x>0){
-				outport_dirn = "West";
-			}
-			else if(my_id == dest_id){
-	//			std::cout << "Output direction: Local port." << std::endl;
-			}
-			else{
-				long long random = rand();
-				action = random % 4;
-			}	
-		}while(outport_dirn == "Unknown");
-
-		if(my_id == src_id) {
-			return m_outports_dirn2idx[outport_dirn];
-		}
-
-		CPyObject pFunc = PyObject_GetAttrString(pModule, "update_replay_memory");
-		
-		if(pFunc && PyCallable_Check(pFunc)){
-			// pass done variable
-			int done = 0;
-			if (dest_id == my_id){
-				done = 1;
-			}
-			CPyObject args = PyTuple_Pack(6,PyLong_FromLong(my_id),PyLong_FromLong(dest_id),PyLong_FromLong(prev_router_id),PyLong_FromLong(prev_action),PyLong_FromLong(queueing_delay), PyLong_FromLong(done));
-			pValue = PyObject_CallObject(pFunc, args);
-		}
-		else{
-			std::cout << "Error calling update memory func\n";	
-		}
-		
-		pFunc = PyObject_GetAttrString(pModule, "train");
-
-		if(pFunc && PyCallable_Check(pFunc)){
-        	CPyObject args = PyTuple_Pack(2,PyLong_FromLong(my_id),PyLong_FromLong(dest_id));
-	        pValue = PyObject_CallObject(pFunc, args);
-	 	}
-		else{
-			std::cout << "Error calling train() func\n";
-		}
-	}
-	else{
-		printf("ERROR: Module not imported in main functions\n");
-	}
-	
-	auto x = m_outports_dirn2idx[outport_dirn];
-	return x;
-}
-
-int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirection inport_dirn) {
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
     
@@ -1110,7 +740,7 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
     int my_x = my_id % num_cols;
     int my_y = my_id / num_cols;
 
-	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+//	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
 
     int dest_id = route.dest_router;
 
@@ -1233,11 +863,12 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	//out >> action;
 
 	std::cout<<"Action = "<<action<<"\n";
+	std:: cout << "Tick = " << curTick() << "\n";
 	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
 	fl << action << "\n";
 	fl.close();
 	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
-		std::cout<<"File removed\n";
+		std::cout<<"File removed\n\n";
 	}
 //	-----
 	switch(action) {
@@ -1263,6 +894,104 @@ int RoutingUnit::outportComputeDQNPython_1(flit *t_flit, int inport, PortDirecti
 	auto x = m_outports_dirn2idx[outport_dirn];
 	return x;
 }
+
+
+
+int RoutingUnit::outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
+	RouteInfo route = t_flit->get_route();
+	PortDirection outport_dirn = "Unknown";
+    
+	Tick src_queueing_delay = t_flit->get_src_delay();
+    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
+    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
+
+	//---Geting source and destination router details
+	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+//	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+
+    int dest_id = route.dest_router;
+
+    int src_id = route.src_router;
+	
+	static bool isInit = false;
+
+	int action = -1;
+	int prev_router_id;
+
+	
+	std::ofstream file;
+	file.open("/home/rohitr/NoC-Routing/input.txt");
+	file << my_id << "\n";
+	file << dest_id << "\n";
+	file.close();
+	
+
+//	Reading from file outputed by Python script
+	
+	while (1) {
+		//std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+		struct stat buffer;
+		if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+			break;
+		}
+	}
+
+	do {
+//        std::cout<<"Looping \n";
+        std::ifstream out("/home/rohitr/NoC-Routing/action.txt");
+
+        out >> action;
+
+        out.close();
+    }while(action == -1);
+
+
+	//std::cout<<"\nFile created\n";
+	//std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+	
+	//out >> action;
+
+	std::cout<<"Action = "<<action<<"\n";
+	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
+	fl << action << "\n";
+	fl.close();
+	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+		std::cout<<"File removed\n\n";
+	}
+//	-----
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
+	}
+	
+
+
+	auto x = m_outports_dirn2idx[outport_dirn];
+	return x;
+}
+
+
 
 
 

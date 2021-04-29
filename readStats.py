@@ -1,13 +1,15 @@
 import os
 
 
-keywords = ['average_packet_latency','average_packet_network_latency','average_packet_queueing_latency','packets_injected::total', 'packets_received::total']
-traffic_type = ['shuffle']
-injection_rate = [0.4, 0.5, 0.6]
+keywords = ['average_hops', 'average_packet_latency','average_packet_network_latency','average_packet_queueing_latency','packets_injected::total', 'packets_received::total']
+traffic_type = ['uniform_random','shuffle']
+injection_rate = [0.4,0.5,0.6,0.7,0.8]
 
 routing_algorithms = {
-        "Q_Routing_CPP": 3,
-        "Q_Routing_Python": 4
+        "XY":1,
+        "OE":2,
+        "Q_Routing_CPP": 5,
+        "Q Routing Hops": 6
         }
 
 def readFile():
