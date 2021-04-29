@@ -23,8 +23,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 LEARNINGRATE = 0.01
 DISCOUNT = 0.9
-EPSILON = 1
-EPSILON_DECAY = 0.99955
+EPSILON = 0.01
+EPSILON_DECAY = 0.9992
 MIN_EPSILON = 0.01
 
 REPLAY_MEMORY_SIZE = 200  # How many last steps to keep for model training
@@ -174,7 +174,7 @@ def get_qs(model, my_id, dest_id):
 #    model = tf.keras.models.load_model('./saved_model')
     state = oneHotEncode(my_id, dest_id)
     actions = model.predict(np.array(state).reshape(-1, NROUTERS*2))
-    optimal_action = np.argmax(actions)
+    optimal_action = np.argmin(actions)
     return model, optimal_action
 
 
@@ -215,7 +215,7 @@ print("\n\nSTARTING PYTHON")
 if __name__ == "__main__":
 #    print("Started")
     iterations = 0
-    EPISODES = 0
+    EPISODES = 700
     destcount = 0    
     m = None
     tm = None
@@ -321,7 +321,7 @@ if __name__ == "__main__":
 
         #print('Action from Python:', action)
 
-        if cur_tick == 100000:
+        if cur_tick == -100000:
             m.save('./saved_model')
             tm.save('./saved_target_model')
             with open('REPLAYMEM', 'wb') as f:
@@ -334,5 +334,3 @@ if __name__ == "__main__":
 #        if ITERATIONS == 30:
             #exit(0)
         print('----------------------')
-
-
