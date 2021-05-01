@@ -36,6 +36,7 @@
 #include "base/cast.hh"
 #include "debug/RubyNetwork.hh"
 #include "mem/ruby/network/garnet/InputUnit.hh"
+#include "mem/ruby/network/garnet/OutputUnit.hh"
 #include "mem/ruby/network/garnet/Router.hh"
 #include "mem/ruby/slicc_interface/Message.hh"
 #include "mem/ruby/network/garnet/flit.hh"
@@ -245,10 +246,15 @@ RoutingUnit::outportComputeXY(RouteInfo route,
 
     bool x_dirn = (dest_x >= my_x);
     bool y_dirn = (dest_y >= my_y);
-
     // already checked that in outportCompute() function
     assert(!(x_hops == 0 && y_hops == 0));
-
+	/*if(OutputUnit::has_free_vc(route.vnet)) {
+		std::cout<<"Output function called\n";
+	}*/
+	auto outputunit = m_router->getOutputUnit(m_outports_dirn2idx["East"]);
+	if(outputunit->has_free_vc(route.vnet)) {
+		std::cout<<"Output Unit called\n";
+	}
 	std::cout<<inport_dirn<<std::endl;
     if (x_hops > 0) {
         if (x_dirn) {
@@ -615,7 +621,6 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 
 int
 RoutingUnit::outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
-	std::cout<<"0- Reached here\n";
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
     
@@ -624,7 +629,6 @@ RoutingUnit::outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, Port
 	int num_cols = m_router->get_net_ptr()->getNumCols();
     assert(num_rows > 0 && num_cols > 0);
 
-	std::cout<<"0.5- Reached here\n";
     int my_id = m_router->get_id();
 
     int dest_id = route.dest_router;
@@ -638,6 +642,7 @@ RoutingUnit::outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, Port
 	
 	//setenv("PYTHONPATH", "~/NoC/gem5/src/mem/ruby/network/garnet/", 1);
 	static bool isInit = false;
+	
 	if(!isInit) {
 		Py_Initialize();
 		isInit = true;
@@ -675,6 +680,7 @@ RoutingUnit::outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, Port
 	
 	int action = (int) PyLong_AsLong(pValue);
 //	Py_Finalize();
+//	
 	//std::cout<<"Exiting\n";
 //	if(action == 0) {
 //		outport_dirn = "North";
@@ -719,7 +725,69 @@ RoutingUnit::outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, Port
 	std::cout<<"C function "<<x1<<std::endl;
 	return x;
 
+	/*
 	
+	std::ofstream file;
+	file.open("/home/b170330cs/NoC/gem5/input.txt");
+	file << my_id << "\n";
+	file << dest_id << "\n";
+	file.close();
+	
+	
+//	Reading from file outputed by Python script
+	int action = -1;	
+	while (1) {
+		//std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/b170330cs/NoC/gem5/action.txt";
+		struct stat buffer;
+		if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+			break;
+		}
+	}
+	std::cout<<"Action file read\n";
+	do {
+//        std::cout<<"Looping \n";
+        std::ifstream out("/home/b170330cs/NoC/gem5/action.txt");
+
+        out >> action;
+
+        out.close();
+    }while(action == -1);
+	std::cout<<"Action "<<action<<"\n";
+
+	//std::cout<<"\nFile created\n";
+	//std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+	
+	//out >> action;
+
+	std::cout<<"Action = "<<action<<"\n";
+	if(std::remove("/home/b170330cs/NoC/gem5/action.txt") == 0) {
+		std::cout<<"File removed\n\n";
+	}
+//	-----
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
+	}
+	
+
+
+	auto x = m_outports_dirn2idx[outport_dirn];
+	return x;
+*/
 }
 
 

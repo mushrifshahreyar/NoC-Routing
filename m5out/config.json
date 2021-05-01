@@ -141,7 +141,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl0.sequencer.in_ports[0]",
@@ -181,7 +181,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl1.sequencer.in_ports[0]",
@@ -221,7 +221,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl2.sequencer.in_ports[0]",
@@ -261,7 +261,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl3.sequencer.in_ports[0]",
@@ -301,7 +301,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl4.sequencer.in_ports[0]",
@@ -341,7 +341,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl5.sequencer.in_ports[0]",
@@ -381,7 +381,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl6.sequencer.in_ports[0]",
@@ -421,7 +421,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl7.sequencer.in_ports[0]",
@@ -461,7 +461,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl8.sequencer.in_ports[0]",
@@ -501,7 +501,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl9.sequencer.in_ports[0]",
@@ -541,7 +541,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl10.sequencer.in_ports[0]",
@@ -581,7 +581,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl11.sequencer.in_ports[0]",
@@ -621,7 +621,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl12.sequencer.in_ports[0]",
@@ -661,7 +661,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl13.sequencer.in_ports[0]",
@@ -701,7 +701,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl14.sequencer.in_ports[0]",
@@ -741,7 +741,7 @@
                 "single_dest": -1,
                 "single_sender": -1,
                 "system": "system",
-                "traffic_type": "shuffle",
+                "traffic_type": "uniform_random",
                 "test": {
                     "role": "GEM5 REQUESTOR",
                     "peer": "system.ruby.l1_cntrl15.sequencer.in_ports[0]",
@@ -30811,7 +30811,7 @@
                         "width": 16
                     }
                 ],
-                "routing_algorithm": 7,
+                "routing_algorithm": 2,
                 "ruby_system": "system.ruby",
                 "topology": "Mesh_XY",
                 "vcs_per_vnet": 8
