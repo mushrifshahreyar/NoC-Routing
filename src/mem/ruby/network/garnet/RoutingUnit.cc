@@ -173,7 +173,7 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 	RouteInfo route = t_flit->get_route();
 	RoutingAlgorithm routing_algorithm = (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
 
-    if (route.dest_router == m_router->get_id() && routing_algorithm != 7) {
+    if (route.dest_router == m_router->get_id() && routing_algorithm != 7 && routing_algorithm !=5) {
 
         // Multiple NIs may be connected to this router,
         // all with output port direction = "Local"
@@ -550,6 +550,7 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 
 int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
 
+	static int distance[100];
 	static bool isQTableInitialized = false;
 	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, INT_MAX)));
 	if(!isQTableInitialized){
@@ -563,6 +564,9 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 					}
 				}
 			}
+		}
+		for(int i=0;i<100;++i) {
+			distance[i] = 0;
 		}
 	}
 
@@ -581,9 +585,20 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 	
 	//---- Get action
 	int action = std::distance(Q[my_id][dest_id].begin(), std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end()));
+	std::cout<<"Printing distance\n";
+	int id = t_flit->get_id();
+	t_flit->inc_distance();
+	std::cout<<id<<" "<<t_flit->get_distance()<<"\n";
+	std::cout<<"Distance Printed and incremented\n";
+//	distance[id]++;
 
-
+//	for(int i=0;i<100;++i) {
+//		std::cout<<distance[i]<<" ";
+//	}
+	std::cout<<"\n";
 	if(my_id == dest_id){
+		std::cout<<"my_id = dest_id\n";
+//		distance[id] = 0;
 	    int outport = lookupRoutingTable(route.vnet, route.net_dest);	
     	return outport;
 	}

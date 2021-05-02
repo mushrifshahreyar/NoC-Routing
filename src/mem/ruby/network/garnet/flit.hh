@@ -49,6 +49,10 @@ class flit
 
     int get_outport() {return m_outport; }
     int get_size() { return m_size; }
+	// My changes---
+	int get_distance() {return m_distance;}
+	//----
+	
     Tick get_enqueue_time() { return m_enqueue_time; }
     Tick get_dequeue_time() { return m_dequeue_time; }
     int get_id() { return m_id; }
@@ -61,6 +65,9 @@ class flit
     std::pair<flit_stage, Tick> get_stage() { return m_stage; }
     Tick get_src_delay() { return src_delay; }
 
+	// My changes---
+	void inc_distance() {m_distance++;}
+	//---
     void set_outport(int port) { m_outport = port; }
     void set_time(Tick time) { m_time = time; }
     void set_vc(int vc) { m_vc = vc; }
@@ -110,6 +117,7 @@ class flit
     int m_vc;
     RouteInfo m_route;
     int m_size;
+	int m_distance = 0;
     Tick m_enqueue_time, m_dequeue_time;
     Tick m_time;
     flit_type m_type;
