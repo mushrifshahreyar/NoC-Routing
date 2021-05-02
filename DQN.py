@@ -23,7 +23,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 LEARNINGRATE = 0.01
 DISCOUNT = 0.9
-EPSILON = 0.01
+EPSILON = 0.99
 EPSILON_DECAY = 0.9992
 MIN_EPSILON = 0.01
 REWARD_FACTOR = 100000
@@ -113,7 +113,7 @@ def train(model, target_model, replay_memory, target_update_counter):
 
     # Now we need to enumerate our batches
     # reward here is queuing delay
-    for index, (my_id, dest_id, prev_router_id, prev_action, reward, done) in enumerate(minibatch):
+    for index, (my_id, dest_id, prev_router_id, prev_action, reward, done, is_dead) in enumerate(minibatch):
 
         if not is_dead:
             if not done:
@@ -170,7 +170,7 @@ print("\nSTARTING DQN PYTHON EXECUTION!")
 if __name__ == "__main__":
 
     reset_variables = sys.argv[1] if len(sys.argv) > 1 else 0
-    iterations = sys.argv[2] if len(sys.argv) > 2 else 700
+    iterations = sys.argv[2] if len(sys.argv) > 2 else 0
 
     m = None
     tm = None
@@ -268,9 +268,13 @@ if __name__ == "__main__":
 
         if my_id == dest_id:
             m, tm, rm, tuc = train(m, tm, rm, tuc)
+
+		if iterations % 50 == 0:
             if EPSILON > MIN_EPSILON:
                 EPSILON *= EPSILON_DECAY
                 EPSILON = max(MIN_EPSILON, EPSILON)
+			if iterations == 200000:
+				EPSILON = MIN_EPSILON
 
 
         if cur_tick == 100000:
