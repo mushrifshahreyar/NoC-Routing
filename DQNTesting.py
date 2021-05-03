@@ -15,23 +15,11 @@ from os import path
 REPLAYMEM = "replay.dat"
 VARIABLES = "variable.dat"
 NACTIONS = 4
-NROUTERS = 16
+GRIDSIZE = 8
+NROUTERS = GRIDSIZE * GRIDSIZE
 NSTATES = 2 * NROUTERS # Number of states - 32
-GRIDSIZE = 4
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
-
-LEARNINGRATE = 0.01
-DISCOUNT = 0.9
-EPSILON = 1
-EPSILON_DECAY = 0.99955
-MIN_EPSILON = 0.01
-
-REPLAY_MEMORY_SIZE = 200  # How many last steps to keep for model training
-MIN_REPLAY_MEMORY_SIZE = 64  # Minimum number of steps in a memory to start training
-MINIBATCH_SIZE = 16  # How many steps (samples) to use for training
-UPDATE_TARGET_EVERY = 32  # Terminal states (end of episodes)
-
 
 def oneHotEncode(my_id, dest_id):
     my_id_vec = [0] * NROUTERS
@@ -45,13 +33,15 @@ def oneHotEncode(my_id, dest_id):
 def get_qs(model, my_id, dest_id):
 #    model = tf.keras.models.load_model('./saved_model')
     state = oneHotEncode(my_id, dest_id)
-    actions = model.predict(np.array(state).reshape(-1, NROUTERS*2))
-    optimal_action = np.argmin(actions)
+    actions = model.predict(np.array(state).reshape(-1, NSTATES))
+    optimal_action = np.argmax(actions)
     return model, optimal_action
 
 if __name__ == "__main__":
     print('Starting testing!')
     tm = tf.keras.models.load_model('./saved_target_model')
+    legal_actions = 0
+    total_actions = 0
 
     while(1):
         while(1):
@@ -75,23 +65,31 @@ if __name__ == "__main__":
         os.remove("input.txt")
         
         tm, action = get_qs(tm, my_id, dest_id)
+        total_actions += 1
         print('Action taken:', action)      
         my_x = my_id % GRIDSIZE
         my_y = my_id // GRIDSIZE
         while True:
             if(action == 0 and my_y < GRIDSIZE-1):
-                 break
+                legal_actions += 1
+                break
             elif(action == 1 and my_x < GRIDSIZE-1):
-                 break
+                legal_actions += 1
+                break
             elif(action == 2 and my_y>0):
-                 break
+                legal_actions += 1
+                break
             elif(action == 3 and my_x>0):
-                 break
+                legal_actions += 1
+                break
             elif(my_id == dest_id):
                  break
             else:
                  action = np.random.randint(0, NACTIONS);
+                 
 
         f = open("action.txt","w")
         f.write(str(action))
         f.close()
+    print('Total actions: ', total_actions)
+    print('Legal actions: ', legal_actions) 

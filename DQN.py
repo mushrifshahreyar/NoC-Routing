@@ -269,12 +269,12 @@ if __name__ == "__main__":
         if my_id == dest_id:
             m, tm, rm, tuc = train(m, tm, rm, tuc)
 
-		if iterations % 50 == 0:
+        if iterations % 50 == 0:
             if EPSILON > MIN_EPSILON:
                 EPSILON *= EPSILON_DECAY
                 EPSILON = max(MIN_EPSILON, EPSILON)
-			if iterations == 200000:
-				EPSILON = MIN_EPSILON
+            if iterations == 200000:
+                EPSILON = MIN_EPSILON
 
 
         if cur_tick == 100000:
