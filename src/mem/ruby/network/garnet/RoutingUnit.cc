@@ -210,6 +210,9 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 		case 8:
 			 outport = outportComputeDQNPythonTesting(t_flit, inport, inport_dirn);
 			 break;
+		case 9:
+			 outport = outportComputeDQNvcPython(t_flit, inport, inport_dirn);
+			 break;
         default:
 			 outport = lookupRoutingTable(route.vnet, route.net_dest);
 			 break;
@@ -361,9 +364,9 @@ RoutingUnit::outportComputeOE(RouteInfo route,
 
 #define EPSILON 0.3
 #define epsilon 0.3
-#define NROUTERS 16
+#define NROUTERS 64
 #define NACTIONS 4
-#define GRIDSIZE 4
+#define GRIDSIZE 8
 #define LEARNINGRATE 0.09
 #define DISCOUNTRATE 0.7
 #define EPSILON_DECAY 0.99975
@@ -550,7 +553,6 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 
 int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
 
-	static int distance[100];
 	static bool isQTableInitialized = false;
 	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, INT_MAX)));
 	if(!isQTableInitialized){
@@ -564,9 +566,6 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 					}
 				}
 			}
-		}
-		for(int i=0;i<100;++i) {
-			distance[i] = 0;
 		}
 	}
 
@@ -584,18 +583,17 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
     int src_id = route.src_router;
 	
 	//---- Get action
+	std::cout << "====================\n";
+	std::cout << "My ID: " << my_id << " Src ID: " << src_id << " Dest ID: " << dest_id << std::endl;
 	int action = std::distance(Q[my_id][dest_id].begin(), std::min_element(Q[my_id][dest_id].begin(), Q[my_id][dest_id].end()));
-	std::cout<<"Printing distance\n";
-	int id = t_flit->get_id();
-	t_flit->inc_distance();
-	std::cout<<id<<" "<<t_flit->get_distance()<<"\n";
-	std::cout<<"Distance Printed and incremented\n";
+	//int id = t_flit->get_id();
+	//t_flit->inc_distance();
+	//std::cout<<id<<" "<<t_flit->get_distance()<<"\n";
 //	distance[id]++;
 
 //	for(int i=0;i<100;++i) {
 //		std::cout<<distance[i]<<" ";
 //	}
-	std::cout<<"\n";
 	if(my_id == dest_id){
 		std::cout<<"my_id = dest_id\n";
 //		distance[id] = 0;
@@ -603,10 +601,7 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
     	return outport;
 	}
 
-
-	
-	std::cout<<"------\n";
-	std::cout<<action<<std::endl;
+	std::cout<<"Action: " << action << std::endl;
 	for(int i=0;i<4;++i) {
 		std::cout<<Q[my_id][dest_id][i]<<" ";
 	}	
@@ -627,8 +622,7 @@ int RoutingUnit::outportComputeQ_RoutingTesting(flit *t_flit, int inport, PortDi
 				std::cout<<"Rchd here\n";
 				break;
 	}
-	std::cout<<outport_dirn;	
-	std::cout<<"\n------\n";
+	std::cout<<"Outport Direction: " << outport_dirn << std::endl;	
 	
     return m_outports_dirn2idx[outport_dirn];
 
@@ -806,6 +800,191 @@ RoutingUnit::outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, Port
 }
 
 
+int RoutingUnit::outportComputeDQNvcPython(flit *t_flit, int inport, PortDirection inport_dirn) {
+	RouteInfo route = t_flit->get_route();
+	PortDirection outport_dirn = "Unknown";
+    
+	Tick src_queueing_delay = t_flit->get_src_delay();
+    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
+    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
+
+	//---Geting source and destination router details
+	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+//	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+
+    int dest_id = route.dest_router;
+
+    int src_id = route.src_router;
+	
+	static bool isInit = false;
+
+	int action = -1;
+	int prev_router_id;
+
+	int temp_x = 0;
+	int temp_y = 0;
+	
+	if(inport_dirn == "North"){
+		if(my_y < num_rows - 1) {
+			temp_y = my_y + 1;
+			temp_x = my_x;
+		}
+	}
+	else if(inport_dirn == "South") {
+		if(my_y > 0) {
+			temp_y = my_y - 1;
+			temp_x = my_x;
+		}
+	
+	}
+	else if(inport_dirn == "East") {
+		if(my_x < num_cols -1) {
+			temp_x = my_x + 1;
+			temp_y = my_y;
+		}
+	}
+	else if(inport_dirn == "West"){
+		if(my_x > 0) {
+			temp_x = my_x - 1;
+			temp_y = my_y;
+		}
+	
+	}
+	else{
+	}
+
+	prev_router_id = temp_y * num_cols + temp_x;
+
+	int prev_action = 0;
+	if(inport_dirn == "North") {
+		prev_action = 2;
+	}
+	else if(inport_dirn == "East") {
+		prev_action = 3;
+	}
+	else if(inport_dirn == "South") {
+		prev_action = 0;
+	}
+	else {
+		prev_action = 1;
+	}
+	
+	int free_vcs[4];
+	for(int i=0; i < 3; i++){
+		char* directions[] = {"North", "East", "South", "West"};
+	    auto outputunit = m_router->getOutputUnit(m_outports_dirn2idx[directions[i]]);
+		free_vcs[i] = outputunit->count_free_vc(route.vnet);
+	}
+
+//	New Changes
+//	-----
+	if(!isInit) {
+		srand(time(NULL));
+		isInit = true;
+	}
+	std::cout<<"Printing in file\n";
+	
+	std::ofstream file;
+	file.open("/home/rohitr/NoC-Routing/input.txt");
+	file << my_id << "\n";
+	file << src_id << "\n";
+	file << dest_id << "\n";
+	file << prev_router_id <<"\n";
+	file << prev_action << "\n";
+	file << queueing_delay<< "\n";
+	file << curTick() << "\n";
+	file << free_vcs[0] << "\n";
+	file << free_vcs[1] << "\n";
+	file << free_vcs[2] << "\n";
+	file << free_vcs[3];
+	file.close();
+	
+	if(my_id == dest_id){
+	    int outport = lookupRoutingTable(route.vnet, route.net_dest);	
+		while (1) {
+			//std::cout<<"\nWaiting for file\n";
+			std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+			struct stat buffer;
+			if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+				break;
+			}
+		}
+		if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+			std::cout<<"File removed\n";
+		}
+		std::cout << "If myid == destid\n";
+    	return outport;
+	}
+
+
+//	Reading from file outputed by Python script
+	
+	while (1) {
+		//std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+		struct stat buffer;
+		if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+			break;
+		}
+	}
+
+	do {
+//        std::cout<<"Looping \n";
+        std::ifstream out("/home/rohitr/NoC-Routing/action.txt");
+
+        out >> action;
+
+        out.close();
+    }while(action == -1);
+
+
+	//std::cout<<"\nFile created\n";
+	//std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+	
+	//out >> action;
+
+	std::cout<<"Action = "<<action<<"\n";
+	std:: cout << "Tick = " << curTick() << "\n";
+	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
+	fl << action << "\n";
+	fl.close();
+	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+		std::cout<<"File removed\n\n";
+	}
+//	-----
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
+	}
+	
+
+
+	auto x = m_outports_dirn2idx[outport_dirn];
+	return x;
+}
+
+
+
 int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn) {
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
@@ -978,8 +1157,6 @@ int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection
 	return x;
 }
 
-
-
 int RoutingUnit::outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
 	RouteInfo route = t_flit->get_route();
 	PortDirection outport_dirn = "Unknown";
@@ -1042,13 +1219,13 @@ int RoutingUnit::outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDi
 	
 	//out >> action;
 
-	std::cout<<"Action = "<<action<<"\n";
+	//std::cout<<"Action = "<<action<<"\n";
 	std:: cout << "Tick = " << curTick() << "\n";
 	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
 	fl << action << "\n";
 	fl.close();
 	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
-		std::cout<<"File removed\n\n";
+		//std::cout<<"File removed\n\n";
 	}
 //	-----
 	switch(action) {

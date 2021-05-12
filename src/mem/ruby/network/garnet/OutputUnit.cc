@@ -97,6 +97,21 @@ OutputUnit::has_free_vc(int vnet)
     return false;
 }
 
+
+// Return thr number of free vcss.
+bool
+OutputUnit::count_free_vc(int vnet)
+{
+    int vc_base = vnet*m_vc_per_vnet, count = 0;
+    for (int vc = vc_base; vc < vc_base + m_vc_per_vnet; vc++) {
+        if (is_vc_idle(vc, curTick()))
+            count++;
+    }
+
+    return count;
+}
+
+
 // Assign a free output VC to the winner of Switch Allocation
 int
 OutputUnit::select_free_vc(int vnet)

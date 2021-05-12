@@ -21,7 +21,7 @@ if return_code == 0:
 #        bar.update(i)
 #        result = os.system('python3 DQN.py &')
         print("Iteration Number:", i)
-        result = os.system('./build/X86/gem5.opt -d m5out/ configs/example/garnet_synth_traffic.py --num-cpus=64 --num-dirs=64 --network=garnet --topology=Mesh_XY --mesh-rows=8 --sim-cycles=100000 --inj-vnet=-1 --vcs-per-vnet=8 --injectionrate=0.1 --synthetic=shuffle   --routing-algorithm=7')
+        result = os.system('./build/X86/gem5.opt -d m5out/ configs/example/garnet_synth_traffic.py --num-cpus=64 --num-dirs=64 --network=garnet --topology=Mesh_XY --mesh-rows=8 --sim-cycles=100000 --inj-vnet=-1 --vcs-per-vnet=8 --injectionrate=0.1 --synthetic=shuffle   --routing-algorithm=9')
 
     print("Training Phase Ended")
     #os.system('pkill -9 -f DQN.py')

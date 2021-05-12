@@ -59,6 +59,7 @@ class OutputUnit : public Consumer
     void increment_credit(int out_vc);
     bool has_credit(int out_vc);
     bool has_free_vc(int vnet);
+    bool count_free_vc(int vnet);
     int select_free_vc(int vnet);
 
     inline PortDirection get_direction() { return m_direction; }

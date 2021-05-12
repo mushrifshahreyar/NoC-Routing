@@ -79,8 +79,9 @@ class RoutingUnit
 
 	int outportComputeQ_RoutingPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn);
 	int outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn);
-    int outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn);
-int outportComputeCustom(RouteInfo route,
+    int outportComputeDQNvcPython(flit *t_flit, int inport, PortDirection inport_dirn);
+	int outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn);
+	int outportComputeCustom(RouteInfo route,
                              int inport,
                              PortDirection inport_dirn);
 

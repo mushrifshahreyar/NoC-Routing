@@ -159,6 +159,8 @@ def get_qs(model, my_id, dest_id):
 
     state = oneHotEncode(my_id, dest_id)
     actions = model.predict(np.array(state).reshape(-1, NSTATES))
+    #actions = model(np.array(state).reshape(1, NSTATES))
+    print(actions)
     optimal_action = np.argmax(actions)
     
     return model, optimal_action

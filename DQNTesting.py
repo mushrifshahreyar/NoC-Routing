@@ -91,5 +91,5 @@ if __name__ == "__main__":
         f = open("action.txt","w")
         f.write(str(action))
         f.close()
-    print('Total actions: ', total_actions)
-    print('Legal actions: ', legal_actions) 
+        print('Total actions: ', total_actions)
+        print('Legal actions: ', legal_actions) 
