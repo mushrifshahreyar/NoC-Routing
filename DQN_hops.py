@@ -34,13 +34,17 @@ MINIBATCH_SIZE = 32  # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 64  # Terminal states (end of episodes)
 
 # Try using ordinal encoding as there is relationship between inputs
-def oneHotEncode(my_id, dest_id):
+def oneHotEncode(my_id, dest_id, future_dist, past_dist):
+    result = []
     my_id_vec = [0] * NROUTERS
     dest_id_vec = [0] * NROUTERS
     my_id_vec[my_id] = 1
     dest_id_vec[dest_id] = 1
-    my_id_vec.extend(dest_id_vec)
-    return np.array(my_id_vec)
+    result.extend(my_id_vec)
+    result.extend(dest_id_vec)
+    result.append(future_dist)
+    result.append(past_dist)
+    return np.array(result)
 
 
 def vectorize(my_id, dest_id, free_vcs, future_dist, past_dist):
@@ -79,7 +83,7 @@ def create_model():
     model = Sequential()
 
     #model.add(tf.keras.Input(shape = (NSTATES, )))
-    model.add(tf.keras.Input(shape = (8, )))
+    model.add(tf.keras.Input(shape = (130, )))
     model.add(Dense(256, activation = 'relu'))
     # model.add(Dropout(0.2))
 
@@ -115,17 +119,17 @@ def train(model, target_model, replay_memory, target_update_counter):
 
     # Get current states from minibatch, then query NN model for Q values
     #current_states = np.array([oneHotEncode(transition[2], transition[1]) for transition in minibatch])
-    current_states = np.array([vectorize(transition[2], transition[1], transition[7], getFutureDistance(transition[2], transition[1]), transition[8] - 1) for transition in minibatch])
+    current_states = np.array([oneHotEncode(transition[2], transition[1], getFutureDistance(transition[2], transition[1]), transition[8] - 1) for transition in minibatch])
     current_qs_list = model.predict(current_states)
     #print('Transitino[7]: ', transition[7])
     #current_dead_states = np.array([oneHotEncode(transition[0], transition[1]) for transition in minibatch])
-    current_dead_states = np.array([vectorize(transition[0], transition[1], transition[7], getFutureDistance(transition[0], transition[1]), transition[8]) for transition in minibatch])
+    current_dead_states = np.array([oneHotEncode(transition[0], transition[1], getFutureDistance(transition[0], transition[1]), transition[8]) for transition in minibatch])
     current_qs_dead_list = model.predict(current_dead_states)    
 
     # Get future states from minibatch, then query NN model for Q values
     # When using target network, query it, otherwise main network should be queried
     #new_current_states = np.array([oneHotEncode(transition[0], transition[1]) for transition in minibatch])
-    new_current_states = np.array([vectorize(transition[0], transition[1], transition[7], getFutureDistance(transition[0], transition[1]), transition[8]) for transition in minibatch])
+    new_current_states = np.array([oneHotEncode(transition[0], transition[1], getFutureDistance(transition[0], transition[1]), transition[8]) for transition in minibatch])
     future_qs_list = target_model.predict(new_current_states)
 
     X = []
@@ -149,7 +153,7 @@ def train(model, target_model, replay_memory, target_update_counter):
 
             # And append to our training data
             #X.append(oneHotEncode(prev_router_id, dest_id))
-            X.append(vectorize(prev_router_id, dest_id, free_vcs, getFutureDistance(prev_router_id, dest_id), past_dist - 1))
+            X.append(oneHotEncode(prev_router_id, dest_id, getFutureDistance(prev_router_id, dest_id), past_dist - 1))
             y.append(current_qs)
         else:
             new_q = -10
@@ -159,7 +163,7 @@ def train(model, target_model, replay_memory, target_update_counter):
 
             # And append to our training data
             #X.append(oneHotEncode(my_id, dest_id))
-            X.append(vectorize(my_id, dest_id, free_vcs, getFutureDistance(my_id, dest_id), past_dist))
+            X.append(oneHotEncode(my_id, dest_id, getFutureDistance(my_id, dest_id), past_dist))
             y.append(current_qs)
 
 
@@ -183,9 +187,9 @@ def get_qs(model, my_id, dest_id, free_vcs, past_dist):
 
     #state = oneHotEncode(my_id, dest_id)
     #print('Size:', len(free_vcs))
-    state = vectorize(my_id, dest_id, free_vcs, getFutureDistance(my_id, dest_id), past_dist)
+    state = oneHotEncode(my_id, dest_id, getFutureDistance(my_id, dest_id), past_dist)
     #actions = model.predict(np.array(state).reshape(-1, NSTATES))
-    actions = model.predict(np.array(state).reshape(-1, 8))
+    actions = model.predict(np.array(state).reshape(-1, 130))
     optimal_action = np.argmax(actions)
     
     return model, optimal_action
