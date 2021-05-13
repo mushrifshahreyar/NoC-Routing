@@ -44,6 +44,7 @@
 #include <Python.h>
 #include "pyhelper.hpp"
 #include <unistd.h>
+#include <math.h>
 
 RoutingUnit::RoutingUnit(Router *router)
 {
@@ -173,7 +174,7 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 	RouteInfo route = t_flit->get_route();
 	RoutingAlgorithm routing_algorithm = (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
 
-    if (route.dest_router == m_router->get_id() && routing_algorithm != 7 && routing_algorithm !=5) {
+    if (route.dest_router == m_router->get_id() && routing_algorithm != 7 && routing_algorithm !=4 && routing_algorithm != 9 && routing_algorithm != 10) {
 
         // Multiple NIs may be connected to this router,
         // all with output port direction = "Local"
@@ -212,6 +213,15 @@ RoutingUnit::outportCompute(flit *t_flit, int inport,
 			 break;
 		case 9:
 			 outport = outportComputeDQNvcPython(t_flit, inport, inport_dirn);
+			 break;
+		case 10:
+			 outport = outportComputeDQNhopsPython(t_flit, inport, inport_dirn);
+			 break;
+		case 11:
+			 outport = outportComputeDQNvcPythonTesting(t_flit, inport, inport_dirn);
+			 break;
+		case 12:
+			 outport = outportComputeDQNhopsPythonTesting(t_flit, inport, inport_dirn);
 			 break;
         default:
 			 outport = lookupRoutingTable(route.vnet, route.net_dest);
@@ -401,7 +411,7 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	static int iter = 0;
 	//std::cout << "Number of iterations: " << iter << std::endl;
 	iter++;
-
+	
     PortDirection outport_dirn = "Unknown";
     static bool isQTableInitialized = false;
 	static std::vector<std::vector<std::vector<double>>> Q(NROUTERS, std::vector<std::vector<double>>(NROUTERS, std::vector<double> (NACTIONS, INT_MAX)));
@@ -529,6 +539,12 @@ int RoutingUnit::outportComputeQ_Routing(flit *t_flit, int inport, PortDirection
 	std::cout << "Q-tavle value before updation: " << Q[prev_router_id][dest_id][prev_action] << std::endl;
 	std::cout << "Qy_min: " << Qy_min << " Queueing delay: " << queueing_delay << std::endl;
 	Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (DISCOUNTRATE*Qy_min + ((int)(queueing_delay)) - Q[prev_router_id][dest_id][prev_action]);
+	if(my_id == dest_id){
+		Q[prev_router_id][dest_id][prev_action] = Q[prev_router_id][dest_id][prev_action] + LEARNINGRATE * (((int)(queueing_delay)) - Q[prev_router_id][dest_id][prev_action]);
+		int outport = lookupRoutingTable(route.vnet, route.net_dest);
+	    return outport;
+	}
+
 	std::cout << "Q-tavle value after updation: " << Q[prev_router_id][dest_id][prev_action] << std::endl;
 	if(curTick() == 100000) {
 		std::ofstream f_qTable;
@@ -984,6 +1000,194 @@ int RoutingUnit::outportComputeDQNvcPython(flit *t_flit, int inport, PortDirecti
 }
 
 
+int RoutingUnit::outportComputeDQNhopsPython(flit *t_flit, int inport, PortDirection inport_dirn) {
+	RouteInfo route = t_flit->get_route();
+	PortDirection outport_dirn = "Unknown";
+    
+	Tick src_queueing_delay = t_flit->get_src_delay();
+    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
+    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
+
+	//---Geting source and destination router details
+	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+//	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+
+    int dest_id = route.dest_router;
+
+    int src_id = route.src_router;
+	
+	static bool isInit = false;
+
+	int action = -1;
+	int prev_router_id;
+
+	int temp_x = 0;
+	int temp_y = 0;
+	
+	
+	if(inport_dirn == "North"){
+		if(my_y < num_rows - 1) {
+			temp_y = my_y + 1;
+			temp_x = my_x;
+		}
+	}
+	else if(inport_dirn == "South") {
+		if(my_y > 0) {
+			temp_y = my_y - 1;
+			temp_x = my_x;
+		}
+	
+	}
+	else if(inport_dirn == "East") {
+		if(my_x < num_cols -1) {
+			temp_x = my_x + 1;
+			temp_y = my_y;
+		}
+	}
+	else if(inport_dirn == "West"){
+		if(my_x > 0) {
+			temp_x = my_x - 1;
+			temp_y = my_y;
+		}
+	
+	}
+	else{
+	}
+
+	prev_router_id = temp_y * num_cols + temp_x;
+
+	int prev_action = 0;
+	if(inport_dirn == "North") {
+		prev_action = 2;
+	}
+	else if(inport_dirn == "East") {
+		prev_action = 3;
+	}
+	else if(inport_dirn == "South") {
+		prev_action = 0;
+	}
+	else {
+		prev_action = 1;
+	}
+	
+	int free_vcs[4];
+	for(int i=0; i < 3; i++){
+		char* directions[] = {"North", "East", "South", "West"};
+	    auto outputunit = m_router->getOutputUnit(m_outports_dirn2idx[directions[i]]);
+		free_vcs[i] = outputunit->count_free_vc(route.vnet);
+	}
+
+	int past_dist = t_flit->get_distance();
+//	New Changes
+//	-----
+	if(!isInit) {
+		srand(time(NULL));
+		isInit = true;
+	}
+	std::cout<<"Printing in file\n";
+	
+	std::ofstream file;
+	file.open("/home/rohitr/NoC-Routing/input.txt");
+	file << my_id << "\n";
+	file << src_id << "\n";
+	file << dest_id << "\n";
+	file << prev_router_id <<"\n";
+	file << prev_action << "\n";
+	file << queueing_delay<< "\n";
+	file << curTick() << "\n";
+	file << free_vcs[0] << "\n";
+	file << free_vcs[1] << "\n";
+	file << free_vcs[2] << "\n";
+	file << free_vcs[3] << "\n";
+	file << past_dist;
+	file.close();
+	
+	if(my_id == dest_id){
+	    int outport = lookupRoutingTable(route.vnet, route.net_dest);	
+		while (1) {
+			//std::cout<<"\nWaiting for file\n";
+			std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+			struct stat buffer;
+			if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+				break;
+			}
+		}
+		if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+			std::cout<<"File removed\n";
+		}
+		std::cout << "If myid == destid\n";
+    	return outport;
+	}
+
+
+//	Reading from file outputed by Python script
+	
+	while (1) {
+		//std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+		struct stat buffer;
+		if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+			break;
+		}
+	}
+
+	do {
+//        std::cout<<"Looping \n";
+        std::ifstream out("/home/rohitr/NoC-Routing/action.txt");
+
+        out >> action;
+
+        out.close();
+    }while(action == -1);
+
+
+	//std::cout<<"\nFile created\n";
+	//std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+	
+	//out >> action;
+
+	std::cout<<"Action = "<<action<<"\n";
+	std:: cout << "Tick = " << curTick() << "\n";
+	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
+	fl << action << "\n";
+	fl.close();
+	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+		std::cout<<"File removed\n\n";
+	}
+//	-----
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
+	}
+	
+	t_flit->inc_distance();
+
+	auto x = m_outports_dirn2idx[outport_dirn];
+	return x;
+}
+
+
+
 
 int RoutingUnit::outportComputeDQNPython(flit *t_flit, int inport, PortDirection inport_dirn) {
 	RouteInfo route = t_flit->get_route();
@@ -1253,6 +1457,220 @@ int RoutingUnit::outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDi
 }
 
 
+
+int RoutingUnit::outportComputeDQNvcPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
+	RouteInfo route = t_flit->get_route();
+	PortDirection outport_dirn = "Unknown";
+    
+	Tick src_queueing_delay = t_flit->get_src_delay();
+    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
+    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
+
+	//---Geting source and destination router details
+	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+//	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+
+    int dest_id = route.dest_router;
+
+    int src_id = route.src_router;
+	
+	static bool isInit = false;
+
+	int action = -1;
+	int prev_router_id;
+
+	int free_vcs[4];
+	for(int i=0; i < 3; i++){
+		char* directions[] = {"North", "East", "South", "West"};
+	    auto outputunit = m_router->getOutputUnit(m_outports_dirn2idx[directions[i]]);
+		free_vcs[i] = outputunit->count_free_vc(route.vnet);
+	}
+
+	std::ofstream file;
+	file.open("/home/rohitr/NoC-Routing/input.txt");
+	file << my_id << "\n";
+	file << dest_id << "\n";
+	file << free_vcs[0] << "\n";
+	file << free_vcs[1] << "\n";
+	file << free_vcs[2] << "\n";
+	file << free_vcs[3] << "\n";
+	file.close();
+	
+
+//	Reading from file outputed by Python script
+	
+	while (1) {
+		//std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+		struct stat buffer;
+		if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+			break;
+		}
+	}
+
+	do {
+//        std::cout<<"Looping \n";
+        std::ifstream out("/home/rohitr/NoC-Routing/action.txt");
+
+        out >> action;
+
+        out.close();
+    }while(action == -1);
+
+
+	//std::cout<<"\nFile created\n";
+	//std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+	
+	//out >> action;
+
+	//std::cout<<"Action = "<<action<<"\n";
+	std:: cout << "Tick = " << curTick() << "\n";
+	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
+	fl << action << "\n";
+	fl.close();
+	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+		//std::cout<<"File removed\n\n";
+	}
+//	-----
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
+	}
+	
+
+
+	auto x = m_outports_dirn2idx[outport_dirn];
+	return x;
+}
+
+
+
+int RoutingUnit::outportComputeDQNhopsPythonTesting(flit *t_flit, int inport, PortDirection inport_dirn) {
+	RouteInfo route = t_flit->get_route();
+	PortDirection outport_dirn = "Unknown";
+    
+	Tick src_queueing_delay = t_flit->get_src_delay();
+    Tick dest_queueing_delay = (curTick() - t_flit->get_dequeue_time());
+    Tick queueing_delay = src_queueing_delay + dest_queueing_delay;
+
+	//---Geting source and destination router details
+	int M5_VAR_USED num_rows = m_router->get_net_ptr()->getNumRows();
+	int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+//	std::cout << "Cols:" << num_cols << " Rows: " << num_rows << "\n";
+
+    int dest_id = route.dest_router;
+
+    int src_id = route.src_router;
+	
+	static bool isInit = false;
+
+	int action = -1;
+	int prev_router_id;
+
+	int past_dist = t_flit->get_distance();	
+
+	int free_vcs[4];
+	for(int i=0; i < 3; i++){
+		char* directions[] = {"North", "East", "South", "West"};
+	    auto outputunit = m_router->getOutputUnit(m_outports_dirn2idx[directions[i]]);
+		free_vcs[i] = outputunit->count_free_vc(route.vnet);
+	}
+
+	std::ofstream file;
+	file.open("/home/rohitr/NoC-Routing/input.txt");
+	file << my_id << "\n";
+	file << dest_id << "\n";
+	file << free_vcs[0] << "\n";
+	file << free_vcs[1] << "\n";
+	file << free_vcs[2] << "\n";
+	file << free_vcs[3] << "\n";
+	file << past_dist << "\n";
+	file.close();
+	
+//	Reading from file outputed by Python script
+	
+	while (1) {
+		//std::cout<<"\nWaiting for file\n";
+		std::string filename = "/home/rohitr/NoC-Routing/action.txt";
+		struct stat buffer;
+		if(stat(filename.c_str(), &buffer) == 0 || curTick() == 100000) {
+			break;
+		}
+	}
+
+	do {
+//        std::cout<<"Looping \n";
+        std::ifstream out("/home/rohitr/NoC-Routing/action.txt");
+
+        out >> action;
+
+        out.close();
+    }while(action == -1);
+
+
+	//std::cout<<"\nFile created\n";
+	//std::fstream out("/home/rohitr/NoC-Routing/action.txt",std::ios_base::in);
+	
+	//out >> action;
+
+	//std::cout<<"Action = "<<action<<"\n";
+	std:: cout << "Tick = " << curTick() << "\n";
+	std::ofstream fl("/home/rohitr/NoC-Routing/cppaction.txt", std::ios::app);
+	fl << action << "\n";
+	fl.close();
+	if(std::remove("/home/rohitr/NoC-Routing/action.txt") == 0) {
+		//std::cout<<"File removed\n\n";
+	}
+//	-----
+	switch(action) {
+		case 0: outport_dirn = "North";
+				break;
+
+		case 1: outport_dirn = "East";
+				break;
+
+		case 2: outport_dirn = "South";
+				break;
+
+		case 3: outport_dirn = "West";
+				break;
+
+		default:
+				std::cout<<"Rchd here\n";
+				break;
+	}
+	
+	t_flit->inc_distance();
+
+	auto x = m_outports_dirn2idx[outport_dirn];
+	return x;
+}
 
 
 
