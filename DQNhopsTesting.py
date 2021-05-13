@@ -21,13 +21,17 @@ NSTATES = 2 * NROUTERS # Number of states - 32
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
-def oneHotEncode(my_id, dest_id):
+def oneHotEncode(my_id, dest_id, future_dist, past_dist):
+    result = []
     my_id_vec = [0] * NROUTERS
     dest_id_vec = [0] * NROUTERS
     my_id_vec[my_id] = 1
     dest_id_vec[dest_id] = 1
-    my_id_vec.extend(dest_id_vec)
-    return np.array(my_id_vec)
+    result.extend(my_id_vec)
+    result.extend(dest_id_vec)
+    result.append(future_dist)
+    result.append(past_dist)
+    return np.array(result)
 
 def vectorize(my_id, dest_id, free_vcs):
     result = [my_id, dest_id]
@@ -46,8 +50,8 @@ def getFutureDistance(my_id, dest_id):
 def get_qs(model, my_id, dest_id, free_vcs, past_dist):
 #    model = tf.keras.models.load_model('./saved_model')
    # state = oneHotEncode(my_id, dest_id)
-    state = vectorize(my_id, dest_id, free_vcs, getFutureDistance(my_id, dest_id), past_dist)
-    actions = model.predict(np.array(state).reshape(-1, 8))
+    state = oneHotEncode(my_id, dest_id, getFutureDistance(my_id, dest_id), past_dist)
+    actions = model.predict(np.array(state).reshape(-1, 130))
     optimal_action = np.argmax(actions)
     return model, optimal_action
 
