@@ -35,3 +35,47 @@ images.
 If you have questions, please send mail to gem5-users@gem5.org
 
 Enjoy using gem5 and please share your modifications and extensions.
+
+# NoC 
+
+## Running gem5 simulator
+
+```
+ ./build/X86/gem5.opt -d m5out/ configs/example/garnet_synth_traffic.py --num-cpus=64 --num-dirs=64 --network=garnet --topology=Mesh_XY --mesh-rows=8 --sim-cycles=100000 --vcs-per-vnet=8 --injectionrate=0.4 --synthetic=uniform_random   --routing-algorithm=8 
+```
+
+For routing algorithm: `--routing-algorithm=x`
+- x = 1; lookupRoutingTable (default)
+- x = 2; XY (default)
+- x = 3; Odd Even
+- x = 4; Q Routing training done in C++
+- x = 5; Q Routing testing done in C++
+- x = 6; Q Rouing testing done in python using Python.h, `Python filename: Q_Routing_test.py` 
+- x = 7; DQN done in Python, `Python filename: DQN.py`
+- x = 8; DQN Testing Python, `Python filename: DQNTest.py`
+- x = 9; DQN Virtual buffer Training, `Python filename: DQN_vc.py`
+- x = 10; DQN hops buffer Training, `Python filename: DQN_hops.py`
+- x = 11; DQN Virtual buffer Testing, `Python filename: DQNvcTesting.py`
+- x = 12; DQN hops buffer Testing, `Python filename: DQNHopsTesting.py`
+
+## How to run
+
+1. Open two terminals [Only required from routing algorithm number=6 else one terminal in enough]
+    a. In first terminal run the above command with the required algorithm number
+    b. In 2nd terminal run do, Ex
+```
+python3 *Required filename*
+python3 DQN.py
+```
+2. Programs in both terminals will execute simultaneously.
+
+![Example 1](./ex1.jpg)
+![Example 2](./ex2.jpg)
+## Some Extra files:
+1. Python file ```Run.py```
+-   This file is used for training the model. Intead of running ./build... in 1st terminal, run `python run.py`. You can specify the number of iterations in the run.py file and also the routing algorithm number.
+
+2. Python file ```readStats.py```
+-   This is a script used for simplifying the work used to get the required output from the ```/m5out/stats.txt``` file. You can specify the required routing algorithms, different injection rates, traffic types and the required keywords to get from stats.txt file in the list. All the outputs will be printed in Results.txt file.
+
+
