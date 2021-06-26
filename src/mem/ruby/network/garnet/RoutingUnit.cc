@@ -266,9 +266,9 @@ RoutingUnit::outportComputeXY(RouteInfo route,
 	}*/
 	auto outputunit = m_router->getOutputUnit(m_outports_dirn2idx["East"]);
 	if(outputunit->has_free_vc(route.vnet)) {
-		std::cout<<"Output Unit called\n";
+		//std::cout<<"Output Unit called\n";
 	}
-	std::cout<<inport_dirn<<std::endl;
+	//std::cout<<inport_dirn<<std::endl;
     if (x_hops > 0) {
         if (x_dirn) {
             assert(inport_dirn == "Local" || inport_dirn == "West");
@@ -293,8 +293,13 @@ RoutingUnit::outportComputeXY(RouteInfo route,
         // already checked that in outportCompute() function
         panic("x_hops == y_hops == 0");
     }
+	std::ofstream file;
+	file.open("/home/b170330cs/NoC/gem5/XY_path.txt",std::ios_base::app);
 
-    return m_outports_dirn2idx[outport_dirn];
+	
+	file <<"Current router id: "<<my_id<<"\tInport direction: "<<inport_dirn<<"\tOutport Dirn: "<<outport_dirn<<"\n";
+    file.close();
+	return m_outports_dirn2idx[outport_dirn];
 }
 
 //Odd Even routing algorithm
@@ -1437,7 +1442,13 @@ int RoutingUnit::outportComputeDQNPythonTesting(flit *t_flit, int inport, PortDi
 				break;
 	}
 	
+	std::ofstream file_t;
+	file_t.open("/home/b170330cs/NoC/gem5/DQN_path.txt",std::ios_base::app);
 
+	
+	file_t <<"Current router id: "<<my_id<<"\tInport direction: "<<inport_dirn<<"\tOutport Dirn: "<<outport_dirn<<"\n";
+    file_t.close();
+	
 
 	auto x = m_outports_dirn2idx[outport_dirn];
 	return x;
