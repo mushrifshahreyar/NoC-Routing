@@ -2,14 +2,12 @@ import os
 
 
 keywords = ['average_hops', 'average_packet_latency','average_packet_network_latency','average_packet_queueing_latency','packets_injected::total', 'packets_received::total']
-traffic_type = ['uniform_random','shuffle']
-injection_rate = [0.4,0.5,0.6,0.7,0.8]
+traffic_type = ['uniform_random']
+injection_rate = [0.05,0.15,0.3,0.45,0.6,0.75,0.9]
 
 routing_algorithms = {
-        "XY":1,
-        "OE":2,
-        "Q_Routing_CPP": 5,
-        "Q Routing Hops": 6
+        "DQN":8,
+        "Q_Routing":5
         }
 
 def readFile():
@@ -44,7 +42,8 @@ if __name__ == "__main__":
         for traffic in traffic_type:
             for routing_algo in routing_algorithms:
                 for rate in injection_rate:
-                    code = './build/X86/gem5.opt -d m5out/ configs/example/garnet_synth_traffic.py --num-cpus=16 --num-dirs=16 --network=garnet --topology=Mesh_XY --mesh-rows=4 --sim-cycles=100000 --inj-vnet=-1 --vcs-per-vnet=8 --injectionrate={} --synthetic={}   --routing-algorithm={}'.format(rate,traffic,routing_algorithms[routing_algo])
+                    code = './build/X86/gem5.opt -d m5out/ configs/example/garnet_synth_traffic.py --num-cpus=64 --num-dirs=64 --network=garnet --topology=Mesh_XY --mesh-rows=8 --sim-cycles=100000 --inj-vnet=-1 --vcs-per-vnet=8 --injectionrate={} --synthetic={}   --routing-algorithm={}'.format(rate,traffic,routing_algorithms[routing_algo])
+
                     result = os.system(code)
                     if(result == 0):
                         lines = readFile()

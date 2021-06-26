@@ -1,5 +1,7 @@
 import numpy as np
 import tensorflow as tf
+import sys
+import signal
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Activation, Flatten
@@ -37,6 +39,9 @@ def get_qs(model, my_id, dest_id):
     optimal_action = np.argmax(actions)
     return model, optimal_action
 
+def signal_handler(sig, frame):
+    print("Hello")
+    sys.exit(0)
 if __name__ == "__main__":
     print('Starting testing!')
     tm = tf.keras.models.load_model('./saved_target_model')
@@ -87,7 +92,6 @@ if __name__ == "__main__":
             else:
                  action = np.random.randint(0, NACTIONS);
                  
-
         f = open("action.txt","w")
         f.write(str(action))
         f.close()

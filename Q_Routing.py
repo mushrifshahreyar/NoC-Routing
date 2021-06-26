@@ -1,7 +1,7 @@
 import numpy as np
 
 #--- Constants
-NROUTERS = 16
+NROUTERS = 64
 NACTIONS = 4
 
 def read_QTableFile():

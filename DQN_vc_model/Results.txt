@@ -1,0 +1,156 @@
+Traffic: shuffle	 Algorithm: XY	 Injection rate: 0.4
+average_hops 3.612295
+
+average_packet_latency 14211.600430
+
+average_packet_network_latency 13211.600430
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 2509
+
+packets_received::total 1862
+
+Traffic: shuffle	 Algorithm: XY	 Injection rate: 0.5
+average_hops 3.514902
+
+average_packet_latency 15950.071667
+
+average_packet_network_latency 14946.966077
+
+average_packet_queueing_latency 1003.105590
+
+packets_injected::total 3068
+
+packets_received::total 2093
+
+Traffic: shuffle	 Algorithm: XY	 Injection rate: 0.6
+average_hops 3.390490
+
+average_packet_latency 17241.505376
+
+average_packet_network_latency 16232.258065
+
+average_packet_queueing_latency 1009.247312
+
+packets_injected::total 3581
+
+packets_received::total 2325
+
+Traffic: shuffle	 Algorithm: XY	 Injection rate: 0.8
+average_hops 3.218446
+
+average_packet_latency 19297.757154
+
+average_packet_network_latency 18281.129157
+
+average_packet_queueing_latency 1016.627997
+
+packets_injected::total 4437
+
+packets_received::total 2586
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.4
+average_hops 3.399056
+
+average_packet_latency 12977.642276
+
+average_packet_network_latency 11977.642276
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 2504
+
+packets_received::total 1722
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.5
+average_hops 3.297952
+
+average_packet_latency 14520.707071
+
+average_packet_network_latency 13514.646465
+
+average_packet_queueing_latency 1006.060606
+
+packets_injected::total 3078
+
+packets_received::total 1980
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.6
+average_hops 3.245564
+
+average_packet_latency 15891.555556
+
+average_packet_network_latency 14867.111111
+
+average_packet_queueing_latency 1024.444444
+
+packets_injected::total 3593
+
+packets_received::total 2250
+
+Traffic: shuffle	 Algorithm: Q_Routing_CPP	 Injection rate: 0.8
+average_hops 3.069732
+
+average_packet_latency 16792.032024
+
+average_packet_network_latency 15765.535646
+
+average_packet_queueing_latency 1026.496378
+
+packets_injected::total 4465
+
+packets_received::total 2623
+
+Traffic: shuffle	 Algorithm: DQN	 Injection rate: 0.4
+average_hops 2.211066
+
+average_packet_latency 9802.127660
+
+average_packet_network_latency 8802.127660
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 2431
+
+packets_received::total 235
+
+Traffic: shuffle	 Algorithm: DQN	 Injection rate: 0.5
+average_hops 2.035008
+
+average_packet_latency 10312.068966
+
+average_packet_network_latency 9312.068966
+
+average_packet_queueing_latency 1000
+
+packets_injected::total 2852
+
+packets_received::total 290
+
+Traffic: shuffle	 Algorithm: DQN	 Injection rate: 0.6
+average_hops 1.898374
+
+average_packet_latency 12211.783439
+
+average_packet_network_latency 10942.675159
+
+average_packet_queueing_latency 1269.108280
+
+packets_injected::total 3287
+
+packets_received::total 314
+
+Traffic: shuffle	 Algorithm: DQN	 Injection rate: 0.8
+average_hops 1.667497
+
+average_packet_latency 11895.721925
+
+average_packet_network_latency 10868.983957
+
+average_packet_queueing_latency 1026.737968
+
+packets_injected::total 3714
+
+packets_received::total 374
+
